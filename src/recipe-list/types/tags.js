@@ -1,0 +1,1 @@
+export const TAGS_RECEIVED = 'TAGS_RECEIVED';

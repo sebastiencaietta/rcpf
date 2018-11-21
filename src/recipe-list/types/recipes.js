@@ -1,0 +1,1 @@
+export const RECIPES_RECEIVED = 'RECIPES_RECEIVED';
