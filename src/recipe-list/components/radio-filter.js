@@ -5,8 +5,8 @@ export default class RadioFilter extends React.Component {
         const {title, id, onChange, checked, name} = this.props;
 
         return (
-            <label htmlFor={`filter-${id}`}>
-                <input type="radio" name={name} onChange={onChange} id={`filter-${id}`} checked={checked}/>
+            <label htmlFor={`${name}-${id}`}>
+                <input type="radio" name={name} onChange={onChange} id={`${name}-${id}`} checked={checked}/>
                 {title}
             </label>
         )

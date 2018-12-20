@@ -2,6 +2,7 @@ import React from 'react';
 import {eve} from '../../global/eve';
 import CheckboxFilter from './checkbox-filter';
 import RadioFilter from './radio-filter';
+import '../styles/filters.css';
 
 const fetchTags = async (initTags) => {
     const response = await eve.get('/tags');
@@ -20,6 +21,7 @@ export default class Filters extends React.Component {
         this.updateSearch = this.updateSearch.bind(this);
         this.toggleTag = this.toggleTag.bind(this);
         this.toggleCategory = this.toggleCategory.bind(this);
+        this.resetFilters = this.resetFilters.bind(this);
     }
 
     updateSearch(e) {
@@ -32,6 +34,10 @@ export default class Filters extends React.Component {
 
     toggleCategory(id) {
         this.props.toggleCategory(id);
+    }
+
+    resetFilters() {
+        this.props.resetFilters();
     }
 
     componentWillMount() {
@@ -52,7 +58,12 @@ export default class Filters extends React.Component {
                 <ul>
                     {tags.map(tag => (
                         <li key={tag.id}>
-                            <CheckboxFilter onChange={() => this.toggleTag(tag.id)} title={tag.title} id={tag.id} />
+                            <CheckboxFilter onChange={() => this.toggleTag(tag.id)}
+                                            title={tag.title}
+                                            id={tag.id}
+                                            name="filters-tag"
+                                            checked={filters.tags.some((id) => tag.id === id)}
+                            />
                         </li>
                     ))}
                 </ul>
@@ -69,6 +80,10 @@ export default class Filters extends React.Component {
                         </li>
                     ))}
                 </ul>
+
+                <button onClick={this.resetFilters} className="btn btn-outline-warning">
+                    Reset
+                </button>
             </div>
         )
 
