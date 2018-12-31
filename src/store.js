@@ -5,6 +5,9 @@ import categories from './recipe-list/reducers/categories';
 import tags from './recipe-list/reducers/tags';
 import recipes from './recipe-list/reducers/recipes';
 import filters from './recipe-list/reducers/filters';
+import currentRecipe from './recipe/reducers/current-recipe';
+import editRecipeForm from './recipe/reducers/edit-recipe-form';
+import {reducer as formReducer} from 'redux-form';
 
 export const history = createHistory();
 
@@ -25,6 +28,9 @@ const reducers = combineReducers({
         tags,
         recipes,
         filters,
+        currentRecipe,
+        editRecipeForm,
+        form: formReducer,
     },
 );
 

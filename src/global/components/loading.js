@@ -1,3 +1,3 @@
 import React from 'react';
 
-export default () => (<div>Loading...</div>);
+export const Loading = () => (<div>Loading...</div>);

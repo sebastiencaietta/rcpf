@@ -24,7 +24,7 @@ const filterRecipes = (filters, recipes) => {
             }
         }
 
-        if (category !== undefined) {
+        if (category) {
             return recipe.category.id === category;
         }
 

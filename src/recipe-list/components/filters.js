@@ -1,18 +1,9 @@
 import React from 'react';
-import {eve} from '../../global/eve';
+import PropTypes from 'prop-types';
+import {fetchCategories, fetchTags} from '../../global/eve';
 import CheckboxFilter from './checkbox-filter';
 import RadioFilter from './radio-filter';
 import '../styles/filters.css';
-
-const fetchTags = async (initTags) => {
-    const response = await eve.get('/tags');
-    initTags(response.data);
-};
-
-const fetchCategories = async initCategories => {
-    const response = await eve.get('/categories');
-    initCategories(response.data);
-};
 
 export default class Filters extends React.Component {
     constructor(props) {
@@ -43,10 +34,10 @@ export default class Filters extends React.Component {
     componentWillMount() {
         const {initTags, initCategories} = this.props;
 
-        Promise.all([fetchTags(initTags), fetchCategories(initCategories)]).then(() => {
-            console.log('all fetched');
+        Promise.all([fetchTags(initTags), fetchCategories(initCategories)]).then(([tags, categories]) => {
+            initTags(tags);
+            initCategories(categories);
         });
-
     }
 
     render() {
@@ -89,3 +80,13 @@ export default class Filters extends React.Component {
 
     }
 }
+
+Filters.propTypes = {
+    filters: PropTypes.object,
+};
+
+Filters.defaultProps = {
+    filters: {
+        search: '',
+    },
+};

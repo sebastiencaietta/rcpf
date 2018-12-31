@@ -1,12 +1,12 @@
-import {RECIPES_RECEIVED} from '../types/recipes';
+import {RECIPE_RECEIVED} from '../types/current-recipe';
 
-const initialState = [];
+const initialState = null;
 
 export default (state = initialState, action) => {
     switch (action.type) {
-        case RECIPES_RECEIVED:
+        case RECIPE_RECEIVED:
             return action.payload;
         default:
             return state;
     }
-}
+};

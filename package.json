@@ -29,5 +29,9 @@
     "not dead",
     "not ie <= 11",
     "not op_mini all"
-  ]
+  ],
+  "devDependencies": {
+    "react-widgets": "^4.4.8",
+    "redux-form": "^8.0.4"
+  }
 }

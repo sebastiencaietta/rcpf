@@ -3,8 +3,8 @@ import {addOrRemoveInArray} from '../../global/lodash';
 
 const initialState = {
     tags: [],
-    category: undefined,
-    search: undefined,
+    category: null,
+    search: '',
 };
 
 export default (state = initialState, action) => {

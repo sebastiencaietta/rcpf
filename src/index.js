@@ -4,6 +4,7 @@ import ReactDOM from 'react-dom';
 import {Router} from 'react-router-dom'
 import store, {history} from './store'
 
+import 'react-widgets/dist/css/react-widgets.css';
 import 'bootstrap/dist/css/bootstrap.min.css'
 import './index.css';
 import App from './App';

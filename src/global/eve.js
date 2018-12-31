@@ -11,3 +11,25 @@ const config = {
 };
 
 export const eve = axios.create(config);
+
+export const fetchRecipe = async (slug) => {
+    const response = await eve.get(`recipes/${slug}`);
+    return response.data;
+};
+
+export const fetchCategories = async () => {
+    const response = await eve.get('/categories');
+    return response.data;
+};
+
+export const fetchTags = async () => {
+    const response = await eve.get('/tags');
+    return response.data;
+};
+
+export const editRecipe = async (values) => {
+    const {id} = values;
+
+    const response = await eve.put(`recipes/${id}`, values);
+    return response.data;
+};
