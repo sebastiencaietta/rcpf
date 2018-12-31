@@ -125,10 +125,20 @@ class EditRecipeForm extends React.Component {
                         <Field id="picture" disabled name="picture" component="input" type="text" className="form-control"/>
                     </div>
                 </div>
-
             </div>
 
-
+            <div className="row">
+                <div className="col-sm-12">
+                    <div className="form-group">
+                        <label htmlFor="description">Description</label>
+                        <Field id="description"
+                               name="description"
+                               component="textarea"
+                               className="form-control"
+                               rows="10"/>
+                    </div>
+                </div>
+            </div>
 
             <div className="row">
                 <div className="col-sm-6">
