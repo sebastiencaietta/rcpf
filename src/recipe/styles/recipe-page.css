@@ -1,0 +1,7 @@
+.recipe__tags p {
+    margin-bottom: 5px;
+}
+
+.recipe__description {
+    white-space: pre-line;
+}

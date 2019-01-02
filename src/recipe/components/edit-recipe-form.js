@@ -23,7 +23,7 @@ class EditRecipeForm extends React.Component {
             fetchCategories().then(categories => this.props.initCategories(categories));
         }
 
-        if (!this.props.categories.length) {
+        if (!this.props.tags.length) {
             fetchTags().then(tags => this.props.initTags(tags));
         }
     }
