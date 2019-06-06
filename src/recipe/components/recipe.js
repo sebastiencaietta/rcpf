@@ -1,6 +1,7 @@
 import React from 'react';
 import {fetchCategories, fetchRecipe} from '../../global/eve';
 import {Loading} from '../../global/components/loading';
+import IngredientList from './ingredient-list';
 import {Link} from 'react-router-dom';
 import '../styles/recipe-page.css';
 
@@ -72,7 +73,7 @@ export default class Recipe extends React.Component {
                     {/*Feeds*/}
 
                     <h4>Ingredients</h4>
-                    {/*Ingredients*/}
+                    <IngredientList ingredients={recipe.ingredients}/>
                 </div>
 
                 <div className="col-md-8">

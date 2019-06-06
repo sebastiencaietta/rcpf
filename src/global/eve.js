@@ -27,6 +27,11 @@ export const fetchTags = async () => {
     return response.data;
 };
 
+export const fetchUnits = async () => {
+    const response = await eve.get('/units');
+    return response.data;
+};
+
 export const editRecipe = async (values) => {
     const {id} = values;
 

@@ -3,14 +3,12 @@ import {connect} from 'react-redux';
 import EditRecipeForm from '../components/edit-recipe-form';
 import {RECIPE_RECEIVED} from '../types/current-recipe';
 import {CATEGORIES_RECEIVED} from '../../recipe-list/types/categories';
-import {TAGS_RECEIVED} from '../../recipe-list/types/tags';
 import {FORM_RESPONSE_SUCCESS, FORM_SUBMITTED} from '../types/edit-recipe-form';
 import {editRecipe} from '../../global/eve';
 
 const mapStateToProps = (state) => ({
     recipe: state.currentRecipe,
     categories: state.categories,
-    tags: state.tags,
     initialValues: state.currentRecipe,
 });
 
@@ -25,7 +23,6 @@ const submit = (dispatch) => (async (values) => {
 const mapDispatchToProps = (dispatch) => ({
     initRecipe: (recipe) => dispatch({type: RECIPE_RECEIVED, payload: recipe}),
     initCategories: (recipe) => dispatch({type: CATEGORIES_RECEIVED, payload: recipe}),
-    initTags: (recipe) => dispatch({type: TAGS_RECEIVED, payload: recipe}),
     onSubmit: submit(dispatch),
 });
 
