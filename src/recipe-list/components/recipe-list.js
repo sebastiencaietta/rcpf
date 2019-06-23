@@ -1,25 +1,42 @@
 import React from 'react';
-import {eve} from '../../global/eve';
 import Recipe from './recipe-card';
+import CategoryTabs from "./category-tabs";
 
-const fetchRecipes = async initRecipes => {
-    const response = await eve.get('recipes');
-    initRecipes(response.data);
+const filterRecipes = (filters, recipes) => {
+    const {search = '', tags = [], category} = filters;
+
+    return recipes.filter((recipe) => {
+        if (search !== '' && !recipe.title.toLowerCase().includes(search.toLowerCase())) {
+            return false;
+        }
+
+        if (tags.length !== 0) {
+            const hasAllTags = tags.every((tagId) => {
+                return recipe.tags.some((recipeTagId) => recipeTagId === tagId);
+            });
+
+            if (!hasAllTags) {
+                return false;
+            }
+        }
+
+        if (category) {
+            return recipe.category_id === category;
+        }
+
+        return true;
+    });
 };
 
 export default class RecipeList extends React.Component {
-    componentWillMount() {
-        const {initRecipes} = this.props;
-        fetchRecipes(initRecipes);
-    }
-
     render() {
-        const {recipes = []} = this.props;
+        const {recipes = [], categories = [], filters} = this.props;
 
         return (
-            <div className="row">
-                {recipes.map(recipe => <Recipe recipe={recipe} key={recipe.id}/>)}
-            </div>
+            <React.Fragment>
+                <CategoryTabs categories={categories} onChange={this.props.toggleCategory} />
+                {filterRecipes(filters, recipes).map(recipe => <Recipe recipe={recipe} key={recipe.id}/>)}
+            </React.Fragment>
         );
     };
 

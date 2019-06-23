@@ -1,4 +1,7 @@
 import axios from 'axios';
+import {getRecipes} from '../repositories/recipes';
+import {getCategories} from "../repositories/categories";
+import {getTags} from "../repositories/tags";
 
 const headers = {
     post: {'Content-Type': 'application/json'},
@@ -12,19 +15,21 @@ const config = {
 
 export const eve = axios.create(config);
 
+export const fetchRecipes = async () => {
+    return getRecipes();
+};
+
 export const fetchRecipe = async (slug) => {
     const response = await eve.get(`recipes/${slug}`);
     return response.data;
 };
 
 export const fetchCategories = async () => {
-    const response = await eve.get('/categories');
-    return response.data;
+    return getCategories();
 };
 
 export const fetchTags = async () => {
-    const response = await eve.get('/tags');
-    return response.data;
+    return getTags();
 };
 
 export const fetchUnits = async () => {

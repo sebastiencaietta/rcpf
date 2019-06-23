@@ -1,24 +1,11 @@
-import React, { Component } from 'react';
+import React from 'react';
 import {Route} from 'react-router-dom';
-import NavBar from './navigation/nav-bar';
-import RecipeList from './recipe-list';
-import Recipe from './recipe/containers/recipe';
-import EditRecipe from './recipe/containers/edit-recipe';
+import RecipeList from "./recipe-list/";
 
-class App extends Component {
-  render() {
+export default function App() {
     return (
-        <main className={'container-fluid App'}>
-            <Route path="/" component={NavBar}/>
-
+        <React.Fragment>
             <Route exact path="/" component={RecipeList}/>
-
-            <Route exact path="/recipes/:slug" component={Recipe}/>
-
-            <Route path="/recipes/:slug/edit" component={EditRecipe}/>
-        </main>
+        </React.Fragment>
     );
-  }
 }
-
-export default App;

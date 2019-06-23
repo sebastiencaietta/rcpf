@@ -1,15 +1,12 @@
 import {createStore, compose} from 'redux';
-import createHistory from 'history/createBrowserHistory';
+import * as history from 'history';
 import {combineReducers} from 'redux';
-import categories from './recipe-list/reducers/categories';
-import tags from './recipe-list/reducers/tags';
-import recipes from './recipe-list/reducers/recipes';
 import filters from './recipe-list/reducers/filters';
 import currentRecipe from './recipe/reducers/current-recipe';
 import editRecipeForm from './recipe/reducers/edit-recipe-form';
 import {reducer as formReducer} from 'redux-form';
 
-export const history = createHistory();
+export const browserHistory = history.createBrowserHistory();
 
 const initialState = {};
 const enhancers = [];
@@ -24,9 +21,6 @@ if (process.env.NODE_ENV === 'development') {
 
 const composedEnhancers = compose(...enhancers);
 const reducers = combineReducers({
-        categories,
-        tags,
-        recipes,
         filters,
         currentRecipe,
         editRecipeForm,
