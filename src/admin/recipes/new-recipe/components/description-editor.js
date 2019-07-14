@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {Editor, EditorState, convertToRaw, convertFromRaw, Modifier, CompositeDecorator, RichUtils} from "draft-js";
 import {makeStyles} from "@material-ui/core";
 import Paper from "@material-ui/core/Paper";
@@ -31,16 +31,22 @@ const useStyles = makeStyles(theme => ({
 const decorator = new CompositeDecorator([linkDecorator,]);
 
 
-export default function DescriptionEditor({rawValue, onChange}) {
+export default function DescriptionEditor({rawValue, onChange, rawValueUpdated}) {
     const classes = useStyles();
 
     const [editorState, setEditorState] = useState(
         EditorState.createWithContent(convertFromRaw(rawValue), decorator)
     );
 
+    useEffect(() => {
+        const newContent = convertFromRaw(rawValue);
+        const newState = EditorState.push(editorState, newContent, 'insert-characters');
+        setEditorState(newState);
+    }, [rawValueUpdated]);
+
     function handleOnChange(event) {
         setEditorState(event);
-        onChange(convertToRaw(event.getCurrentContent()))
+        onChange(convertToRaw(event.getCurrentContent()));
     }
 
     function handleInlineStyleChange(style) {

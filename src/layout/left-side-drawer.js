@@ -8,7 +8,6 @@ import ListItemText from "@material-ui/core/ListItemText";
 import Divider from "@material-ui/core/Divider";
 import InboxIcon from '@material-ui/icons/MoveToInbox';
 import MailIcon from '@material-ui/icons/Mail';
-import {useTheme} from "@material-ui/styles";
 import Hidden from "@material-ui/core/Hidden";
 import {Link} from "react-router-dom";
 
@@ -32,7 +31,6 @@ const useStyles = makeStyles(theme => ({
 
 export default function Layout(props) {
     const classes = useStyles();
-    const theme = useTheme();
 
     const drawer = (
         <Drawer

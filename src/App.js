@@ -10,6 +10,7 @@ export default function App() {
             <Route exact path="/" component={RecipeList}/>
             <Route exact path="/recipes/:slug" component={Recipe}/>
             <Route exact path="/admin/recipes/add" component={AddRecipe}/>
+            <Route exact path="/admin/recipes/edit/:slug" component={AddRecipe}/>
         </React.Fragment>
     );
 }

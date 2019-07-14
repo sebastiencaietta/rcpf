@@ -16,7 +16,7 @@ import Fab from "@material-ui/core/Fab";
 import slugify from "slugify";
 import Snackbar from "@material-ui/core/Snackbar";
 import SnackbarContent from "@material-ui/core/SnackbarContent";
-import { EditorState, convertToRaw} from "draft-js";
+import {EditorState, convertToRaw} from "draft-js";
 import Renderer from "../../../../global/components/RteRenderer.js";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
@@ -103,6 +103,18 @@ export default (props) => {
         tags: [],
     });
 
+    const [savedRecipe, setSavedRecipe] = useState({});
+
+    useEffect(() => {
+        if (props.recipe.title) {
+            const newState = {
+                ...props.recipe,
+            };
+            setRecipe(newState);
+            setSavedRecipe(newState);
+        }
+    }, [props.recipe]);
+
     useEffect(() => {
         Promise.all([fetchTags(), fetchCategories()]).then(([tags, categories]) => {
             setTags(tags);
@@ -162,6 +174,7 @@ export default (props) => {
             fullWidth
             margin="normal"
             helperText={recipe.slug}
+            value={recipe.title}
             onChange={handleTitleChange}
             required={true}
         />
@@ -210,11 +223,13 @@ export default (props) => {
             <AntTab label="Preview" value="preview"/>
         </AntTabs>
 
-        {descriptionTab === 'editor' && <DescriptionEditor rawValue={recipe.description} onChange={handleDescriptionChange}/>}
-        {descriptionTab === 'preview' && <Renderer raw={recipe.description} />}
+        {descriptionTab === 'editor' && <DescriptionEditor rawValue={recipe.description}
+                                                           onChange={handleDescriptionChange}
+                                                           rawValueUpdated={savedRecipe.description}/>}
+        {descriptionTab === 'preview' && <Renderer raw={recipe.description}/>}
 
         <Snackbar
-            anchorOrigin={{vertical: 'top',horizontal: 'right'}}
+            anchorOrigin={{vertical: 'top', horizontal: 'right'}}
             open={successOpen}
             autoHideDuration={1500}
             onClose={handleSuccessClose}
