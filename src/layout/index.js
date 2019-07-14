@@ -113,7 +113,7 @@ export default function Layout(props) {
                         {props.title}
                     </Typography>
 
-                    <IconButton
+                    {props.rightSideDrawer && <IconButton
                         color="inherit"
                         aria-label="Open drawer"
                         edge="start"
@@ -121,7 +121,8 @@ export default function Layout(props) {
                         className={classes.rightSideButton}
                     >
                         <FilterList />
-                    </IconButton>
+                    </IconButton>}
+
                 </Toolbar>
             </AppBar>
 

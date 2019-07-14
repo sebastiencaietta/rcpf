@@ -10,6 +10,7 @@ import InboxIcon from '@material-ui/icons/MoveToInbox';
 import MailIcon from '@material-ui/icons/Mail';
 import {useTheme} from "@material-ui/styles";
 import Hidden from "@material-ui/core/Hidden";
+import {Link} from "react-router-dom";
 
 const drawerWidth = 240;
 const useStyles = makeStyles(theme => ({
@@ -23,6 +24,10 @@ const useStyles = makeStyles(theme => ({
     drawerPaper: {
         width: drawerWidth,
     },
+    listLinks: {
+        textDecoration: 'none',
+        color: theme.palette.text.primary,
+    }
 }));
 
 export default function Layout(props) {
@@ -39,12 +44,16 @@ export default function Layout(props) {
         >
             <div className={classes.toolbar}/>
             <List>
-                {['Recipes', 'Menus'].map((text, index) => (
-                    <ListItem button key={text}>
-                        <ListItemIcon>{index % 2 === 0 ? <InboxIcon/> : <MailIcon/>}</ListItemIcon>
-                        <ListItemText primary={text}/>
+                <Link to="/" className={classes.listLinks}>
+                    <ListItem button>
+                        <ListItemIcon><MailIcon/></ListItemIcon>
+                        <ListItemText primary="Recipes"/>
                     </ListItem>
-                ))}
+                </Link>
+                <ListItem button disabled>
+                    <ListItemIcon><InboxIcon/></ListItemIcon>
+                    <ListItemText primary="Menus" secondary="Coming soon"/>
+                </ListItem>
             </List>
             <Divider/>
             <List>
@@ -63,7 +72,7 @@ export default function Layout(props) {
             <Hidden smUp implementation="css">
                 <Drawer
                     variant="temporary"
-                    anchor={theme.direction === 'rtl' ? 'right' : 'left'}
+                    anchor="left"
                     open={props.mobileOpen}
                     onClose={props.handleDrawerToggle}
                     classes={{

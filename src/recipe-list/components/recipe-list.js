@@ -1,6 +1,8 @@
 import React from 'react';
 import Recipe from './recipe-card';
 import CategoryTabs from "./category-tabs";
+import Grid from "@material-ui/core/Grid";
+import {makeStyles} from "@material-ui/core";
 
 const filterRecipes = (filters, recipes) => {
     const {search = '', tags = [], category} = filters;
@@ -28,16 +30,22 @@ const filterRecipes = (filters, recipes) => {
     });
 };
 
-export default class RecipeList extends React.Component {
-    render() {
-        const {recipes = [], categories = [], filters} = this.props;
+const useStyles = makeStyles(theme => ({
+    recipeList: {
+        paddingTop: theme.spacing(3),
+    }
+}));
 
-        return (
-            <React.Fragment>
-                <CategoryTabs categories={categories} onChange={this.props.toggleCategory} />
+export default function RecipeList(props) {
+    const {recipes = [], categories = [], filters} = props;
+    const classes = useStyles();
+
+    return (
+        <React.Fragment>
+            <CategoryTabs categories={categories} onChange={props.toggleCategory}/>
+            <Grid container justify="flex-start" spacing={3} className={classes.recipeList}>
                 {filterRecipes(filters, recipes).map(recipe => <Recipe recipe={recipe} key={recipe.slug}/>)}
-            </React.Fragment>
-        );
-    };
-
+            </Grid>
+        </React.Fragment>
+    );
 }
