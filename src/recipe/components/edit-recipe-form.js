@@ -3,7 +3,6 @@ import {Field, FieldArray, reduxForm} from 'redux-form';
 import {fetchCategories, fetchRecipe} from '../../global/eve';
 import {Multiselect} from 'react-widgets';
 import {Link} from "react-router-dom";
-import {Loading} from "../../global/components/loading";
 import withTags from "../../global/dataLoaders/withTags";
 import withUnits from "../../global/dataLoaders/withUnits";
 
@@ -144,7 +143,7 @@ class EditRecipeForm extends React.Component {
                     </p>
                 </div>
             </div>
-        </form> : <Loading/>
+        </form> : null;
     }
 }
 

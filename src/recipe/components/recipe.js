@@ -1,6 +1,5 @@
 import React from 'react';
 import {fetchCategories, fetchRecipe} from '../../global/eve';
-import {Loading} from '../../global/components/loading';
 import IngredientList from './ingredient-list';
 import {Link} from 'react-router-dom';
 import '../styles/recipe-page.css';
@@ -17,10 +16,6 @@ export default class Recipe extends React.Component {
 
     render() {
         const {recipe, categories} = this.props;
-
-        if (!recipe) {
-            return <Loading/>
-        }
 
         return <div className="recipe-container">
             <div className="row">

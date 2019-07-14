@@ -5,7 +5,10 @@ export const getCategories = async () => {
     const snapshot = await db.collection("categories").get();
     const categories = [];
     snapshot.forEach((doc) => {
-        categories.push(doc.data());
+        categories.push({
+            ...doc.data(),
+            id: doc.id
+        });
     });
 
     return categories;

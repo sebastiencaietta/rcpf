@@ -1,5 +1,5 @@
 import axios from 'axios';
-import {getRecipes} from '../repositories/recipes';
+import {getRecipes, getRecipe} from '../repositories/recipes';
 import {getCategories} from "../repositories/categories";
 import {getTags} from "../repositories/tags";
 
@@ -20,8 +20,7 @@ export const fetchRecipes = async () => {
 };
 
 export const fetchRecipe = async (slug) => {
-    const response = await eve.get(`recipes/${slug}`);
-    return response.data;
+    return getRecipe(slug);
 };
 
 export const fetchCategories = async () => {

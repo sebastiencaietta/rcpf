@@ -21,7 +21,7 @@ const filterRecipes = (filters, recipes) => {
         }
 
         if (category) {
-            return recipe.category_id === category;
+            return recipe.category === category;
         }
 
         return true;
@@ -35,7 +35,7 @@ export default class RecipeList extends React.Component {
         return (
             <React.Fragment>
                 <CategoryTabs categories={categories} onChange={this.props.toggleCategory} />
-                {filterRecipes(filters, recipes).map(recipe => <Recipe recipe={recipe} key={recipe.id}/>)}
+                {filterRecipes(filters, recipes).map(recipe => <Recipe recipe={recipe} key={recipe.slug}/>)}
             </React.Fragment>
         );
     };

@@ -48,13 +48,15 @@ const useStyles = makeStyles(theme => ({
     rightSideButton: {
         marginRight: theme.spacing(2),
     },
-    toolbar: theme.mixins.toolbar,content: {
+    toolbar: theme.mixins.toolbar,
+    content: {
         flexGrow: 1,
         padding: theme.spacing(3),
         transition: theme.transitions.create('margin', {
             easing: theme.transitions.easing.sharp,
             duration: theme.transitions.duration.leavingScreen,
         }),
+        position: 'relative',
         [theme.breakpoints.up('sm')]: {
             marginRight: -drawerWidth,
         },
@@ -124,12 +126,12 @@ export default function Layout(props) {
             </AppBar>
 
             <Container fixed>
+                <div className={classes.toolbar} />
                 <main
                     className={clsx(classes.content, {
                         [classes.contentShift]: rightDrawerOpen,
                     })}
                 >
-                    <div className={classes.toolbar} />
                     {props.children}
                 </main>
             </Container>
