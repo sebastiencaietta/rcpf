@@ -13,24 +13,21 @@ export const getRecipes = async () => {
 export const getRecipe = async (slug) => {
     const docRef = firebase.firestore().collection('recipes').doc(slug);
 
-    docRef.get().then(function (doc) {
-        if (doc.exists) {
-            console.log("Document data:", doc.data());
-        } else {
-            // doc.data() will be undefined in this case
-            console.log("No such document!");
-        }
-    }).catch(function (error) {
-        console.log("Error getting document:", error);
-    });
+    const recipe = await docRef.get();
+
+    if (recipe.exists) {
+        return recipe.data();
+    } else {
+        console.log("No such recipe!");
+    }
 };
 
 export const setRecipe = async (recipe) => {
     firebase.firestore().collection('recipes').doc(recipe.slug).set(recipe)
-        .then(function() {
+        .then(function () {
             console.log("Document successfully written!");
         })
-        .catch(function(error) {
+        .catch(function (error) {
             console.error("Error writing document: ", error);
         });
 };

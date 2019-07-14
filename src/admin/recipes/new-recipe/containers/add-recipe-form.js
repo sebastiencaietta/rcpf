@@ -17,7 +17,7 @@ import slugify from "slugify";
 import Snackbar from "@material-ui/core/Snackbar";
 import SnackbarContent from "@material-ui/core/SnackbarContent";
 import { EditorState, convertToRaw} from "draft-js";
-import DescriptionPreview from "../components/description-preview";
+import Renderer from "../../../../global/components/RteRenderer.js";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import DescriptionEditor from "../components/description-editor";
@@ -211,7 +211,7 @@ export default (props) => {
         </AntTabs>
 
         {descriptionTab === 'editor' && <DescriptionEditor rawValue={recipe.description} onChange={handleDescriptionChange}/>}
-        {descriptionTab === 'preview' && <DescriptionPreview raw={recipe.description} />}
+        {descriptionTab === 'preview' && <Renderer raw={recipe.description} />}
 
         <Snackbar
             anchorOrigin={{vertical: 'top',horizontal: 'right'}}
