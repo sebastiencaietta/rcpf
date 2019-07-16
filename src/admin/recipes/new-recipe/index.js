@@ -10,7 +10,7 @@ const saveRecipe = async (recipe) => {
 const Component = (props) => {
     const [recipe, setRecipe] = useState({});
 
-    if (props.match) {
+    if (props.match.params.slug) {
         useEffect(() => {
             async function fetchRecipe(slug) {
                 const result = await getRecipe(slug);

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {makeStyles} from '@material-ui/core/styles';
 import Drawer from "@material-ui/core/Drawer";
 import List from "@material-ui/core/List";
@@ -6,10 +6,14 @@ import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import Divider from "@material-ui/core/Divider";
-import InboxIcon from '@material-ui/icons/MoveToInbox';
-import MailIcon from '@material-ui/icons/Mail';
+import ViewList from '@material-ui/icons/ViewList';
+import SettingsIcon from '@material-ui/icons/Settings';
+import ExpandLess from '@material-ui/icons/ExpandLess';
+import ExpandMore from '@material-ui/icons/ExpandMore';
+import RestaurantMenu from '@material-ui/icons/RestaurantMenu';
 import Hidden from "@material-ui/core/Hidden";
 import {Link} from "react-router-dom";
+import Collapse from "@material-ui/core/Collapse";
 
 const drawerWidth = 240;
 const useStyles = makeStyles(theme => ({
@@ -26,11 +30,19 @@ const useStyles = makeStyles(theme => ({
     listLinks: {
         textDecoration: 'none',
         color: theme.palette.text.primary,
-    }
+    },
+    nested: {
+        paddingLeft: theme.spacing(4),
+    },
 }));
 
 export default function Layout(props) {
     const classes = useStyles();
+    const [adminOpen, setAdminOpen] = useState(false);
+
+    function handleAdminClick() {
+        setAdminOpen(!adminOpen);
+    }
 
     const drawer = (
         <Drawer
@@ -44,23 +56,36 @@ export default function Layout(props) {
             <List>
                 <Link to="/" className={classes.listLinks}>
                     <ListItem button>
-                        <ListItemIcon><MailIcon/></ListItemIcon>
+                        <ListItemIcon><RestaurantMenu/></ListItemIcon>
                         <ListItemText primary="Recipes"/>
                     </ListItem>
                 </Link>
                 <ListItem button disabled>
-                    <ListItemIcon><InboxIcon/></ListItemIcon>
+                    <ListItemIcon><ViewList/></ListItemIcon>
                     <ListItemText primary="Menus" secondary="Coming soon"/>
                 </ListItem>
             </List>
             <Divider/>
             <List>
-                {['Admin'].map((text, index) => (
-                    <ListItem button key={text}>
-                        <ListItemIcon>{index % 2 === 0 ? <InboxIcon/> : <MailIcon/>}</ListItemIcon>
-                        <ListItemText primary={text}/>
-                    </ListItem>
-                ))}
+                <ListItem button onClick={handleAdminClick}>
+                    <ListItemIcon>
+                        <SettingsIcon/>
+                    </ListItemIcon>
+                    <ListItemText primary={"Admin"}/>
+                    {adminOpen ? <ExpandLess/> : <ExpandMore/>}
+                </ListItem>
+                <Collapse component="li" in={adminOpen} timeout="auto" unmountOnExit>
+                    <List disablePadding>
+                        <Link to="/admin/recipes" className={classes.listLinks}>
+                            <ListItem className={classes.nested} button>
+                                <ListItemIcon>
+                                    <RestaurantMenu/>
+                                </ListItemIcon>
+                                <ListItemText primary={"Recipes"}/>
+                            </ListItem>
+                        </Link>
+                    </List>
+                </Collapse>
             </List>
         </Drawer>
     );

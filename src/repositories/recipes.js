@@ -10,6 +10,10 @@ export const getRecipes = async () => {
     return recipes;
 };
 
+export const listenToRecipes = (onNext) => {
+    return firebase.firestore().collection("recipes").onSnapshot(onNext);
+};
+
 export const getRecipe = async (slug) => {
     const docRef = firebase.firestore().collection('recipes').doc(slug);
 
@@ -30,4 +34,8 @@ export const setRecipe = async (recipe) => {
         .catch(function (error) {
             console.error("Error writing document: ", error);
         });
+};
+
+export const deleteRecipe = async (slug) => {
+    firebase.firestore().collection('recipes').doc(slug).delete();
 };
