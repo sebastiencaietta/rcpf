@@ -112,19 +112,18 @@ export default function RecipesAdmin() {
             aria-labelledby="alert-dialog-title"
             aria-describedby="alert-dialog-description"
         >
-            <DialogTitle id="alert-dialog-title">{"Use Google's location service?"}</DialogTitle>
+            <DialogTitle id="alert-dialog-title">Are you sure you want to delete this recipe?</DialogTitle>
             <DialogContent>
                 <DialogContentText id="alert-dialog-description">
-                    Let Google help apps determine location. This means sending anonymous location data to
-                    Google, even when no apps are running.
+                    By clicking OK, you will permantently delete the recipe {recipeToDelete}.
                 </DialogContentText>
             </DialogContent>
             <DialogActions>
                 <Button onClick={handleClose} color="primary">
-                    Disagree
+                    Cancel
                 </Button>
                 <Button onClick={handleDelete} color="primary" autoFocus>
-                    Agree
+                    Ok
                 </Button>
             </DialogActions>
         </Dialog>
