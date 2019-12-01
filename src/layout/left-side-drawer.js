@@ -18,7 +18,7 @@ import Collapse from "@material-ui/core/Collapse";
 const drawerWidth = 240;
 const useStyles = makeStyles(theme => ({
     drawer: {
-        [theme.breakpoints.up('sm')]: {
+        [theme.breakpoints.up('md')]: {
             width: drawerWidth,
             flexShrink: 0,
         },
@@ -57,7 +57,7 @@ export default function Layout(props) {
                 <Link to="/" className={classes.listLinks}>
                     <ListItem button>
                         <ListItemIcon><RestaurantMenu/></ListItemIcon>
-                        <ListItemText primary="Recipes"/>
+                        <ListItemText primary="Recettes"/>
                     </ListItem>
                 </Link>
                 <ListItem button disabled>
@@ -81,7 +81,7 @@ export default function Layout(props) {
                                 <ListItemIcon>
                                     <RestaurantMenu/>
                                 </ListItemIcon>
-                                <ListItemText primary={"Recipes"}/>
+                                <ListItemText primary={"Recettes"}/>
                             </ListItem>
                         </Link>
                     </List>
@@ -92,7 +92,7 @@ export default function Layout(props) {
 
     return (
         <nav className={classes.drawer} aria-label="CookMate navigation">
-            <Hidden smUp implementation="css">
+            <Hidden mdUp implementation="css">
                 <Drawer
                     variant="temporary"
                     anchor="left"
@@ -108,7 +108,7 @@ export default function Layout(props) {
                     {drawer}
                 </Drawer>
             </Hidden>
-            <Hidden xsDown implementation="css">
+            <Hidden smDown implementation="css">
                 <Drawer
                     classes={{
                         paper: classes.drawerPaper,

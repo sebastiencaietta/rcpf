@@ -9,7 +9,7 @@ import Drawer from "@material-ui/core/Drawer";
 const drawerWidth = 240;
 const useStyles = makeStyles(theme => ({
     drawer: {
-        [theme.breakpoints.up('sm')]: {
+        [theme.breakpoints.up('md')]: {
             width: '240px',
             flexShrink: 0,
         },
@@ -36,7 +36,7 @@ export default function rightSideDrawer(props) {
     };
 
     return <nav className={clsx(classes.drawer, {[classes.drawerOpen]: props.isOpen})}>
-        <Hidden smUp implementation="js">
+        <Hidden mdUp implementation="js">
             <SwipeableDrawer
                 anchor="right"
                 open={props.isOpen}
@@ -65,6 +65,4 @@ export default function rightSideDrawer(props) {
             </Drawer>
         </Hidden>
     </nav>
-
-
 }

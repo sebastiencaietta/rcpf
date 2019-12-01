@@ -19,7 +19,7 @@ const Component = (props) => {
         });
     }, []);
 
-    return <Layout title="Recipes" rightSideDrawer={<Filters tags={tags} onToggle={props.selectTag} onSearch={props.onSearch}/>}>
+    return <Layout title="Recettes" rightSideDrawer={<Filters tags={tags} onToggle={props.selectTag} onSearch={props.onSearch}/>}>
         <RecipeList categories={categories} recipes={recipes}/>
     </Layout>;
 };
