@@ -4,6 +4,7 @@ import {fetchCategories, fetchTags} from "../../../../global/eve";
 import {green} from '@material-ui/core/colors';
 import TextField from "@material-ui/core/TextField";
 import {makeStyles, withStyles} from "@material-ui/core";
+import Avatar from "@material-ui/core/Avatar";
 import FormControl from "@material-ui/core/FormControl";
 import InputLabel from "@material-ui/core/InputLabel";
 import Select from "@material-ui/core/Select";
@@ -94,6 +95,7 @@ export default (props) => {
     const [categories, setCategories] = useState([]);
     const [successOpen, setSuccessOpen] = useState(false);
     const [descriptionTab, setDescriptionTab] = useState('editor');
+    const fileInput = React.createRef();
 
     const [recipe, setRecipe] = useState({
         title: '',
@@ -101,6 +103,7 @@ export default (props) => {
         description: convertToRaw(EditorState.createEmpty().getCurrentContent()),
         category: '',
         tags: [],
+        thumbnail: '',
     });
 
     const [savedRecipe, setSavedRecipe] = useState({});
@@ -167,7 +170,19 @@ export default (props) => {
         setDescriptionTab(newValue);
     }
 
+    async function handleThumbnailImageChange(thumbnail) {
+        const slug = recipe.slug || Date.now();
+        const thumbUrl = await props.handleUploadRecipeThumbnail(slug, thumbnail);
+        setRecipe({
+            ...recipe,
+            thumbnail: thumbUrl,
+        });
+    }
+
     return <form>
+        {recipe.thumbnail ? <Avatar variant="square" className={classes.square} src={recipe.thumbnail} /> : '' }
+        <input type="file" ref={fileInput} onChange={(e) => handleThumbnailImageChange(e.target.files[0])}/>
+
         <TextField
             style={{margin: 8}}
             label="Title"
