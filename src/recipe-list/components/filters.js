@@ -16,27 +16,13 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-export default function filters({tags, onToggle, onSearch}) {
+export default function filters({checked, tags, onToggle, search, onSearch}) {
     const classes = useStyles();
-    const [checked, setChecked] = React.useState([0]);
-
-    const handleToggle = value => () => {
-        const currentIndex = checked.indexOf(value);
-        const newChecked = [...checked];
-
-        if (currentIndex === -1) {
-            newChecked.push(value);
-        } else {
-            newChecked.splice(currentIndex, 1);
-        }
-
-        setChecked(newChecked);
-        onToggle(value);
-    };
 
     return <React.Fragment>
         <FormControl className={classes.margin}>
             <Input
+                value={search}
                 onChange={(e) => {onSearch(e.target.value)}}
                 startAdornment={
                     <InputAdornment position="start">
@@ -49,7 +35,7 @@ export default function filters({tags, onToggle, onSearch}) {
             {tags.map(tag => {
                 const labelId = `checkbox-list-label-${tag.title}`;
 
-                return <ListItem key={tag.id} role={undefined} dense button onClick={handleToggle(tag.id)}>
+                return <ListItem key={tag.id} role={undefined} dense button onClick={() => onToggle(tag.id)}>
                     <ListItemIcon>
                         <Checkbox
                             edge="start"
