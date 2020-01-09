@@ -180,9 +180,6 @@ export default (props) => {
     }
 
     return <form>
-        {recipe.thumbnail ? <Avatar variant="square" className={classes.square} src={recipe.thumbnail} /> : '' }
-        <input type="file" ref={fileInput} onChange={(e) => handleThumbnailImageChange(e.target.files[0])}/>
-
         <TextField
             style={{margin: 8}}
             label="Title"
@@ -242,6 +239,13 @@ export default (props) => {
                                                            onChange={handleDescriptionChange}
                                                            rawValueUpdated={savedRecipe.description}/>}
         {descriptionTab === 'preview' && <Renderer raw={recipe.description}/>}
+
+        <Typography variant="body1" className={classes.descriptionLabel}>
+            Recipe list image
+        </Typography>
+
+        {recipe.thumbnail ? <Avatar variant="square" className={classes.square} src={recipe.thumbnail} /> : '' }
+        <input type="file" ref={fileInput} onChange={(e) => handleThumbnailImageChange(e.target.files[0])}/>
 
         <Snackbar
             anchorOrigin={{vertical: 'top', horizontal: 'right'}}
