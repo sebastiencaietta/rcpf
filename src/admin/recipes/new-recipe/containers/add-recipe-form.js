@@ -173,6 +173,7 @@ export default (props) => {
     async function handleThumbnailImageChange(thumbnail) {
         const slug = recipe.slug || Date.now();
         const thumbUrl = await props.handleUploadRecipeThumbnail(slug, thumbnail);
+
         setRecipe({
             ...recipe,
             thumbnail: thumbUrl,
