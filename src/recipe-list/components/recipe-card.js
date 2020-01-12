@@ -2,11 +2,35 @@ import React from 'react';
 import {Link} from 'react-router-dom';
 import Card from "@material-ui/core/Card";
 import {Grid, makeStyles} from "@material-ui/core";
-import CardHeader from "@material-ui/core/CardHeader";
+import CardContent from "@material-ui/core/CardContent";
+import CardMedia from "@material-ui/core/CardMedia";
+import Typography from "@material-ui/core/Typography";
+import RecipeImage from '../images/recipe.jpg';
 
 const useStyles = makeStyles(theme => ({
     card: {
         height: '100%',
+        display: 'flex',
+        flexDirection: 'column',
+    },
+    cardContent: {
+        flexGrow: 1,
+        width: '100%',
+        overflow: 'hidden',
+        display: 'flex',
+    },
+    cardTitle: {
+        whiteSpace: 'nowrap',
+        overflow: 'hidden',
+        textOverflow: 'ellipsis',
+        width: '100%',
+        alignSelf: 'center',
+    },
+    media: {
+        height: 140,
+        [theme.breakpoints.up('md')]: {
+            height: 180,
+        },
     },
     link: {
         textDecoration: 'none',
@@ -23,7 +47,16 @@ export default function Recipe({recipe}) {
     return <Grid item xs={12} sm={4} md={3}>
         <Link to={`/recipes/${recipe.slug}`} className={classes.link}>
             <Card className={classes.card}>
-                <CardHeader title={recipe.title} />
+                <CardMedia
+                    className={classes.media}
+                    image={recipe.thumbnail || RecipeImage}
+                    title={recipe.title}
+                />
+                <CardContent className={classes.cardContent}>
+                    <Typography variant="body2" color="textSecondary" component="p" className={classes.cardTitle}>
+                        {recipe.title}
+                    </Typography>
+                </CardContent>
             </Card>
         </Link>
     </Grid>

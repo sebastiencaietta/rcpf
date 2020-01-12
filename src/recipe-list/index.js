@@ -3,8 +3,7 @@ import {connect} from 'react-redux';
 import RecipeList from './containers/recipe-list';
 import Layout from "../layout/index";
 import {fetchCategories, fetchRecipes, fetchTags} from "../global/eve";
-import Filters from './components/filters';
-import {TOGGLE_TAG, UPDATE_SEARCH} from "./types/filters";
+import Filters from './containers/filters';
 
 const Component = (props) => {
     const [tags, setTags] = useState([]);
@@ -19,14 +18,10 @@ const Component = (props) => {
         });
     }, []);
 
-    return <Layout title="Recettes" rightSideDrawer={<Filters tags={tags} onToggle={props.selectTag} onSearch={props.onSearch}/>}>
+    return <Layout title="Recettes" rightSideDrawer={<Filters tags={tags}/>}>
         <RecipeList categories={categories} recipes={recipes}/>
     </Layout>;
 };
 
-const mapDispatchToProps = (dispatch) => ({
-    selectTag: (tagId) => dispatch({type: TOGGLE_TAG, payload: tagId}),
-    onSearch: (search) => dispatch({type: UPDATE_SEARCH, payload: search})
-});
 
-export default connect(null, mapDispatchToProps)(Component)
+export default connect(null, null)(Component)
