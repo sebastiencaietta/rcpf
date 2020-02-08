@@ -33,7 +33,7 @@ const useStyles = makeStyles(theme => ({
     newRecipe: {
         bottom: theme.spacing(1),
         right: theme.spacing(1),
-        position: 'absolute',
+        position: 'fixed',
     },
     noRecipesNewRecipeButton: {
         bottom: theme.spacing(2) * -1,
