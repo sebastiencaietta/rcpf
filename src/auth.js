@@ -20,10 +20,7 @@ const AuthComponent = ({initUser}) => {
         })
     }, []);
 
-
-    return <Fragment>
-        <div>test</div>
-    </Fragment>
+    return <Fragment />
 };
 
 export default connect(null, mapDispatchToProps)(AuthComponent)

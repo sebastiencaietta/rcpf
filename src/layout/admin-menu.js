@@ -51,7 +51,7 @@ const Component = ({user}) => {
     </React.Fragment>);
 
     const loggedOutAdminMenu = (<React.Fragment>
-        <Link to="/admin" className={classes.listLinks}>
+        <Link to="/admin/recipes" className={classes.listLinks}>
             <ListItem button onClick={handleAdminClick}>
                 <ListItemIcon>
                     <SettingsIcon/>
