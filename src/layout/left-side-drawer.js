@@ -8,11 +8,10 @@ import ListItemText from "@material-ui/core/ListItemText";
 import Divider from "@material-ui/core/Divider";
 import ViewList from '@material-ui/icons/ViewList';
 import SettingsIcon from '@material-ui/icons/Settings';
-import ExpandLess from '@material-ui/icons/ExpandLess';
-import ExpandMore from '@material-ui/icons/ExpandMore';
 import RestaurantMenu from '@material-ui/icons/RestaurantMenu';
 import Hidden from "@material-ui/core/Hidden";
 import {Link} from "react-router-dom";
+import AdminMenu from './admin-menu';
 import Collapse from "@material-ui/core/Collapse";
 
 const drawerWidth = 240;
@@ -36,13 +35,8 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-export default function Layout(props) {
+export default function LeftSideDrawer(props) {
     const classes = useStyles();
-    const [adminOpen, setAdminOpen] = useState(false);
-
-    function handleAdminClick() {
-        setAdminOpen(!adminOpen);
-    }
 
     const drawer = (
         <Drawer
@@ -66,27 +60,7 @@ export default function Layout(props) {
                 </ListItem>
             </List>
             <Divider/>
-            <List>
-                <ListItem button onClick={handleAdminClick}>
-                    <ListItemIcon>
-                        <SettingsIcon/>
-                    </ListItemIcon>
-                    <ListItemText primary={"Admin"}/>
-                    {adminOpen ? <ExpandLess/> : <ExpandMore/>}
-                </ListItem>
-                <Collapse component="li" in={adminOpen} timeout="auto" unmountOnExit>
-                    <List disablePadding>
-                        <Link to="/admin/recipes" className={classes.listLinks}>
-                            <ListItem className={classes.nested} button>
-                                <ListItemIcon>
-                                    <RestaurantMenu/>
-                                </ListItemIcon>
-                                <ListItemText primary={"Recettes"}/>
-                            </ListItem>
-                        </Link>
-                    </List>
-                </Collapse>
-            </List>
+            {<AdminMenu />}
         </Drawer>
     );
 

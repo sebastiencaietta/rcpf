@@ -2,6 +2,7 @@ import {createStore, compose} from 'redux';
 import * as history from 'history';
 import {combineReducers} from 'redux';
 import filters from './recipe-list/reducers/filters';
+import auth from './global/reducers/auth';
 import {reducer as formReducer} from 'redux-form';
 
 export const browserHistory = history.createBrowserHistory();
@@ -20,6 +21,7 @@ if (process.env.NODE_ENV === 'development') {
 const composedEnhancers = compose(...enhancers);
 const reducers = combineReducers({
         filters,
+        auth,
         form: formReducer,
     },
 );

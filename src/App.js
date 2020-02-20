@@ -4,15 +4,16 @@ import RecipeList from "./recipe-list";
 import Recipe from './recipe';
 import AddRecipe from './admin/recipes/new-recipe';
 import RecipesAdmin from './admin/recipes';
+import Auth from './auth'
 
-export default function App() {
-    return (
-        <React.Fragment>
-            <Route exact path="/" component={RecipeList}/>
-            <Route exact path="/recipes/:slug" component={Recipe}/>
-            <Route exact path="/admin/recipes/add" component={AddRecipe}/>
-            <Route exact path="/admin/recipes" component={RecipesAdmin}/>
-            <Route exact path="/admin/recipes/edit/:slug" component={AddRecipe}/>
-        </React.Fragment>
-    );
-}
+export default () => (
+    <React.Fragment>
+        <Auth />
+        <Route exact path="/" component={RecipeList}/>
+        <Route exact path="/recipes/:slug" component={Recipe}/>
+        <Route exact path="/admin/recipes/add" component={AddRecipe}/>
+        <Route exact path="/admin/recipes" component={RecipesAdmin}/>
+        <Route exact path="/admin/recipes/edit/:slug" component={AddRecipe}/>
+    </React.Fragment>
+);
+
