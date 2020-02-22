@@ -1,11 +1,10 @@
 import React, {useEffect, useState} from 'react';
-import {connect} from 'react-redux';
 import RecipeList from './containers/recipe-list';
 import Layout from "../layout/index";
 import {fetchCategories, fetchRecipes, fetchTags} from "../global/eve";
 import Filters from './containers/filters';
 
-const Component = (props) => {
+export default () => {
     const [tags, setTags] = useState([]);
     const [recipes, setRecipes] = useState();
     const [categories, setCategories] = useState([]);
@@ -22,6 +21,3 @@ const Component = (props) => {
         <RecipeList categories={categories} recipes={recipes}/>
     </Layout>;
 };
-
-
-export default connect(null, null)(Component)
