@@ -1,8 +1,8 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import SignInForm from '../components/sign-in-form';
+import SignInForm from '../containers/sign-in-form';
 
-export default function createComponentWithLoginScreen(ChildComponent) {
+export const requiresLogin = function createComponentWithLoginScreen(ChildComponent) {
     const mapStateToProps = state => ({user: state.auth.user});
 
     const RequireLoginHOC = (props) => {

@@ -9,8 +9,6 @@ import { ThemeProvider } from '@material-ui/styles';
 import CssBaseline from "@material-ui/core/CssBaseline";
 import theme from './vendor/material-ui';
 
-import 'react-widgets/dist/css/react-widgets.css';
-import '@fortawesome/fontawesome-free/css/all.min.css';
 import './index.css';
 import App from './App';
 

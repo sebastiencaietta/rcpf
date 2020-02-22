@@ -9,9 +9,7 @@ import FormControl from "@material-ui/core/FormControl";
 import InputLabel from "@material-ui/core/InputLabel";
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
-import Input from "@material-ui/core/Input";
-import Checkbox from "@material-ui/core/Checkbox";
-import ListItemText from "@material-ui/core/ListItemText";
+import TagSelect from '../components/tagSelect';
 import SaveIcon from '@material-ui/icons/Save';
 import Fab from "@material-ui/core/Fab";
 import slugify from "slugify";
@@ -24,7 +22,7 @@ import Tab from "@material-ui/core/Tab";
 import DescriptionEditor from "../components/description-editor";
 import Typography from "@material-ui/core/Typography";
 
-const AntTabs = withStyles(theme => ({
+const AntTabs = withStyles(() => ({
     root: {
         borderBottom: '1px solid #e8e8e8',
     },
@@ -78,17 +76,6 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
-const ITEM_HEIGHT = 48;
-const ITEM_PADDING_TOP = 8;
-const MenuProps = {
-    PaperProps: {
-        style: {
-            maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-            width: 250,
-        },
-    },
-};
-
 export default (props) => {
     const classes = useStyles();
     const [tags, setTags] = useState([]);
@@ -109,21 +96,19 @@ export default (props) => {
     const [savedRecipe, setSavedRecipe] = useState({});
 
     useEffect(() => {
-        if (props.recipe.title) {
-            const newState = {
-                ...props.recipe,
-            };
-            setRecipe(newState);
-            setSavedRecipe(newState);
-        }
-    }, [props.recipe]);
-
-    useEffect(() => {
         Promise.all([fetchTags(), fetchCategories()]).then(([tags, categories]) => {
             setTags(tags);
             setCategories(categories);
+
+            if (props.recipe.title) {
+                const newState = {
+                    ...props.recipe,
+                };
+                setRecipe(newState);
+                setSavedRecipe(newState);
+            }
         });
-    }, []);
+    }, [props.recipe]);
 
     function handleTitleChange(event) {
         setRecipe({
@@ -140,10 +125,10 @@ export default (props) => {
         });
     }
 
-    function handleTagSelect(event) {
+    function handleTagSelect(selectedTags) {
         setRecipe({
             ...recipe,
-            tags: event.target.value,
+            tags: selectedTags,
         });
     }
 
@@ -208,24 +193,7 @@ export default (props) => {
             </Select>
         </FormControl>
 
-        <FormControl className={classes.formControl}>
-            <InputLabel htmlFor="tags">Tags</InputLabel>
-            <Select
-                multiple
-                value={recipe.tags}
-                onChange={handleTagSelect}
-                input={<Input id="tags"/>}
-                renderValue={selected => selected.map(id => tags.find((tag) => tag.id === id).title).join(', ')}
-                MenuProps={MenuProps}
-            >
-                {tags.map(tag => (
-                    <MenuItem key={tag.id} value={tag.id}>
-                        <Checkbox checked={recipe.tags.indexOf(tag.id) > -1}/>
-                        <ListItemText primary={tag.title}/>
-                    </MenuItem>
-                ))}
-            </Select>
-        </FormControl>
+        <TagSelect tags={tags} recipeTags={recipe.tags} handleTagSelect={handleTagSelect} />
 
         <Typography variant="body1" className={classes.descriptionLabel}>
             Description

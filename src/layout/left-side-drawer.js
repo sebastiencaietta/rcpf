@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {makeStyles} from '@material-ui/core/styles';
 import Drawer from "@material-ui/core/Drawer";
 import List from "@material-ui/core/List";
@@ -7,12 +7,10 @@ import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import Divider from "@material-ui/core/Divider";
 import ViewList from '@material-ui/icons/ViewList';
-import SettingsIcon from '@material-ui/icons/Settings';
 import RestaurantMenu from '@material-ui/icons/RestaurantMenu';
 import Hidden from "@material-ui/core/Hidden";
 import {Link} from "react-router-dom";
 import AdminMenu from './admin-menu';
-import Collapse from "@material-ui/core/Collapse";
 
 const drawerWidth = 240;
 const useStyles = makeStyles(theme => ({
