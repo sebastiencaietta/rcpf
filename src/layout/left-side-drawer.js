@@ -6,7 +6,7 @@ import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import Divider from "@material-ui/core/Divider";
-import ViewList from '@material-ui/icons/ViewList';
+import MenuBookIcon from '@material-ui/icons/MenuBook';
 import RestaurantMenu from '@material-ui/icons/RestaurantMenu';
 import Hidden from "@material-ui/core/Hidden";
 import {Link} from "react-router-dom";
@@ -53,7 +53,7 @@ export default function LeftSideDrawer(props) {
                     </ListItem>
                 </Link>
                 <ListItem button disabled>
-                    <ListItemIcon><ViewList/></ListItemIcon>
+                    <ListItemIcon><MenuBookIcon/></ListItemIcon>
                     <ListItemText primary="Menus" secondary="Coming soon"/>
                 </ListItem>
             </List>

@@ -9,6 +9,7 @@ import List from "@material-ui/core/List";
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
 import RestaurantMenu from '@material-ui/icons/RestaurantMenu';
+import ArtTrackIcon from '@material-ui/icons/ArtTrack';
 import {makeStyles} from "@material-ui/core";
 import {connect} from "react-redux";
 
@@ -46,6 +47,12 @@ const Component = ({user}) => {
                         <ListItemText primary={"Recettes"}/>
                     </ListItem>
                 </Link>
+                <Link to="/admin/ingredients" className={classes.listLinks}>
+                    <ListItem className={classes.nested} button>
+                        <ListItemIcon><ArtTrackIcon/></ListItemIcon>
+                        <ListItemText primary={"Ingredients"}/>
+                    </ListItem>
+                </Link>
             </List>
         </Collapse>
     </React.Fragment>);
@@ -62,7 +69,7 @@ const Component = ({user}) => {
     </React.Fragment>);
 
     return <List>
-        {user.uid !== undefined ? loggedInAdminMenu : loggedOutAdminMenu};
+        {user.uid !== undefined ? loggedInAdminMenu : loggedOutAdminMenu}
     </List>;
 };
 

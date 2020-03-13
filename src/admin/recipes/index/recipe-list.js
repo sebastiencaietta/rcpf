@@ -67,7 +67,7 @@ const useStyles = makeStyles(theme => ({
         justifyContent: 'flex-end',
     },
     leftIcon: {
-        marginRight: theme.spacing(1),
+        paddingRight: theme.spacing(1),
     }
 }));
 
@@ -145,7 +145,7 @@ export default function AdminRecipeList() {
             <DialogTitle id="alert-dialog-title">Are you sure you want to delete this recipe?</DialogTitle>
             <DialogContent>
                 <DialogContentText id="alert-dialog-description">
-                    By clicking OK, you will permantently delete the recipe {recipeToDelete}.
+                    By clicking OK, you will permanently delete the recipe {recipeToDelete}.
                 </DialogContentText>
             </DialogContent>
             <DialogActions>

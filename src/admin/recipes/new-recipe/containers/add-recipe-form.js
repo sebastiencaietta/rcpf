@@ -213,7 +213,7 @@ export default (props) => {
             Recipe list image
         </Typography>
 
-        {recipe.thumbnail ? <Avatar variant="square" className={classes.square} src={recipe.thumbnail} /> : '' }
+        {recipe.thumbnail ? <Avatar variant="square" src={recipe.thumbnail} /> : '' }
         <input type="file" ref={fileInput} onChange={(e) => handleThumbnailImageChange(e.target.files[0])}/>
 
         <Snackbar
@@ -221,7 +221,6 @@ export default (props) => {
             open={successOpen}
             autoHideDuration={1500}
             onClose={handleSuccessClose}
-
         >
             <SnackbarContent
                 aria-describedby="message-id"
