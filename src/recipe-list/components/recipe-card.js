@@ -27,10 +27,7 @@ const useStyles = makeStyles(theme => ({
         alignSelf: 'center',
     },
     media: {
-        height: 140,
-        [theme.breakpoints.up('md')]: {
-            height: 180,
-        },
+        paddingTop: '75%',
     },
     link: {
         textDecoration: 'none',
@@ -44,7 +41,7 @@ const useStyles = makeStyles(theme => ({
 export default function Recipe({recipe}) {
     const classes = useStyles();
 
-    return <Grid item xs={12} sm={4} md={3}>
+    return <Grid item xs={6} md={4}>
         <Link to={`/recipes/${recipe.slug}`} className={classes.link}>
             <Card className={classes.card}>
                 <CardMedia
@@ -53,7 +50,7 @@ export default function Recipe({recipe}) {
                     title={recipe.title}
                 />
                 <CardContent className={classes.cardContent}>
-                    <Typography variant="body2" color="textSecondary" component="p" className={classes.cardTitle}>
+                    <Typography variant="body2" color="textPrimary" component="p" className={classes.cardTitle}>
                         {recipe.title}
                     </Typography>
                 </CardContent>

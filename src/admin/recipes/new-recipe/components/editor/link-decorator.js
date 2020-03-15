@@ -1,5 +1,5 @@
 import React from "react";
-
+import Link from '@material-ui/core/Link';
 
 function findLinkEntities(contentBlock, callback, contentState) {
     contentBlock.findEntityRanges(
@@ -14,14 +14,10 @@ function findLinkEntities(contentBlock, callback, contentState) {
     );
 }
 
-const Link = (props) => {
-    const {url} = props.contentState.getEntity(props.entityKey).getData();
-    return (
-        <a href={url}>{props.children}</a>
-    );
-};
-
 export const linkDecorator = {
     strategy: findLinkEntities,
-    component: Link,
+    component: (props) => {
+        const {url} = props.contentState.getEntity(props.entityKey).getData();
+        return <Link href={url} color="inherit">{props.children}</Link>;
+    },
 };

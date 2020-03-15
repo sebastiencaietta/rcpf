@@ -1,8 +1,8 @@
 import React, {useEffect, useState} from 'react';
-import Layout from "../../../layout/index";
 import AddRecipeForm from './containers/add-recipe-form';
 import {getRecipe, setRecipe, uploadRecipeThumbnail} from "../../../repositories/recipes";
 import {requiresLogin} from "../../../global/components/requires-login";
+import Layout from "../../../layout";
 
 const saveRecipe = async (recipe) => {
     return setRecipe(recipe);
@@ -23,7 +23,7 @@ const Component = (props) => {
         }, []);
     }
 
-    return <Layout title="Add a recipe">
+    return <Layout>
         <ProtectedRecipeForm handleSubmit={saveRecipe} recipe={recipe} handleUploadRecipeThumbnail={uploadRecipeThumbnail}/>
     </Layout>
 };

@@ -14,7 +14,7 @@ const useStyles = makeStyles(theme => ({
         margin: theme.spacing(2),
         marginBottom: 0,
         padding: theme.spacing(2),
-        backgroundColor: theme.palette.grey[100],
+        backgroundColor: theme.palette.background.paper,
         borderRadius: theme.shape.borderRadius,
         cursor: "text"
     },
@@ -24,12 +24,11 @@ const useStyles = makeStyles(theme => ({
     toolbar: {
         display: "flex",
         justifyContent: "space-between",
-        backgroundColor: theme.palette.grey[200]
+        backgroundColor: theme.palette.background.paper,
     },
 }));
 
 const decorator = new CompositeDecorator([linkDecorator,]);
-
 
 export default function DescriptionEditor({rawValue, onChange, rawValueUpdated}) {
     const classes = useStyles();

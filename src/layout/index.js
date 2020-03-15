@@ -1,143 +1,39 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import {makeStyles} from '@material-ui/core/styles';
-import LeftSideDrawer from './left-side-drawer';
-import RightSideDrawer from './right-side-drawer';
-import AppBar from "@material-ui/core/AppBar";
+import AppBar from "./app-bar";
 import Container from "@material-ui/core/Container";
-import clsx from "clsx";
-import Toolbar from "@material-ui/core/Toolbar";
-import IconButton from "@material-ui/core/IconButton";
-import MenuIcon from '@material-ui/icons/Menu';
-import Typography from "@material-ui/core/Typography";
-import FilterList from '@material-ui/icons/FilterList';
+import Hero from '../global/components/hero';
 
-const drawerWidth = 240;
 const useStyles = makeStyles(theme => ({
-    root: {
-        display: 'flex',
-    },
-    appBar: {
-        marginLeft: drawerWidth,
-        transition: theme.transitions.create(['margin', 'width'], {
-            easing: theme.transitions.easing.sharp,
-            duration: theme.transitions.duration.leavingScreen,
-        }),
-        [theme.breakpoints.up('md')]: {
-            width: `calc(100% - ${drawerWidth}px)`,
-        },
-    },
-    appBarShift: {
-        [theme.breakpoints.up('md')]: {
-            width: `calc(100% - ${drawerWidth * 2}px)`,
-            marginRight: drawerWidth,
-        },
-        transition: theme.transitions.create(['margin', 'width'], {
-            easing: theme.transitions.easing.easeOut,
-            duration: theme.transitions.duration.enteringScreen,
-        }),
-    },
-    title: {
-        flexGrow: 1,
-    },
-    menuButton: {
-        marginRight: theme.spacing(2),
-        [theme.breakpoints.up('md')]: {
-            display: 'none',
-        },
-    },
-    rightSideButton: {
-        marginRight: theme.spacing(2),
-    },
-    toolbar: theme.mixins.toolbar,
     content: {
         flexGrow: 1,
-        padding: theme.spacing(3),
-        transition: theme.transitions.create('margin', {
-            easing: theme.transitions.easing.sharp,
-            duration: theme.transitions.duration.leavingScreen,
-        }),
+        paddingTop: theme.spacing(3),
         position: 'relative',
-        [theme.breakpoints.up('md')]: {
-            marginRight: -drawerWidth,
-        },
-    },
-    contentShift: {
-        transition: theme.transitions.create('margin', {
-            easing: theme.transitions.easing.easeOut,
-            duration: theme.transitions.duration.enteringScreen,
-        }),
-        [theme.breakpoints.up('md')]: {
-            marginRight: 0,
-        },
     },
 }));
 
-export default function Layout(props) {
+const Layout = (props) => {
     const classes = useStyles();
 
-    const [mobileOpen, setMobileOpen] = React.useState(false);
-    const [rightDrawerOpen, setRightDrawerOpen] = React.useState(false);
-
-    function handleLeftDrawerToggle() {
-        setMobileOpen(!mobileOpen);
-    }
-
-    function handleRightDrawerOpen(status) {
-        if (status !== undefined) {
-            setRightDrawerOpen(status);
-            return;
-        }
-
-        setRightDrawerOpen(!rightDrawerOpen);
-    }
-
     return (
-        <div className={classes.root}>
-            <LeftSideDrawer {...{mobileOpen, handleDrawerToggle: handleLeftDrawerToggle}}/>
+        <React.Fragment>
+            <AppBar/>
 
-            <AppBar position="fixed" className={clsx(classes.appBar, {
-                [classes.appBarShift]: rightDrawerOpen,
-            })}>
-                <Toolbar>
-                    <IconButton
-                        color="inherit"
-                        aria-label="Open drawer"
-                        edge="start"
-                        onClick={handleLeftDrawerToggle}
-                        className={classes.menuButton}
-                    >
-                        <MenuIcon />
-                    </IconButton>
-
-                    <Typography variant="h6" noWrap className={classes.title}>
-                        {props.title}
-                    </Typography>
-
-                    {props.rightSideDrawer && <IconButton
-                        color="inherit"
-                        aria-label="Open drawer"
-                        edge="start"
-                        onClick={() => handleRightDrawerOpen()}
-                        className={classes.rightSideButton}
-                    >
-                        <FilterList />
-                    </IconButton>}
-
-                </Toolbar>
-            </AppBar>
+            {props.heroTitle && props.heroBg ? <Hero title={props.heroTitle} bg={props.heroBg}/> : ''}
 
             <Container fixed>
-                <div className={classes.toolbar} />
-                <main
-                    className={clsx(classes.content, {
-                        [classes.contentShift]: rightDrawerOpen,
-                    })}
-                >
+                <main className={classes.content}>
                     {props.children}
                 </main>
             </Container>
-
-            <RightSideDrawer content={props.rightSideDrawer} isOpen={rightDrawerOpen} handleToggle={handleRightDrawerOpen}/>
-        </div>
+        </React.Fragment>
     );
-}
+};
+
+Layout.propTypes = {
+    heroTitle: PropTypes.string,
+    heroBg: PropTypes.string,
+};
+
+export default Layout;
