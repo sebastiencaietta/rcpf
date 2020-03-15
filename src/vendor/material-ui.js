@@ -1,15 +1,16 @@
-import indigo from '@material-ui/core/colors/indigo';
-import pink from '@material-ui/core/colors/pink';
+import lime from '@material-ui/core/colors/lime';
+import lightBlue from '@material-ui/core/colors/lightBlue';
 import red from '@material-ui/core/colors/red';
 import green from '@material-ui/core/colors/green';
 import { createMuiTheme } from '@material-ui/core/styles';
+import {responsiveFontSizes} from "@material-ui/core";
 
 // A custom theme for this app
 const theme = createMuiTheme({
     palette: {
         type: 'dark',
-        primary: indigo,
-        secondary: pink,
+        primary: lightBlue,
+        secondary: lime,
         error: {
             main: red.A400,
         },
@@ -21,4 +22,4 @@ const theme = createMuiTheme({
     },
 });
 
-export default theme;
+export default responsiveFontSizes(theme);

@@ -1,5 +1,7 @@
 import React from "react";
 import redraft from 'redraft';
+import {Link} from "@material-ui/core";
+
 
 const inline = {
     BOLD: (children, { key }) => <strong key={key}>{children}</strong>,
@@ -28,9 +30,9 @@ const blocks = {
 
 const entities = {
     LINK: (children, entity, { key }) => (
-        <a key={key} href={entity.url}>
+        <Link underline="none" key={key} href={entity.url}>
             {children}
-        </a>
+        </Link>
     ),
 };
 

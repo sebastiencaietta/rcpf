@@ -5,11 +5,9 @@ import Recipe from './recipe';
 import AddRecipe from './admin/recipes/new-recipe';
 import RecipesAdmin from './admin/recipes';
 import IngredientsAdmin from "./admin/ingredients";
-import Layout from './layout/index'
 import Auth from './auth'
 
-export default () => (
-    <Layout>
+export default () => (<>
         <Auth/>
         <Route exact path="/" component={RecipeList}/>
         <Route exact path="/recipes/:slug" component={Recipe}/>
@@ -17,5 +15,5 @@ export default () => (
         <Route exact path="/admin/recipes" component={RecipesAdmin}/>
         <Route exact path="/admin/recipes/edit/:slug" component={AddRecipe}/>
         <Route exact path="/admin/ingredients/" component={IngredientsAdmin}/>
-    </Layout>
+    </>
 );

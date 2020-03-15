@@ -27,10 +27,7 @@ const useStyles = makeStyles(theme => ({
         alignSelf: 'center',
     },
     media: {
-        height: 140,
-        [theme.breakpoints.up('md')]: {
-            height: 180,
-        },
+        paddingTop: '75%',
     },
     link: {
         textDecoration: 'none',
@@ -53,7 +50,7 @@ export default function Recipe({recipe}) {
                     title={recipe.title}
                 />
                 <CardContent className={classes.cardContent}>
-                    <Typography variant="body2" color="textSecondary" component="p" className={classes.cardTitle}>
+                    <Typography variant="body2" color="textPrimary" component="p" className={classes.cardTitle}>
                         {recipe.title}
                     </Typography>
                 </CardContent>

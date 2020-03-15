@@ -4,6 +4,8 @@ import {fetchCategories, fetchRecipes, fetchTags} from "../global/eve";
 import Filters from './containers/filters';
 import Grid from "@material-ui/core/Grid";
 import {makeStyles} from "@material-ui/core/styles";
+import Layout from "../layout";
+import heroBg from './images/recipes-hero.webp';
 
 const useStyles = makeStyles(theme => ({
     filtersGridItem:{
@@ -28,7 +30,7 @@ export default () => {
         });
     }, []);
 
-    return <React.Fragment>
+    return <Layout heroTitle={'Recettes'} heroBg={heroBg}>
         <Grid container spacing={3}>
             <Grid item xs={12} md={3} className={classes.filtersGridItem}>
                 <Filters tags={tags} categories={categories}/>
@@ -38,5 +40,5 @@ export default () => {
             </Grid>
         </Grid>
 
-    </React.Fragment>;
+    </Layout>;
 };
