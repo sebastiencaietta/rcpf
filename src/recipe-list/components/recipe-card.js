@@ -44,7 +44,7 @@ const useStyles = makeStyles(theme => ({
 export default function Recipe({recipe}) {
     const classes = useStyles();
 
-    return <Grid item xs={12} sm={4} md={3}>
+    return <Grid item xs={6} md={4}>
         <Link to={`/recipes/${recipe.slug}`} className={classes.link}>
             <Card className={classes.card}>
                 <CardMedia

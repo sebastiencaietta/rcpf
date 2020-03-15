@@ -1,5 +1,4 @@
 import React, {useEffect, useState} from "react";
-import Layout from "../layout";
 import {getRecipe} from "../repositories/recipes";
 import RecipePage from './components/recipe-page'
 import CircularProgress from "@material-ui/core/CircularProgress";
@@ -16,9 +15,7 @@ const Component = (props) => {
         fetchRecipe(props.match.params.slug).catch(error => console.error(error));
     }, []);
 
-    return <Layout title={recipe.title || ''}>
-        {recipe.title ? <RecipePage recipe={recipe}/> : <CircularProgress />}
-    </Layout>
+    return recipe.title ? <RecipePage recipe={recipe}/> : <CircularProgress />
 };
 
 export default Component;

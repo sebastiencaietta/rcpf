@@ -1,5 +1,4 @@
 import React, {useEffect, useState} from 'react';
-import Layout from "../../../layout/index";
 import AddRecipeForm from './containers/add-recipe-form';
 import {getRecipe, setRecipe, uploadRecipeThumbnail} from "../../../repositories/recipes";
 import {requiresLogin} from "../../../global/components/requires-login";
@@ -23,9 +22,7 @@ const Component = (props) => {
         }, []);
     }
 
-    return <Layout title="Add a recipe">
-        <ProtectedRecipeForm handleSubmit={saveRecipe} recipe={recipe} handleUploadRecipeThumbnail={uploadRecipeThumbnail}/>
-    </Layout>
+    return <ProtectedRecipeForm handleSubmit={saveRecipe} recipe={recipe} handleUploadRecipeThumbnail={uploadRecipeThumbnail}/>
 };
 
 export default Component;

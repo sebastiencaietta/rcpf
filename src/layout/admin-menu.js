@@ -1,76 +1,77 @@
 import React, {useState} from 'react';
 import {Link} from "react-router-dom";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
-import SettingsIcon from "@material-ui/core/SvgIcon/SvgIcon";
-import ListItemText from "@material-ui/core/ListItemText";
-import Collapse from "@material-ui/core/Collapse";
-import List from "@material-ui/core/List";
-import ExpandLess from '@material-ui/icons/ExpandLess';
-import ExpandMore from '@material-ui/icons/ExpandMore';
-import RestaurantMenu from '@material-ui/icons/RestaurantMenu';
-import ArtTrackIcon from '@material-ui/icons/ArtTrack';
+import SettingsIcon from '@material-ui/icons/Settings';
 import {makeStyles} from "@material-ui/core";
 import {connect} from "react-redux";
+import Button from "@material-ui/core/Button";
+import Menu from "@material-ui/core/Menu";
+import MenuItem from "@material-ui/core/MenuItem";
+import clsx from "clsx";
 
 const useStyles = makeStyles(theme => ({
-    listLinks: {
+    menuLink: {
         textDecoration: 'none',
         color: theme.palette.text.primary,
     },
-    nested: {
-        paddingLeft: theme.spacing(4),
+    settingsIcon: {
+        transition: theme.transitions.create('transform', {
+            easing: theme.transitions.easing.sharp,
+            duration: theme.transitions.duration.standard,
+        }),
+        transform: 'rotate(0)',
     },
+    settingsIconOpen: {
+        transition: theme.transitions.create('transform', {
+            easing: theme.transitions.easing.sharp,
+            duration: theme.transitions.duration.standard,
+        }),
+        transform: 'rotate(180deg)',
+    }
 }));
 
 const Component = ({user}) => {
     const classes = useStyles();
-    const [adminOpen, setAdminOpen] = useState(false);
+    const [anchorEl, setAnchorEl] = useState(null);
 
-    function handleAdminClick() {
-        setAdminOpen(!adminOpen);
+    function handleAdminClick(event) {
+        setAnchorEl(event.currentTarget);
     }
 
+    function handleClose() {
+        setAnchorEl(null);
+    }
+
+    const settingsIconClasses = clsx(classes.settingsIcon, {[classes.settingsIconOpen]: anchorEl});
+
     const loggedInAdminMenu = (<React.Fragment>
-        <ListItem button onClick={handleAdminClick}>
-            <ListItemIcon>
-                <SettingsIcon/>
-            </ListItemIcon>
-            <ListItemText primary={"Admin"}/>
-            {adminOpen ? <ExpandLess/> : <ExpandMore/>}
-        </ListItem>
-        <Collapse component="li" in={adminOpen} timeout="auto" unmountOnExit>
-            <List disablePadding>
-                <Link to="/admin/recipes" className={classes.listLinks}>
-                    <ListItem className={classes.nested} button>
-                        <ListItemIcon><RestaurantMenu/></ListItemIcon>
-                        <ListItemText primary={"Recettes"}/>
-                    </ListItem>
-                </Link>
-                <Link to="/admin/ingredients" className={classes.listLinks}>
-                    <ListItem className={classes.nested} button>
-                        <ListItemIcon><ArtTrackIcon/></ListItemIcon>
-                        <ListItemText primary={"Ingredients"}/>
-                    </ListItem>
-                </Link>
-            </List>
-        </Collapse>
+        <Button onClick={handleAdminClick} startIcon={<SettingsIcon className={settingsIconClasses}/>}>
+            Admin
+        </Button>
+        <Menu
+            id="simple-menu"
+            anchorEl={anchorEl}
+            getContentAnchorEl={null}
+            keepMounted
+            open={Boolean(anchorEl)}
+            onClose={handleClose}
+            anchorOrigin={{vertical: 'bottom', horizontal: 'left',}}
+        >
+            <Link to="/admin/recipes" className={classes.menuLink}>
+                <MenuItem onClick={handleClose}>Recettes</MenuItem>
+            </Link>
+            <Link to="/admin/ingredients" className={classes.menuLink}>
+                <MenuItem onClick={handleClose}>Ingredients</MenuItem>
+            </Link>
+        </Menu>
     </React.Fragment>);
 
-    const loggedOutAdminMenu = (<React.Fragment>
-        <Link to="/admin/recipes" className={classes.listLinks}>
-            <ListItem button onClick={handleAdminClick}>
-                <ListItemIcon>
-                    <SettingsIcon/>
-                </ListItemIcon>
-                <ListItemText primary={"Admin"}/>
-            </ListItem>
-        </Link>
-    </React.Fragment>);
+    const loggedOutAdminMenu = <Link to="/admin/recipes" className={classes.menuLink}>
+        <Button startIcon={<SettingsIcon />}>Admin</Button>
+    </Link>;
 
-    return <List>
+    return <React.Fragment>
         {user.uid !== undefined ? loggedInAdminMenu : loggedOutAdminMenu}
-    </List>;
+    </React.Fragment>;
 };
 
 const mapStateToProps = state => ({

@@ -7,6 +7,7 @@ import { createMuiTheme } from '@material-ui/core/styles';
 // A custom theme for this app
 const theme = createMuiTheme({
     palette: {
+        type: 'dark',
         primary: indigo,
         secondary: pink,
         error: {
@@ -16,9 +17,6 @@ const theme = createMuiTheme({
             main: green.A400,
             light: green["600"],
             dark: green["200"],
-        },
-        background: {
-            default: '#eee',
         },
     },
 });

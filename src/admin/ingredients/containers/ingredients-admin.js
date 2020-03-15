@@ -7,6 +7,7 @@ import {makeStyles} from "@material-ui/core";
 import {addIngredient, deleteIngredient, getIngredients, updateIngredient} from "../../../repositories/ingredients";
 import SnackbarContent from "@material-ui/core/SnackbarContent";
 import Snackbar from "@material-ui/core/Snackbar";
+import Divider from "@material-ui/core/Divider";
 
 const useStyles = makeStyles(theme => {
     return {
@@ -95,13 +96,13 @@ export default () => {
     return <React.Fragment>
         <Paper className={classes.paper}>
             <Typography variant="h6">Add new ingredient</Typography>
-            <hr/>
+            <Divider />
             <AdminIngredientForm onSubmit={addNewIngredient}/>
         </Paper>
 
         <Paper className={classes.paper}>
             <Typography variant="h6">Saved ingredients</Typography>
-            <hr/>
+            <Divider />
             <AdminIngredientList
                 ingredients={ingredients}
                 updateIngredient={handleUpdateIngredient}
