@@ -13,50 +13,43 @@ import useScrollTrigger from "@material-ui/core/useScrollTrigger/useScrollTrigge
 import RestaurantMenu from '@material-ui/icons/RestaurantMenu';
 import MenuBookIcon from '@material-ui/icons/MenuBook';
 import {makeStyles} from "@material-ui/core/styles";
+import {PaletteTypeToggleContext} from "../index";
+import TogglePaletteTypeButton from './toggle-palette-type-button';
+import {PALETTE_TYPE_DARK} from "../global/theme-settings";
 
-const useStyles = makeStyles(theme => ({
-    title: {
-        flexGrow: 1,
-    },
-    menuLink: {
-        textDecoration: 'none',
-        color: theme.palette.text.primary,
-    },
-    desktopLinks: {
-        [theme.breakpoints.up('md')]: {
-            display: 'flex',
-            justifyContent: 'flex-end'
+const useStyles = makeStyles(theme => {
+    const appBarTransitionProps = ['box-shadow', 'min-height'];
+    const easingIn = theme.transitions.easing.sharp;
+    const easingOut = theme.transitions.easing.easeOut;
+    const durationIn = theme.transitions.duration.enteringScreen;
+    const durationOut = theme.transitions.duration.leavingScreen;
+
+    return {
+        title: {flexGrow: 1},
+        menuLink: {
+            textDecoration: 'none',
+            color: theme.palette.text.primary,
         },
-    },
-    appBar: {
-        transition: theme.transitions.create(['box-shadow', 'background-color', 'min-height'], {
-            easing: theme.transitions.easing.sharp,
-            duration: theme.transitions.duration.leavingScreen,
-        }),
-        backgroundColor: "#212121",
-    },
-    appBarShift: {
-        transition: theme.transitions.create(['box-shadow', 'background-color', 'min-height'], {
-            easing: theme.transitions.easing.easeOut,
-            duration: theme.transitions.duration.enteringScreen,
-        }),
-        background: '#212121',
-    },
-    toolbar: {
-        ...theme.mixins.toolbar,
-        transition: theme.transitions.create(['min-height'], {
-            easing: theme.transitions.easing.sharp,
-            duration: theme.transitions.duration.leavingScreen,
-        }),
-    },
-    toolbarShift: {
-        minHeight: theme.mixins.toolbar.minHeight - theme.spacing(1),
-        transition: theme.transitions.create(['min-height'], {
-            easing: theme.transitions.easing.easeOut,
-            duration: theme.transitions.duration.enteringScreen,
-        }),
-    },
-}));
+        desktopLinks: {
+            [theme.breakpoints.up('md')]: {display: 'flex', justifyContent: 'flex-end', alignItems: 'center'},
+        },
+        appBar: {
+            transition: theme.transitions.create(appBarTransitionProps, {easing: easingIn, duration: durationIn}),
+            backgroundColor: theme.palette.type === PALETTE_TYPE_DARK ? '#212121' : theme.palette.background.paper,
+        },
+        appBarShift: {
+            transition: theme.transitions.create(appBarTransitionProps, {easing: easingOut, duration: durationOut}),
+        },
+        toolbar: {
+            ...theme.mixins.toolbar,
+            transition: theme.transitions.create(['min-height'], {easing: easingIn, duration: durationIn}),
+        },
+        toolbarShift: {
+            minHeight: theme.mixins.toolbar.minHeight - theme.spacing(1),
+            transition: theme.transitions.create(['min-height'], {easing: easingOut, duration: durationOut}),
+        },
+    }
+});
 
 export default () => {
     const classes = useStyles();
@@ -77,13 +70,16 @@ export default () => {
                                 <Typography variant="h6" noWrap className={classes.title}>Cookmate</Typography>
                             </Link>
                         </Grid>
-                        <Grid item md={6}>
+                        <Grid item md={6} className={classes.desktopLinks}>
                             <Hidden smDown implementation="css" className={classes.desktopLinks}>
                                 <Link to="/" className={classes.menuLink}>
                                     <Button startIcon={<RestaurantMenu/>}>Recettes</Button>
                                 </Link>
                                 <Button disabled startIcon={<MenuBookIcon/>}>Menus</Button>
                                 <AdminMenu/>
+                                <PaletteTypeToggleContext.Consumer>
+                                    {({onToggleTheme}) => <TogglePaletteTypeButton onToggleTheme={onToggleTheme}/>}
+                                </PaletteTypeToggleContext.Consumer>
                             </Hidden>
                         </Grid>
                     </Grid>

@@ -18,7 +18,7 @@ const Layout = (props) => {
 
     return (
         <React.Fragment>
-            <AppBar/>
+            <AppBar onToggleTheme={props.onToggleTheme}/>
 
             {props.heroTitle && props.heroBg ? <Hero title={props.heroTitle} bg={props.heroBg}/> : ''}
 

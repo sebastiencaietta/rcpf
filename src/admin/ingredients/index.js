@@ -1,10 +1,12 @@
 import React from "react";
 import IngredientsAdmin from './containers/ingredients-admin'
 import Layout from "../../layout";
-import {requiresLogin} from "../../global/components/requires-login";
+import SignInPage from '../../global/components/sign-in-page';
 
 export default function IngredientsAdminPage() {
-    const ProtectedIngredientsAdmin = requiresLogin(IngredientsAdmin);
-
-    return <Layout><ProtectedIngredientsAdmin/></Layout>
+    return <Layout>
+        <SignInPage>
+            <IngredientsAdmin/>
+        </SignInPage>
+    </Layout>
 }

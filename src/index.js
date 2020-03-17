@@ -1,30 +1,47 @@
-import React from 'react';
+import React, {createContext, useState} from 'react';
 import {Provider} from 'react-redux';
 import ReactDOM from 'react-dom';
 import {Router} from 'react-router-dom'
 import store, {browserHistory} from './store'
 import * as serviceWorker from './serviceWorker';
-import { initFirebaseApp } from "./vendor/firebase";
-import { ThemeProvider } from '@material-ui/styles';
+import {createTheme, getPreferredPaletteType, setPreferredPaletteType} from "./global/theme-settings";
+import {initFirebaseApp} from "./vendor/firebase";
+import {ThemeProvider} from '@material-ui/styles';
 import CssBaseline from "@material-ui/core/CssBaseline";
-import theme from './vendor/material-ui';
+import Auth from "./auth";
+import Routes from './routes';
 
 import './index.css';
-import App from './App';
 
 initFirebaseApp();
 
-
 const target = document.querySelector('#root');
+
+export const PaletteTypeToggleContext = createContext({});
+
+const App = () => {
+    const [theme, setTheme] = useState(createTheme(getPreferredPaletteType()));
+
+    const onToggleTheme = paletteType => {
+        setPreferredPaletteType(paletteType);
+        setTheme(createTheme(paletteType));
+    };
+
+    return <Provider store={store}>
+        <PaletteTypeToggleContext.Provider value={{onToggleTheme}}>
+            <ThemeProvider theme={theme}>
+                <CssBaseline/>
+                <Router history={browserHistory}>
+                    <Auth/>
+                    <Routes/>
+                </Router>
+            </ThemeProvider>
+        </PaletteTypeToggleContext.Provider>
+    </Provider>
+};
+
 ReactDOM.render(
-    <ThemeProvider theme={theme}>
-        <CssBaseline />
-        <Provider store={store}>
-            <Router history={browserHistory}>
-                <App/>
-            </Router>
-        </Provider>
-    </ThemeProvider>,
+    <App/>,
     target
 );
 

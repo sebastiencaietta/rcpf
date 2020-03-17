@@ -1,14 +1,12 @@
 import React, {useEffect, useState} from 'react';
 import AddRecipeForm from './containers/add-recipe-form';
 import {getRecipe, setRecipe, uploadRecipeThumbnail} from "../../../repositories/recipes";
-import {requiresLogin} from "../../../global/components/requires-login";
+import SignUpPage from '../../../global/components/sign-in-page';
 import Layout from "../../../layout";
 
 const saveRecipe = async (recipe) => {
     return setRecipe(recipe);
 };
-
-const ProtectedRecipeForm = requiresLogin(AddRecipeForm);
 
 const Component = (props) => {
     const [recipe, setRecipe] = useState({});
@@ -24,7 +22,12 @@ const Component = (props) => {
     }
 
     return <Layout>
-        <ProtectedRecipeForm handleSubmit={saveRecipe} recipe={recipe} handleUploadRecipeThumbnail={uploadRecipeThumbnail}/>
+        <SignUpPage>
+            <AddRecipeForm
+                handleSubmit={saveRecipe}
+                recipe={recipe}
+                handleUploadRecipeThumbnail={uploadRecipeThumbnail}/>
+        </SignUpPage>
     </Layout>
 };
 

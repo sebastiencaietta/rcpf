@@ -27,6 +27,7 @@ const useStyles = makeStyles(theme => ({
     }),
     title: {
         zIndex: 2,
+        color: '#fff',
     },
 }));
 
