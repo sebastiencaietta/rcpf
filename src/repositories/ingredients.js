@@ -24,7 +24,7 @@ export const addIngredient = async (ingredient) => {
         };
     }
 
-    const docRef = await db.collection("ingredients").add(ingredient);
+    const docRef = await db.collection('ingredients').add(ingredient);
     return {
         ...ingredient,
         id: docRef.id,

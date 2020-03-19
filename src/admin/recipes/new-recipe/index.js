@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import AddRecipeForm from './containers/add-recipe-form';
-import {getRecipe, setRecipe, uploadRecipeThumbnail} from "../../../repositories/recipes";
+import {getRecipeBySlug, setRecipe, uploadRecipeThumbnail} from "../../../repositories/recipes";
 import SignUpPage from '../../../global/components/sign-in-page';
 import Layout from "../../../layout";
 
@@ -14,7 +14,7 @@ const Component = (props) => {
     if (props.match.params.slug) {
         useEffect(() => {
             async function fetchRecipe(slug) {
-                const result = await getRecipe(slug);
+                const result = await getRecipeBySlug(slug);
                 setRecipe(result);
             }
             fetchRecipe(props.match.params.slug);

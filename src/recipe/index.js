@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import Layout from "../layout";
-import {getRecipe} from "../repositories/recipes";
+import {getRecipeBySlug} from "../repositories/recipes";
 import RecipePage from './components/recipe-page'
 import CircularProgress from "@material-ui/core/CircularProgress";
 
@@ -9,7 +9,7 @@ const Component = (props) => {
 
     useEffect(() => {
         async function fetchRecipe(slug) {
-            const result = await getRecipe(slug);
+            const result = await getRecipeBySlug(slug);
             setRecipe(result);
         }
 

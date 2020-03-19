@@ -51,49 +51,50 @@ export default function filters({checked, tags, onToggle, search, onSearch, cate
                 }
             />
         </FormControl>
+        <div>
+            <ExpansionPanel>
+                <ExpansionPanelSummary expandIcon={<ExpandMore/>} aria-label="Expand">Categories</ExpansionPanelSummary>
+                <ExpansionPanelDetails>
+                    <List dense className={classes.tagList}>
+                        <RadioGroup aria-label="category" name="category" value={selectedCategory}
+                                    onChange={handleCategoryChange}>
+                            <FormControlLabel value={''}
+                                              control={<Radio/>}
+                                              label="Toutes categories"
+                                              checked={!selectedCategory}/>
+                            {categories.map(category => <FormControlLabel key={category.id}
+                                                                          value={category.id}
+                                                                          control={<Radio/>}
+                                                                          label={category.title}
+                                                                          checked={selectedCategory === category.id}/>)}
+                        </RadioGroup>
+                    </List>
+                </ExpansionPanelDetails>
+            </ExpansionPanel>
+            <ExpansionPanel>
+                <ExpansionPanelSummary expandIcon={<ExpandMore/>} aria-label="Expand">Tags</ExpansionPanelSummary>
+                <ExpansionPanelDetails>
+                    <List dense className={classes.tagList}>
+                        {tags.map(tag => {
+                            const labelId = `checkbox-list-label-${tag.title}`;
 
-        <ExpansionPanel>
-            <ExpansionPanelSummary expandIcon={<ExpandMore/>} aria-label="Expand">Categories</ExpansionPanelSummary>
-            <ExpansionPanelDetails>
-                <List dense className={classes.tagList}>
-                    <RadioGroup aria-label="category" name="category" value={selectedCategory}
-                                onChange={handleCategoryChange}>
-                        <FormControlLabel value={''}
-                                          control={<Radio/>}
-                                          label="Toutes categories"
-                                          checked={!selectedCategory}/>
-                        {categories.map(category => <FormControlLabel key={category.id}
-                                                                      value={category.id}
-                                                                      control={<Radio/>}
-                                                                      label={category.title}
-                                                                      checked={selectedCategory === category.id}/>)}
-                    </RadioGroup>
-                </List>
-            </ExpansionPanelDetails>
-        </ExpansionPanel>
-        <ExpansionPanel>
-            <ExpansionPanelSummary expandIcon={<ExpandMore/>} aria-label="Expand">Tags</ExpansionPanelSummary>
-            <ExpansionPanelDetails>
-                <List dense className={classes.tagList}>
-                    {tags.map(tag => {
-                        const labelId = `checkbox-list-label-${tag.title}`;
-
-                        return <ListItem key={tag.id} button onClick={() => onToggle(tag.id)}
-                                         className={classes.tagListItem}>
-                            <ListItemIcon>
-                                <Checkbox
-                                    edge="start"
-                                    checked={checked.indexOf(tag.id) !== -1}
-                                    tabIndex={-1}
-                                    disableRipple
-                                    inputProps={{'aria-labelledby': labelId}}
-                                />
-                            </ListItemIcon>
-                            <ListItemText id={labelId} primary={tag.title}/>
-                        </ListItem>
-                    })}
-                </List>
-            </ExpansionPanelDetails>
-        </ExpansionPanel>
+                            return <ListItem key={tag.id} button onClick={() => onToggle(tag.id)}
+                                             className={classes.tagListItem}>
+                                <ListItemIcon>
+                                    <Checkbox
+                                        edge="start"
+                                        checked={checked.indexOf(tag.id) !== -1}
+                                        tabIndex={-1}
+                                        disableRipple
+                                        inputProps={{'aria-labelledby': labelId}}
+                                    />
+                                </ListItemIcon>
+                                <ListItemText id={labelId} primary={tag.title}/>
+                            </ListItem>
+                        })}
+                    </List>
+                </ExpansionPanelDetails>
+            </ExpansionPanel>
+        </div>
     </React.Fragment>
 }
