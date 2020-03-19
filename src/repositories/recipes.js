@@ -1,5 +1,26 @@
 import firebase from "firebase/app";
 
+const sortRecipesAlphabetically = (recipeList) => {
+    const idBySlugMap = {};
+    const sortedList = {};
+
+    Object.keys(recipeList)
+        .sort()
+        .forEach((id) => {
+            const {slug} = recipeList[id];
+            idBySlugMap[slug] = id;
+        });
+
+    Object.keys(idBySlugMap)
+        .sort()
+        .forEach(slug => {
+            const id = idBySlugMap[slug];
+            sortedList[id] = recipeList[id];
+        });
+
+    return sortedList;
+};
+
 export const getRecipes = async () => {
     const snapshot = await firebase.firestore().collection('recipes').get();
     const recipes = [];
@@ -10,24 +31,30 @@ export const getRecipes = async () => {
     return recipes;
 };
 
+export const getRecipeList = async () => {
+    const snapshot = await firebase.firestore().collection('cache').doc('recipeList').get();
+    const cachedRecipeList = snapshot.data();
+    const sortedRecipes = sortRecipesAlphabetically(cachedRecipeList);
+    return Object.keys(sortedRecipes).map(id => sortedRecipes[id]);
+};
+
+
 export const listenToRecipes = (onNext) => {
     return firebase.firestore().collection("recipes").onSnapshot(onNext);
 };
 
-export const getRecipe = async (slug) => {
-    const docRef = firebase.firestore().collection('recipes').doc(slug);
+export const getRecipeBySlug = async (slug) => {
+    const docRef = firebase.firestore().collection('recipes').where('slug', "==", slug);
+    const queryResults = await docRef.get();
+    const matches = [];
 
-    const recipe = await docRef.get();
+    queryResults.forEach(docRef => matches.push({...docRef.data(), id: docRef.id}));
 
-    if (recipe.exists) {
-        return recipe.data();
-    } else {
-        console.log("No such recipe!");
-    }
+    return matches[0];
 };
 
 export const setRecipe = async (recipe) => {
-    firebase.firestore().collection('recipes').doc(recipe.slug).set(recipe)
+    firebase.firestore().collection('recipes').doc(recipe.id).set(recipe)
         .then(function () {
             console.log("Document successfully written!");
         })
