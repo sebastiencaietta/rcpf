@@ -25,7 +25,7 @@ export const getRecipes = async () => {
     const snapshot = await firebase.firestore().collection('recipes').get();
     const recipes = [];
     snapshot.forEach((doc) => {
-        recipes.push(doc.data());
+        recipes.push({...doc.data(), id: doc.id});
     });
 
     return recipes;
@@ -53,14 +53,19 @@ export const getRecipeBySlug = async (slug) => {
     return matches[0];
 };
 
-export const setRecipe = async (recipe) => {
-    firebase.firestore().collection('recipes').doc(recipe.id).set(recipe)
-        .then(function () {
-            console.log("Document successfully written!");
-        })
-        .catch(function (error) {
-            console.error("Error writing document: ", error);
-        });
+export const addRecipe = async (recipe) => {
+    const docRef = await firebase.firestore().collection('recipes').add(recipe);
+
+    return {
+        ...recipe,
+        id: docRef.id,
+    };
+};
+
+export const updateRecipe = async (recipe) => {
+    const db = firebase.firestore();
+    await db.collection('recipes').doc(recipe.id).set(recipe);
+    return recipe
 };
 
 export const uploadRecipeThumbnail = async (path, thumbnail) => {
@@ -74,6 +79,6 @@ export const uploadRecipeThumbnail = async (path, thumbnail) => {
     return await storageRef.getDownloadURL();
 };
 
-export const deleteRecipe = async (slug) => {
-    firebase.firestore().collection('recipes').doc(slug).delete();
+export const deleteRecipe = async (id) => {
+    return firebase.firestore().collection('recipes').doc(id).delete();
 };

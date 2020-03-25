@@ -77,9 +77,9 @@ export default function AdminRecipeList() {
     const [recipeToDelete, setRecipeToDelete] = useState();
     const classes = useStyles();
 
-    function openDeleteDialog(slug) {
+    function openDeleteDialog(id) {
         setDeleteDialogOpen(true);
-        setRecipeToDelete(slug);
+        setRecipeToDelete(id);
     }
 
     function handleClose() {
@@ -95,8 +95,8 @@ export default function AdminRecipeList() {
     useEffect(() => {
         const unsubscribeFromRecipes = listenToRecipes((querySnapshot) => {
             const result = [];
-            querySnapshot.forEach(function(recipe) {
-                result.push(recipe.data());
+            querySnapshot.forEach(function(docRef) {
+                result.push({...docRef.data(), id: docRef.id});
             });
             setRecipes(result);
         });
@@ -127,7 +127,7 @@ export default function AdminRecipeList() {
                                     <EditIcon className={classes.leftIcon}/>
                                 </IconButton>
                             </Link>
-                            <IconButton size="small" onClick={() => openDeleteDialog(recipe.slug)}>
+                            <IconButton size="small" onClick={() => openDeleteDialog(recipe.id)}>
                                 <DeleteIcon className={classes.leftIcon}/>
                             </IconButton>
                         </CardActions>

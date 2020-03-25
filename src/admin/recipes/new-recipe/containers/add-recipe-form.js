@@ -1,4 +1,5 @@
 import React from "react";
+import { useHistory } from "react-router-dom";
 import {useEffect, useState} from "react";
 import {fetchCategories, fetchTags} from "../../../../global/eve";
 import {green} from '@material-ui/core/colors';
@@ -83,6 +84,7 @@ export default (props) => {
     const [successOpen, setSuccessOpen] = useState(false);
     const [descriptionTab, setDescriptionTab] = useState('editor');
     const fileInput = React.createRef();
+    const history = useHistory();
 
     const [recipe, setRecipe] = useState({
         title: '',
@@ -139,12 +141,21 @@ export default (props) => {
         });
     }
 
-    async function handleSubmit() {
+    async function handleSubmit(e) {
+        e.preventDefault();
+
         if (recipe.title === '') {
             return;
         }
-        await props.handleSubmit(recipe);
+
+        const updatedRecipe = await props.handleSubmit(recipe);
+        if (savedRecipe.title !== recipe.title) {
+            history.replace(`/admin/recipes/edit/${recipe.slug}`);
+        }
+
         setSuccessOpen(true);
+        setRecipe(updatedRecipe);
+        setSavedRecipe(updatedRecipe);
     }
 
     function handleSuccessClose() {
@@ -165,7 +176,7 @@ export default (props) => {
         });
     }
 
-    return <form>
+    return <form onSubmit={handleSubmit}>
         <TextField
             style={{margin: 8}}
             label="Title"
@@ -233,7 +244,6 @@ export default (props) => {
              aria-label="Save"
              className={classes.fab}
              color="primary"
-             onClick={handleSubmit}
              type="submit">
             <SaveIcon/>
         </Fab>

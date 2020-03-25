@@ -1,11 +1,15 @@
 import React, {useEffect, useState} from 'react';
 import AddRecipeForm from './containers/add-recipe-form';
-import {getRecipeBySlug, setRecipe, uploadRecipeThumbnail} from "../../../repositories/recipes";
+import {getRecipeBySlug, addRecipe, uploadRecipeThumbnail, updateRecipe} from "../../../repositories/recipes";
 import SignUpPage from '../../../global/components/sign-in-page';
 import Layout from "../../../layout";
 
 const saveRecipe = async (recipe) => {
-    return setRecipe(recipe);
+    if (recipe.id === undefined) {
+        return addRecipe(recipe);
+    }
+
+    return updateRecipe(recipe);
 };
 
 const Component = (props) => {
