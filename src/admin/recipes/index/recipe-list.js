@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {deleteRecipe, listenToRecipes} from "../../../repositories/recipes";
+import {deleteRecipe, listenToRecipes, sortRecipeArrayAlphabetically} from "../../../repositories/recipes";
 import Grid from "@material-ui/core/Grid";
 import Card from "@material-ui/core/Card";
 import CardActions from "@material-ui/core/CardActions";
@@ -21,6 +21,10 @@ import RecipeImage from "../../../recipe-list/images/recipe.jpg";
 import CardContent from "@material-ui/core/CardContent";
 import Typography from "@material-ui/core/Typography";
 import IconButton from "@material-ui/core/IconButton";
+import Input from "@material-ui/core/Input";
+import InputAdornment from "@material-ui/core/InputAdornment";
+import {Search} from "@material-ui/icons";
+import FormControl from "@material-ui/core/FormControl";
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -73,6 +77,8 @@ const useStyles = makeStyles(theme => ({
 
 export default function AdminRecipeList() {
     const [recipes, setRecipes] = useState([]);
+    const [visibleRecipes, setVisibleRecipes] = useState([]);
+    const [search, setSearch] = useState('');
     const [deleteDialogOpen, setDeleteDialogOpen] = React.useState(false);
     const [recipeToDelete, setRecipeToDelete] = useState();
     const classes = useStyles();
@@ -92,13 +98,27 @@ export default function AdminRecipeList() {
         });
     }
 
+    function handleSearch(e) {
+        setSearch(e.target.value);
+        const filteredRecipes = recipes.filter(recipe => {
+            if (search === '') {
+                return true;
+            }
+            return recipe.title.toLowerCase().includes(e.target.value.toLowerCase());
+
+        });
+        setVisibleRecipes(filteredRecipes);
+    }
+
     useEffect(() => {
         const unsubscribeFromRecipes = listenToRecipes((querySnapshot) => {
             const result = [];
-            querySnapshot.forEach(function(docRef) {
+            querySnapshot.forEach(function (docRef) {
                 result.push({...docRef.data(), id: docRef.id});
             });
-            setRecipes(result);
+            const sortedRecipes = sortRecipeArrayAlphabetically(result);
+            setRecipes(sortedRecipes);
+            setVisibleRecipes(sortedRecipes);
         });
 
         return () => {
@@ -108,7 +128,21 @@ export default function AdminRecipeList() {
 
     return <React.Fragment>
         <Grid container spacing={3} className={classes.root}>
-            {recipes.map((recipe) => {
+            <Grid item xs={12}>
+                <FormControl className={classes.margin} fullWidth={true}>
+                    <Input
+                        value={search}
+                        onChange={handleSearch}
+                        startAdornment={
+                            <InputAdornment position="start">
+                                <Search/>
+                            </InputAdornment>
+                        }
+                        fullWidth={true}
+                    />
+                </FormControl>
+            </Grid>
+            {visibleRecipes.map((recipe) => {
                 return <Grid item xs={12} md={4} lg={3} key={recipe.slug}>
                     <Card className={classes.card}>
                         <CardMedia
@@ -117,7 +151,8 @@ export default function AdminRecipeList() {
                             title={recipe.title}
                         />
                         <CardContent className={classes.cardContent}>
-                            <Typography variant="body2" color="textSecondary" component="p" className={classes.cardTitle}>
+                            <Typography variant="body2" color="textSecondary" component="p"
+                                        className={classes.cardTitle}>
                                 {recipe.title}
                             </Typography>
                         </CardContent>
