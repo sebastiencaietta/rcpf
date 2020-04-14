@@ -62,6 +62,9 @@ const Component = ({user}) => {
             <Link to="/admin/ingredients" className={classes.menuLink}>
                 <MenuItem onClick={handleClose}>Ingredients</MenuItem>
             </Link>
+            <Link to="/admin/tags" className={classes.menuLink}>
+                <MenuItem onClick={handleClose}>Tags</MenuItem>
+            </Link>
         </Menu>
     </React.Fragment>);
 

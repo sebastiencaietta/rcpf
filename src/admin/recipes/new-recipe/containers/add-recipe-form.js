@@ -236,7 +236,7 @@ export default (props) => {
             <SnackbarContent
                 aria-describedby="message-id"
                 className={classes.successSnackBar}
-                message={<span id="message-id">Recipe saved</span>}
+                message={<span id="message-id">Recette sauvegardée</span>}
             />
         </Snackbar>
 

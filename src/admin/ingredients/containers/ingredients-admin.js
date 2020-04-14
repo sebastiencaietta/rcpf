@@ -50,7 +50,7 @@ export default () => {
                 ...ingredients,
                 newIngredient,
             ]);
-            showSuccess('Ingredient added');
+            showSuccess('Ingredient ajouté');
         } catch (error) {
             showError(error.message);
         }
@@ -62,7 +62,7 @@ export default () => {
             setIngredients(ingredients.map(
                 ingredient => ingredient.id === updatedIngredient.id ? updatedIngredient : ingredient
             ));
-            showSuccess('Ingredient updated');
+            showSuccess('Ingredient sauvegardé');
         } catch (error) {
             showError(error.message);
         }
@@ -74,7 +74,7 @@ export default () => {
             setIngredients(ingredients.filter(
                 ingredient => ingredient.id !== ingredientToDelete.id
             ));
-            showSuccess('Ingredient deleted');
+            showSuccess('Ingredient supprimé');
         } catch (error) {
             showError(error.message);
         }
@@ -95,13 +95,13 @@ export default () => {
 
     return <React.Fragment>
         <Paper className={classes.paper}>
-            <Typography variant="h6">Add new ingredient</Typography>
+            <Typography variant="h6">Ajouter un nouvel ingrédient</Typography>
             <Divider />
             <AdminIngredientForm onSubmit={addNewIngredient}/>
         </Paper>
 
         <Paper className={classes.paper}>
-            <Typography variant="h6">Saved ingredients</Typography>
+            <Typography variant="h6">Ingrédients sauvegardés</Typography>
             <Divider />
             <AdminIngredientList
                 ingredients={ingredients}

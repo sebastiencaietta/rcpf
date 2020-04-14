@@ -81,40 +81,34 @@ exports.updateRecipeListOnRecipeUpdate = functions.region('europe-west1').firest
 
 ////////////////////////////// ON TAGS UPDATE //////////////////////////////
 
-exports.updateRecipeListOnTagDelete = functions.region('europe-west1').firestore
+exports.updateRecipesOnTagDelete = functions.region('europe-west1').firestore
     .document('/tags/{tagId}')
     .onDelete(async (snap) => {
-        const tag = snap.data();
+        const tagId = snap.id;
 
-        //get recipe list and for all the recipes having this tag, remove the tag from the tags array
+        //get recipes and for all the recipes having this tag, remove the tag from the tags array in the recipe collection
         const db = admin.firestore();
-        const documentSnapshot = await db.collection('cache').doc('recipeList').get();
+        const recipesSnapshot = await db.collection('recipes').get();
 
-        if (!documentSnapshot.exists) {
-            return null;
-        }
+        const recipes = [];
+        recipesSnapshot.forEach(doc => {
+            recipes.push({...doc.data(), id: doc.id});
+        });
 
-        const recipeList = documentSnapshot.data();
-
-        Object.keys(recipeList).forEach(recipeId => {
-            const recipe = recipeList[recipeId];
-            const index = recipe.tags.indexOf(tag.id);
+        const batch = db.batch();
+        recipes.forEach(recipe => {
+            const index = recipe.tags.indexOf(tagId);
             if (index === -1) {
                 return;
             }
 
-            const newTags = [
-                ...recipe.tags.slice(0, index),
-                ...recipe.tags.slice(index + 1, recipe.tags.length),
-            ];
-
-            recipeList[recipeId] = {
-                ...recipeList[recipeId],
-                tags: newTags,
-            }
+            batch.update(
+                db.collection('recipes').doc(recipe.id),
+                {tags: admin.firestore.FieldValue.arrayRemove(tagId)}
+            );
         });
 
-        return db.collection('cache').doc('recipeList').set(recipeList);
+        return batch.commit();
     });
 
 exports.regenerateRecipeListCache = functions.region('europe-west1').https.onRequest(async (req, res) => {
@@ -136,6 +130,37 @@ exports.regenerateRecipeListCache = functions.region('europe-west1').https.onReq
     });
 
     await db.collection('cache').doc('recipeList').set(recipeList);
+
+    res.status(200);
+    res.send();
+});
+
+exports.unfuckTags = functions.region('europe-west1').https.onRequest(async (req, res) => {
+    const db = admin.firestore();
+    const tagsSnapshot = await db.collection('tags').get();
+    const recipeListSnapshot = await db.collection('cache').doc('recipeList').get();
+    const recipeList = recipeListSnapshot.data();
+
+    const oldTagIdToNewIdMap = {};
+    tagsSnapshot.forEach(doc => {
+        oldTagIdToNewIdMap[doc.data().id] = doc.id
+    });
+
+    const batch = db.batch();
+    for(const id in recipeList) {
+        if (!recipeList.hasOwnProperty(id)) {
+            continue;
+        }
+        const recipe = recipeList[id];
+        const tags = recipe.tags;
+        if (!tags.length) {
+            continue;
+        }
+        const newTags = tags.map(id => oldTagIdToNewIdMap[id]);
+        batch.update(db.collection('recipes').doc(id), {tags: newTags});
+    }
+
+    await batch.commit();
 
     res.status(200);
     res.send();

@@ -1,5 +1,6 @@
 {
   "projects": {
-    "default": "cookmate-a0444"
+    "default": "cookmate-a0444",
+    "cookmate-dev": "cookmate-dev"
   }
 }

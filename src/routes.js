@@ -5,6 +5,7 @@ import Recipe from './recipe';
 import AddRecipe from './admin/recipes/new-recipe';
 import RecipesAdmin from './admin/recipes';
 import IngredientsAdmin from "./admin/ingredients";
+import TagsAdmin from "./admin/tags";
 
 export default () => <>
     <Route exact path="/" component={RecipeList}/>
@@ -13,5 +14,6 @@ export default () => <>
     <Route exact path="/admin/recipes" component={RecipesAdmin}/>
     <Route exact path="/admin/recipes/edit/:slug" component={AddRecipe}/>
     <Route exact path="/admin/ingredients/" component={IngredientsAdmin}/>
+    <Route exact path="/admin/tags/" component={TagsAdmin}/>
 </>
 

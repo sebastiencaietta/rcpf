@@ -7,7 +7,7 @@ export const sortRecipeListAlphabetically = (recipeList) => {
         return slugA < slugB ? -1 : slugA > slugB ? 1 : 0;
     });
 
-    return sortedIds.map(id => recipeList[id])
+    return sortedIds.map(id => ({...recipeList[id], id}))
 };
 
 export const sortRecipeArrayAlphabetically = (recipeArray) => {
@@ -31,8 +31,7 @@ export const getRecipes = async () => {
 export const getRecipeList = async () => {
     const snapshot = await firebase.firestore().collection('cache').doc('recipeList').get();
     const cachedRecipeList = snapshot.data();
-    const sortedRecipes = sortRecipeListAlphabetically(cachedRecipeList);
-    return Object.keys(sortedRecipes).map(id => sortedRecipes[id]);
+    return sortRecipeListAlphabetically(cachedRecipeList);
 };
 
 
@@ -78,4 +77,14 @@ export const uploadRecipeThumbnail = async (path, thumbnail) => {
 
 export const deleteRecipe = async (id) => {
     return firebase.firestore().collection('recipes').doc(id).delete();
+};
+
+export const addTagForRecipes = async (recipeIds, tagId) => {
+    const batch = firebase.firestore().batch();
+    recipeIds.map(
+        (recipeId) => batch.update(
+            firebase.firestore().collection('recipes').doc(recipeId),
+            {tags: firebase.firestore.FieldValue.arrayUnion(tagId)}
+        ));
+    await batch.commit();
 };
