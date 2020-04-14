@@ -1,5 +1,7 @@
 const functions = require('firebase-functions');
 const admin = require('firebase-admin');
+const cron = require('./cron');
+
 admin.initializeApp();
 
 
@@ -134,3 +136,5 @@ exports.regenerateRecipeListCache = functions.region('europe-west1').https.onReq
     res.status(200);
     res.send();
 });
+
+exports.scheduledFirestoreExport = functions.region('europe-west1').pubsub.schedule('every 24 hours').onRun(cron.dbExport);
