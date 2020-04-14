@@ -134,34 +134,3 @@ exports.regenerateRecipeListCache = functions.region('europe-west1').https.onReq
     res.status(200);
     res.send();
 });
-
-exports.unfuckTags = functions.region('europe-west1').https.onRequest(async (req, res) => {
-    const db = admin.firestore();
-    const tagsSnapshot = await db.collection('tags').get();
-    const recipeListSnapshot = await db.collection('cache').doc('recipeList').get();
-    const recipeList = recipeListSnapshot.data();
-
-    const oldTagIdToNewIdMap = {};
-    tagsSnapshot.forEach(doc => {
-        oldTagIdToNewIdMap[doc.data().id] = doc.id
-    });
-
-    const batch = db.batch();
-    for(const id in recipeList) {
-        if (!recipeList.hasOwnProperty(id)) {
-            continue;
-        }
-        const recipe = recipeList[id];
-        const tags = recipe.tags;
-        if (!tags.length) {
-            continue;
-        }
-        const newTags = tags.map(id => oldTagIdToNewIdMap[id]);
-        batch.update(db.collection('recipes').doc(id), {tags: newTags});
-    }
-
-    await batch.commit();
-
-    res.status(200);
-    res.send();
-});
