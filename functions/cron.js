@@ -1,24 +1,46 @@
+const functions = require('firebase-functions');
 const firestore = require('@google-cloud/firestore');
-const client = new firestore.v1.FirestoreAdminClient();
-const admin = require('firebase-admin');
+const {Storage} = require('@google-cloud/storage');
+const firestoreClient = new firestore.v1.FirestoreAdminClient();
+const storageClient = new Storage();
 
-// Replace BUCKET_NAME
-const bucket = 'gs://cookmate-a0444.appspot.com';
+exports.dbExport = async (context) => {
+    const bucket = functions.config().firestoreexports.bucket;
+    const exportFolder = functions.config().firestoreexports.folder;
+    const exportDirectory = bucket + '/' + exportFolder;
 
-exports.dbExport = (context) => {
 
     const projectId = process.env.GCP_PROJECT || process.env.GCLOUD_PROJECT;
-    const databaseName = client.databasePath(projectId, '(default)');
+    const databaseName = firestoreClient.databasePath(projectId, '(default)');
 
-    return client.exportDocuments({
+    const date = new Date();
+    const newExportPath = exportDirectory + '/' + date.toISOString();
+
+    const [files] = await storageClient.bucket(bucket).getFiles({prefix: 'exports'});
+    const exports = files.filter(file => file.name.includes('.overall_export_metadata'));
+    const exportsToDelete = exports.filter(file => {
+        const exportDateString = file.name.substring(8, 18);
+        const exportTimestamp = Date.parse(exportDateString);
+        return exportTimestamp + 1000 * 60 * 60 * 24 * 30 < (new Date()).getTime();
+    });
+
+
+    exportsToDelete.forEach(file => {
+        const exportDateString = file.name.substring(8, 18);
+        console.log('deleting files beginning with: ', exportDateString);
+        storageClient.bucket(bucket).deleteFiles({'prefix': `exports/${exportDateString}`});
+    });
+
+
+    return firestoreClient.exportDocuments({
         name: databaseName,
-        outputUriPrefix: bucket,
+        outputUriPrefix: newExportPath,
         collectionIds: []
     })
         .then(responses => {
             const response = responses[0];
             console.log(`Operation Name: ${response['name']}`);
-            return response;
+            return response['name'];
         })
         .catch(err => {
             console.error(err);

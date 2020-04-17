@@ -137,4 +137,7 @@ exports.regenerateRecipeListCache = functions.region('europe-west1').https.onReq
     res.send();
 });
 
-exports.scheduledFirestoreExport = functions.region('europe-west1').pubsub.schedule('every 24 hours').onRun(cron.dbExport);
+exports.scheduledFirestoreExport = functions.region('europe-west1').
+    pubsub.schedule('0 3 * * *')
+    .timeZone('Europe/London')
+    .onRun(cron.dbExport);
