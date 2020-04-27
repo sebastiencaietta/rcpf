@@ -31,7 +31,6 @@ export const getRecipes = async () => {
 export const getRecipeList = async () => {
     const snapshot = await firebase.firestore().collection('cache').doc('recipeList').get();
     const cachedRecipeList = snapshot.data();
-    console.log(JSON.stringify(cachedRecipeList).length, 'bytes');
     return sortRecipeListAlphabetically(cachedRecipeList);
 };
 

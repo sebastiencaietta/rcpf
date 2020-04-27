@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
@@ -32,9 +32,22 @@ const useStyles = makeStyles(theme => ({
 
 export default function filters({checked, tags, onToggle, search, onSearch, categories, selectedCategory, toggleCategory}) {
     const classes = useStyles();
+    const [categoryExpanded, setCategoryExpanded] = useState(false);
+    const [tagsExpanded, setTagsExpanded] = useState(false);
 
-    const handleCategoryChange = (a, b, c) => {
-        toggleCategory(a.target.value);
+    useEffect(() => setCategoryExpanded(!!selectedCategory), [selectedCategory]);
+    useEffect(() => setTagsExpanded(!!checked.length), [checked]);
+
+    const handleCategoryChange = (e) => {
+        toggleCategory(e.target.value);
+    };
+
+    const handleExpandCategory = () => {
+        setCategoryExpanded(!categoryExpanded);
+    };
+
+    const handleExpandTags = () => {
+        setTagsExpanded(!tagsExpanded);
     };
 
     return <React.Fragment>
@@ -52,8 +65,10 @@ export default function filters({checked, tags, onToggle, search, onSearch, cate
             />
         </FormControl>
         <div>
-            <ExpansionPanel>
-                <ExpansionPanelSummary expandIcon={<ExpandMore/>} aria-label="Expand">Categories</ExpansionPanelSummary>
+            <ExpansionPanel expanded={categoryExpanded}>
+                <ExpansionPanelSummary expandIcon={<ExpandMore/>} aria-label="Expand" onClick={handleExpandCategory}>
+                    Categories
+                </ExpansionPanelSummary>
                 <ExpansionPanelDetails>
                     <List dense className={classes.tagList}>
                         <RadioGroup aria-label="category" name="category" value={selectedCategory}
@@ -71,8 +86,10 @@ export default function filters({checked, tags, onToggle, search, onSearch, cate
                     </List>
                 </ExpansionPanelDetails>
             </ExpansionPanel>
-            <ExpansionPanel>
-                <ExpansionPanelSummary expandIcon={<ExpandMore/>} aria-label="Expand">Tags</ExpansionPanelSummary>
+            <ExpansionPanel expanded={tagsExpanded}>
+                <ExpansionPanelSummary expandIcon={<ExpandMore/>} aria-label="Expand" onClick={handleExpandTags}>
+                    Tags
+                </ExpansionPanelSummary>
                 <ExpansionPanelDetails>
                     <List dense className={classes.tagList}>
                         {tags.map(tag => {

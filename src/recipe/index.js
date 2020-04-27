@@ -16,7 +16,7 @@ const Component = (props) => {
         fetchRecipe(props.match.params.slug).catch(error => console.error(error));
     }, []);
 
-    return <Layout showHero={recipe.hero}>
+    return <Layout>
         {recipe.title ? <RecipePage recipe={recipe}/> : <CircularProgress />}
     </Layout>;
 };

@@ -24,6 +24,10 @@ const useStyles = makeStyles(theme => ({
             background: 'linear-gradient(90deg, rgba(0,0,0,0.2987570028011205) 0%, rgba(0,0,0,0.5) 27%, rgba(0,0,0,0.5) 73%, rgba(0,0,0,0.3) 100%);',
             zIndex: 1,
         },
+        [theme.breakpoints.up('lg')]: {
+            height: '40vh',
+            backgroundPosition: 'center 69%',
+        }
     }),
     title: {
         zIndex: 2,
