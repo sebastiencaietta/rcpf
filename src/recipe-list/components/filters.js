@@ -35,8 +35,8 @@ export default function filters({checked, tags, onToggle, search, onSearch, cate
     const [categoryExpanded, setCategoryExpanded] = useState(false);
     const [tagsExpanded, setTagsExpanded] = useState(false);
 
-    useEffect(() => setCategoryExpanded(!!selectedCategory), [selectedCategory]);
-    useEffect(() => setTagsExpanded(!!checked.length), [checked]);
+    useEffect(() => setCategoryExpanded(!!selectedCategory || categoryExpanded), [selectedCategory]);
+    useEffect(() => setTagsExpanded(!!checked.length || tagsExpanded), [checked]);
 
     const handleCategoryChange = (e) => {
         toggleCategory(e.target.value);
