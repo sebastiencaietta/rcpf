@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import AddRecipeForm from './containers/add-recipe-form';
+import RecipeForm from './containers/recipe-form';
 import {getRecipeBySlug, addRecipe, uploadRecipeThumbnail, updateRecipe} from "../../../repositories/recipes";
 import SignUpPage from '../../../global/components/sign-in-page';
 import Layout from "../../../layout";
@@ -27,7 +27,7 @@ const Component = (props) => {
 
     return <Layout>
         <SignUpPage>
-            <AddRecipeForm
+            <RecipeForm
                 handleSubmit={saveRecipe}
                 recipe={recipe}
                 handleUploadRecipeThumbnail={uploadRecipeThumbnail}/>

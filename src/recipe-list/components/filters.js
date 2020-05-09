@@ -11,8 +11,8 @@ import {Search, ExpandMore} from "@material-ui/icons";
 import {makeStyles} from "@material-ui/core";
 import ExpansionPanel from "@material-ui/core/ExpansionPanel";
 import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
 import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Radio from "@material-ui/core/Radio";
 import RadioGroup from "@material-ui/core/RadioGroup";
 

@@ -30,17 +30,19 @@ const useStyles = makeStyles(theme => ({
 
 const decorator = new CompositeDecorator([linkDecorator,]);
 
-export default function DescriptionEditor({rawValue, onChange, rawValueUpdated}) {
+export default function DescriptionEditor({onChange, rawValueUpdated}) {
     const classes = useStyles();
 
     const [editorState, setEditorState] = useState(
-        EditorState.createWithContent(convertFromRaw(rawValue), decorator)
+        EditorState.createWithContent((EditorState.createEmpty().getCurrentContent()), decorator)
     );
 
     useEffect(() => {
-        const newContent = convertFromRaw(rawValue);
-        const newState = EditorState.push(editorState, newContent, 'insert-characters');
-        setEditorState(newState);
+        if (rawValueUpdated !== undefined) {
+            const newContent = convertFromRaw(rawValueUpdated);
+            const newState = EditorState.push(editorState, newContent, 'insert-characters');
+            setEditorState(newState);
+        }
     }, [rawValueUpdated]);
 
     function handleOnChange(event) {

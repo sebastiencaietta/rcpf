@@ -2,7 +2,7 @@ import React from 'react';
 import {Route} from 'react-router-dom';
 import RecipeList from "./recipe-list";
 import Recipe from './recipe';
-import AddRecipe from './admin/recipes/new-recipe';
+import AddRecipe from './admin/recipes/recipe-form';
 import RecipesAdmin from './admin/recipes';
 import IngredientsAdmin from "./admin/ingredients";
 import TagsAdmin from "./admin/tags";
