@@ -3,6 +3,7 @@ import RecipeForm from './containers/recipe-form';
 import {getRecipeBySlug, addRecipe, uploadRecipeThumbnail, updateRecipe} from "../../../repositories/recipes";
 import SignUpPage from '../../../global/components/sign-in-page';
 import Layout from "../../../layout";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 const saveRecipe = async (recipe) => {
     if (recipe.id === undefined) {
@@ -14,6 +15,7 @@ const saveRecipe = async (recipe) => {
 
 const Component = (props) => {
     const [recipe, setRecipe] = useState({});
+    const [loading, setLoading] = useState(props.match.params.slug !== undefined);
 
     if (props.match.params.slug) {
         useEffect(() => {
@@ -21,8 +23,16 @@ const Component = (props) => {
                 const result = await getRecipeBySlug(slug);
                 setRecipe(result);
             }
-            fetchRecipe(props.match.params.slug);
+            fetchRecipe(props.match.params.slug).then(() => setLoading(false));
         }, []);
+    }
+
+    if (loading) {
+        return <Layout>
+            <div style={{display: 'flex', height: '90vh', alignItems: 'center', justifyContent: 'center'}}>
+                <CircularProgress />
+            </div>
+        </Layout>;
     }
 
     return <Layout>

@@ -1,4 +1,8 @@
 export const UNITS = {
+    UNIT_NO_UNIT: {
+        unit: ' ',
+        isScientific: true,
+    },
     UNIT_GRAM: {
         unit: 'g',
         isScientific: true,
@@ -10,17 +14,14 @@ export const UNITS = {
     UNIT_LITER: {
         unit: 'L',
         isScientific: true,
-        plural: '',
     },
     UNIT_CENTILITER: {
         unit: 'cL',
         isScientific: true,
-        plural: '',
     },
     UNIT_MILLILITER: {
         unit: 'mL',
         isScientific: true,
-        plural: '',
     },
     UNIT_CLOVER: {
         unit: 'gousse',
@@ -64,7 +65,7 @@ export const UNITS = {
     },
     UNIT_POUND: {
         unit: 'lb',
-        isScientific: true,
+        isScientific: false,
         plural: 'lbs',
     },
     UNIT_TIN: {

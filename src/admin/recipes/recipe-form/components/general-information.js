@@ -9,7 +9,7 @@ import TagSelect from "./tag-select";
 import {fetchCategories, fetchTags} from "../../../../global/eve";
 import InputAdornment from "@material-ui/core/InputAdornment";
 
-const GeneralInformation = ({onFieldChange, savedRecipe}) => {
+const GeneralInformation = ({onFieldChange, savedRecipe, onTitleChange}) => {
     const [data, setData] = useState({
         title: '',
         slug: '',
@@ -28,38 +28,34 @@ const GeneralInformation = ({onFieldChange, savedRecipe}) => {
         Promise.all([fetchTags(), fetchCategories()]).then(([tags, categories]) => {
             setTags(tags);
             setCategories(categories);
-        });
-    }, []);
 
-    useEffect(() => {
-        if (!savedRecipe.title) {
-            return;
-        }
+            if (!savedRecipe.title) {
+                return;
+            }
 
-        setData({
-            ...data,
-            title: savedRecipe.title,
-            slug: savedRecipe.slug,
-            tags: savedRecipe.tags,
-            category: savedRecipe.category,
-            portionSize: savedRecipe.portionSize || '',
-            portionType: savedRecipe.portionType || '',
-            prepTime: savedRecipe.prepTime || '',
-            cookingTime: savedRecipe.cookingTime || '',
-            source: savedRecipe.source || '',
+            setData({
+                ...data,
+                title: savedRecipe.title,
+                slug: savedRecipe.slug,
+                tags: savedRecipe.tags,
+                category: savedRecipe.category,
+                portionSize: savedRecipe.portionSize || '',
+                portionType: savedRecipe.portionType || '',
+                prepTime: savedRecipe.prepTime || '',
+                cookingTime: savedRecipe.cookingTime || '',
+                source: savedRecipe.source || '',
+            });
         });
-    }, [savedRecipe])
+    }, [savedRecipe]);
 
     function handleTitleChange(event) {
         const title = event.target.value;
         const slug = slugify(title).toLowerCase();
         setData({...data, title, slug});
-        onFieldChange('title', title);
-        onFieldChange('slug', slug);
+        onTitleChange(title);
     }
 
     function handleFieldChange(field, value) {
-        console.log(field, value);
         setData({...data, [field]: value});
         onFieldChange(field, value);
     }

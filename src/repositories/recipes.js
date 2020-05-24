@@ -69,7 +69,8 @@ export const uploadRecipeThumbnail = async (path, thumbnail) => {
         contentType: 'image/jpeg'
     };
 
-    const storageRef = firebase.storage().ref(`images/recipes/${path}/thumbnail`);
+    const dateString = new Date().toISOString().substring(0, 10).replace(/-/g, '');
+    const storageRef = firebase.storage().ref(`images/recipes/${path}/thumbnail_${dateString}`);
     await storageRef.put(thumbnail, metadata);
 
     return await storageRef.getDownloadURL();

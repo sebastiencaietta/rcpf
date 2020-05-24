@@ -11,9 +11,8 @@ import InlineStyleControls from "./editor/inline-style-controls";
 
 const useStyles = makeStyles(theme => ({
     editor: {
-        margin: theme.spacing(2),
         marginBottom: 0,
-        padding: theme.spacing(2),
+        padding: theme.spacing(4),
         backgroundColor: theme.palette.background.paper,
         borderRadius: theme.shape.borderRadius,
         cursor: "text"
@@ -30,20 +29,21 @@ const useStyles = makeStyles(theme => ({
 
 const decorator = new CompositeDecorator([linkDecorator,]);
 
-export default function DescriptionEditor({onChange, rawValueUpdated}) {
+export default function DescriptionEditor({onChange, savedDescription}) {
     const classes = useStyles();
+    const editorRef = React.createRef();
 
     const [editorState, setEditorState] = useState(
         EditorState.createWithContent((EditorState.createEmpty().getCurrentContent()), decorator)
     );
 
     useEffect(() => {
-        if (rawValueUpdated !== undefined) {
-            const newContent = convertFromRaw(rawValueUpdated);
+        if (savedDescription !== undefined) {
+            const newContent = convertFromRaw(savedDescription);
             const newState = EditorState.push(editorState, newContent, 'insert-characters');
             setEditorState(newState);
         }
-    }, [rawValueUpdated]);
+    }, [savedDescription]);
 
     function handleOnChange(event) {
         setEditorState(event);
@@ -91,10 +91,11 @@ export default function DescriptionEditor({onChange, rawValueUpdated}) {
                     <LinkIcon />
                 </IconButton>
             </Toolbar>
-            <div className={classes.editor}>
+            <div className={classes.editor} onClick={() => editorRef.current.focus()}>
                 <Editor editorState={editorState}
                         onChange={handleOnChange}
-                        className={classes.editor}/>
+                        className={classes.editor}
+                        ref={editorRef}/>
             </div>
         </Paper>
     </React.Fragment>
