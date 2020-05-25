@@ -9,11 +9,8 @@ const useStyles = makeStyles((theme) => ({
         display: 'flex',
         alignItems: 'center',
     },
-    ingredientAvatar: {
-        width: theme.spacing(4),
-        height: theme.spacing(4),
-        marginRight: theme.spacing(2),
-    },
+    ingredientAvatar: {width: theme.spacing(5), height: theme.spacing(5), marginRight: theme.spacing(2)},
+    ingredientText: {fontSize: '1.15em'},
 }));
 
 const getQuantityWithUnit = (unitConstant, quantity) => {
@@ -24,14 +21,15 @@ const getQuantityWithUnit = (unitConstant, quantity) => {
 
     return `${quantity} ${quantity > 1 ? unitOptions.plural : unitOptions.unit}`;
 }
-
 const IngredientRenderer = ({recipeIngredient, ingredientSettings}) => {
     const {quantity, unit, comment} = recipeIngredient;
     const classes = useStyles();
 
     return <div className={classes.ingredientWrapper}>
         <Avatar alt={ingredientSettings.name} src={ingredientSettings.thumbnail} className={classes.ingredientAvatar}/>
-        <span>{`${getQuantityWithUnit(unit, quantity)} ${ingredientSettings.name}${comment}`}</span>
+        <span className={classes.ingredientText}>
+            {`${getQuantityWithUnit(unit, quantity)} ${ingredientSettings.name}${comment}`}
+        </span>
     </div>
 };
 

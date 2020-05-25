@@ -6,7 +6,9 @@ import {makeStyles} from "@material-ui/core/styles";
 import {UNITS} from "../../../../../global/constants/units";
 import Avatar from "@material-ui/core/Avatar";
 import IconButton from "@material-ui/core/IconButton";
-import DeleteIcon from "@material-ui/icons/Delete"
+import CheckIcon from '@material-ui/icons/CheckCircle';
+import CancelIcon from "@material-ui/icons/Clear"
+import ClickAwayListener from "@material-ui/core/ClickAwayListener";
 
 const useStyles = makeStyles((theme) => ({
     ingredientOption: {display: 'flex', alignItems: 'center'},
@@ -19,7 +21,7 @@ const unitOptions = Object.keys(UNITS).map((unitConstant) => {
     return {label: UNITS[unitConstant].unit, value: unitConstant}
 });
 
-const IngredientFormInputs = ({onQuantityChange, onIngredientChange, onUnitChange, onCommentChange, onCancelSubIngredient, ingredientOptions, predefinedValues, isSub}) => {
+const IngredientFormInputs = ({ingredientOptions, onSubmit, onCancel, savedIngredient}) => {
     const [inputs, setInputs] = useState({
         ingredient: null,
         ingredientInputValue: '',
@@ -28,29 +30,33 @@ const IngredientFormInputs = ({onQuantityChange, onIngredientChange, onUnitChang
         unitInputValue: '',
         comment: '',
     });
+    const [isCanceling, setIsCanceling] = useState(false);
     const classes = useStyles();
+
     useEffect(() => {
-        if (predefinedValues !== undefined) {
-            setInputs({
-                ...inputs,
-                ...predefinedValues,
-                ingredient: predefinedValues.ingredient === null ? null : '', //search for ingredient in options
-                ingredientInputValue: predefinedValues.ingredient === null ? '' : '',
-                unitInputValue: predefinedValues.unit === null ? '' : '',
-                unit: predefinedValues.unit === null ? null : '', //search for unit in options
-                comment: predefinedValues.comment,
-            });
+        if (savedIngredient === undefined) {
+            return;
         }
-    }, [predefinedValues]);
+
+        const ingredientOption = ingredientOptions.find(ingredient => ingredient.value === savedIngredient.ingredientId);
+        const unitOption = unitOptions.find(unit => unit.value === savedIngredient.unit);
+
+        setInputs({
+            ingredient: ingredientOption,
+            ingredientInputValue: ingredientOption.label,
+            quantity: savedIngredient.quantity,
+            unit: unitOption,
+            unitInputValue: unitOption.label,
+            comment: savedIngredient.comment,
+        });
+    }, [savedIngredient]);
 
     function handleQuantityChange(e) {
         setInputs({...inputs, quantity: e.target.value});
-        onQuantityChange(e.target.value);
-    };
+    }
 
     function handleCommentChange(e) {
         setInputs({...inputs, comment: e.target.value});
-        onCommentChange(e.target.value);
     }
 
     function handleIngredientInputChange(e) {
@@ -60,7 +66,6 @@ const IngredientFormInputs = ({onQuantityChange, onIngredientChange, onUnitChang
     function handleIngredientSelect(e, option) {
         const ingredient = option || null;
         setInputs({...inputs, ingredient: ingredient, ingredientInputValue: option ? option.label : ''});
-        onIngredientChange(ingredient.value);
     }
 
     function handleUnitInputChange(e) {
@@ -68,9 +73,45 @@ const IngredientFormInputs = ({onQuantityChange, onIngredientChange, onUnitChang
     }
 
     function handleUnitSelect(e, option) {
-        const unit = option || null
+        const unit = option || null;
         setInputs({...inputs, unit, unitInputValue: option ? option.label : ''});
-        onUnitChange(unit.value);
+    }
+
+    function handleUnitKeyDown(e) {
+        if (e.keyCode === 13 && inputs.unit && inputs.unitInputValue === inputs.unit.label) {
+            e.preventDefault();
+            handleSubmit();
+        }
+    }
+
+    function handleIngredientKeyDown(e) {
+        if (e.keyCode === 13 && inputs.ingredient && inputs.ingredientInputValue === inputs.ingredient.label) {
+            e.preventDefault();
+            handleSubmit();
+        }
+    }
+
+    function handleKeyDown(e) {
+        if (e.keyCode === 13) {
+            e.preventDefault();
+            handleSubmit();
+        }
+    }
+
+    function isValid() {
+        return inputs.unit && inputs.ingredient;
+    }
+
+    function handleSubmit() {
+        if (!isValid()) {
+            return false;
+        }
+        onSubmit({
+            ingredientId: inputs.ingredient.value,
+            quantity: inputs.quantity ? parseInt(inputs.quantity) : '',
+            unit: inputs.unit.value,
+            comment: inputs.comment,
+        });
     }
 
     const renderIngredientOption = (option) => (
@@ -83,41 +124,56 @@ const IngredientFormInputs = ({onQuantityChange, onIngredientChange, onUnitChang
     );
 
     return <Grid container alignItems="flex-end" className={classes.inputContainer}>
-        {isSub ? <Grid item sm={1}>OR</Grid> : ''}
-        <Grid item sm={isSub ? 1 : 2} xs={3}>
-            <TextField type="number" label="Quantity" fullWidth
+        <Grid item xs={2}>
+            <TextField type="number" label="Quantity" fullWidth margin="dense" size="small"
                        value={inputs.quantity}
-                       onChange={handleQuantityChange}/>
+                       onChange={handleQuantityChange}
+                       onKeyDown={handleKeyDown}
+                       tabIndex={1}/>
         </Grid>
-        <Grid item sm={2} xs={3}>
+        <Grid item xs={2}>
             <Autocomplete options={unitOptions} getOptionLabel={(option) => option.label || ''}
-                          renderInput={(params) => <TextField fullWidth
+                          renderInput={(params) => <TextField fullWidth label="Unit" margin="dense"{...params}
+                                                              size="small"
                                                               onChange={handleUnitInputChange}
-                                                              {...params}
-                                                              label="Unit"/>}
+                                                              onKeyDown={handleUnitKeyDown}/>}
                           renderOption={(option) => option.label}
+                          clearOnEscape={true}
                           onChange={handleUnitSelect}
                           value={inputs.unit}
                           inputValue={inputs.unitInputValue}
+                          tabIndex={2}
             />
         </Grid>
-        <Grid item sm={isSub ? 4 : 5} xs={6}>
+        <Grid item xs={3}>
             <Autocomplete options={ingredientOptions} getOptionLabel={(option) => option.label || ''}
-                          renderInput={(params) => <TextField fullWidth
-                                                              onChange={handleIngredientInputChange} {...params}
-                                                              label="Ingredient"/>}
+                          renderInput={(params) => <TextField fullWidth margin="dense" label="Ingredient" {...params}
+                                                              size="small"
+                                                              onChange={handleIngredientInputChange}
+                                                              onKeyDown={handleIngredientKeyDown}/>}
                           renderOption={renderIngredientOption}
+                          clearOnEscape={true}
                           onChange={handleIngredientSelect}
                           value={inputs.ingredient}
                           inputValue={inputs.ingredientInputValue}
+                          tabIndex={3}
             />
         </Grid>
-        <Grid item sm={3} xs={8}>
-            <TextField type="text" label="Comment" fullWidth value={inputs.comment} onChange={handleCommentChange}/>
+        <Grid item xs={3}>
+            <TextField type="text" label="Comment" margin="dense" fullWidth size="small"
+                       value={inputs.comment}
+                       onChange={handleCommentChange}
+                       onKeyDown={handleKeyDown}
+                       tabIndex={4}/>
         </Grid>
-        {isSub ? <Grid item sm={1} style={{textAlign: "center"}}>
-            <IconButton size="small" onClick={onCancelSubIngredient}><DeleteIcon /></IconButton>
-        </Grid> : ''}
+        <Grid item sm={2} style={{textAlign: "center"}}>
+            <IconButton size="small" onClick={handleSubmit} disabled={!isValid()}><CheckIcon/></IconButton>
+            <ClickAwayListener onClickAway={() => setIsCanceling(false)}>
+                <IconButton size="small" onClick={() => isCanceling ? onCancel() : setIsCanceling(true)}>
+                    <CancelIcon color={isCanceling ? "error" : "inherit"}/>
+                </IconButton>
+            </ClickAwayListener>
+        </Grid>
     </Grid>;
 };
 

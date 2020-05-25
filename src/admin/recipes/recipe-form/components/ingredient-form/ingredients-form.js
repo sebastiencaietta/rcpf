@@ -1,13 +1,15 @@
-import React, {useEffect, useMemo, useState} from 'react';
-import Grid from "@material-ui/core/Grid";
+import React, {useEffect, useState} from 'react';
 import {getIngredients} from "../../../../../repositories/ingredients";
-import IngredientList from "./ingredient-list";
-import AddIngredientForm from "./add-ingredient-form";
+import SectionForm from "./section-form";
+import AddIcon from "@material-ui/icons/Add";
+import Button from "@material-ui/core/Button";
 
 const IngredientsForm = ({savedRecipe, onIngredientsChange}) => {
-    const [ingredients, setIngredients] = useState([]);
+    const [data, setData] = useState({sections: [{title: '', ingredients: []}]});
     const [ingredientOptions, setIngredientOptions] = useState([]);
     const [ingredientsById, setIngredientsById] = useState({});
+    const [ingredientsPromise, setIngredientsPromise] = useState(new Promise(() => {
+    }));
 
     useEffect(() => {
         const initIngredients = async () => {
@@ -18,44 +20,71 @@ const IngredientsForm = ({savedRecipe, onIngredientsChange}) => {
                 image: ingredient.thumbnail,
             })));
             const tmp = {};
-            savedIngredients.forEach(ingredient => tmp[ingredient.id] = ingredient)
+            savedIngredients.forEach(ingredient => tmp[ingredient.id] = {
+                name: ingredient.name,
+                thumbnail: ingredient.thumbnail
+            });
             setIngredientsById({...tmp});
         }
 
-        const initSavedRecipeIngredients = () => {
-            if (savedRecipe.ingredients !== undefined && savedRecipe.ingredients.length > 0) {
-                setIngredients(savedRecipe.ingredients);
-            }
-        };
+        const promise = initIngredients();
+        setIngredientsPromise(promise);
+        promise.then(() => setIngredientsPromise(promise));
+    }, []);
 
-        if (Object.keys(ingredientsById).length > 0) {
-            initSavedRecipeIngredients();
-        } else {
-            initIngredients().then(initSavedRecipeIngredients);
+    useEffect(() => {
+        if (savedRecipe === undefined) {
+            return;
         }
-    }, [savedRecipe]);
 
-    function handleAddIngredient(newIngredient) {
-        const newIngredients = [...ingredients, newIngredient];
-        setIngredients(newIngredients);
-        onIngredientsChange(newIngredients)
+        if (savedRecipe.ingredients !== undefined) {
+            ingredientsPromise.then(() => {
+                setData({...savedRecipe.ingredients});
+            });
+        }
+    }, [savedRecipe, ingredientsPromise])
+
+    function handleSectionChange(index, section) {
+        data.sections[index] = section;
+        setData({...data});
+        onIngredientsChange({...data});
     }
 
-    function handleIngredientsChange(newIngredients) {
-        setIngredients(newIngredients);
-        onIngredientsChange(newIngredients);
+    function handleAddSection() {
+        setData({
+            ...data,
+            sections: [...data.sections, {title: '', ingredients: []}],
+        });
     }
 
-    return <Grid container item xs={12}>
-        <AddIngredientForm onAddIngredient={handleAddIngredient} ingredientOptions={ingredientOptions}/>
+    function handleSectionDelete(index) {
+        const dataWithDeletedSection = {
+            ...data,
+            sections: [
+                ...data.sections.slice(0, index),
+                ...data.sections.slice(index+1, data.sections.length),
+            ],
+        };
+        setData(dataWithDeletedSection);
+        onIngredientsChange(dataWithDeletedSection);
+    }
 
-        {useMemo(
-            () => <IngredientList ingredients={ingredients}
-                                  ingredientsById={ingredientsById}
-                                  onIngredientsChange={handleIngredientsChange}/>,
-            [ingredients]
-        )}
-    </Grid>;
+    return <div>
+        {
+            data.sections.map((section, index) => <SectionForm key={index}
+                                                               section={section}
+                                                               onSectionChange={(section) => handleSectionChange(index, section)}
+                                                               ingredientOptions={ingredientOptions}
+                                                               ingredientsById={ingredientsById}
+                                                               defaultSection={index === 0}
+                                                               onCancel={() => handleSectionDelete(index)}/>)
+        }
+
+        <Button variant={"contained"} size="small" startIcon={<AddIcon/>}
+                onClick={handleAddSection}>
+            Section
+        </Button>
+    </div>;
 }
 
 export default IngredientsForm;
