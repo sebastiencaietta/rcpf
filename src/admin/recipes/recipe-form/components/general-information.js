@@ -90,7 +90,7 @@ const GeneralInformation = ({onFieldChange, savedRecipe, onTitleChange}) => {
 
         <Grid item xs={12} sm={6}>
             <TagSelect tags={tags} recipeTags={data.tags}
-                       onTagSelect={(e) => handleFieldChange('tags', e.target.value)}/>
+                       onTagSelect={(tags) => handleFieldChange('tags', tags)}/>
         </Grid>
 
         <Grid item xs={4} sm={2}>

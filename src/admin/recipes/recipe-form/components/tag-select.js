@@ -1,48 +1,58 @@
-import React from "react";
-import InputLabel from "@material-ui/core/InputLabel";
-import Select from "@material-ui/core/Select";
-import Input from "@material-ui/core/Input";
-import MenuItem from "@material-ui/core/MenuItem";
-import ListItemText from "@material-ui/core/ListItemText";
+import React, {useEffect, useState} from "react";
+import TextField from "@material-ui/core/TextField";
+import Autocomplete from "@material-ui/lab/Autocomplete";
 
-const ITEM_HEIGHT = 48;
-const ITEM_PADDING_TOP = 8;
-const MenuProps = {
-    PaperProps: {
-        style: {
-            maxHeight: ITEM_HEIGHT * 5.5 + ITEM_PADDING_TOP,
-            width: 250,
-        },
-    },
+const recreateOptionsFromRecipe = (recipeTags, tags) => {
+  return recipeTags.map(recipeTag => tags.find(tag => recipeTag === tag.id));
 };
 
 export default ({recipeTags, tags, onTagSelect}) => {
+    const [selectedTags, setSelectedTags] = useState([]);
 
-    const getRenderValue = (selected) => {
-        const commaSeparatedTags = selected.map(id => {
-            const tag = tags.find((tag) => tag.id === id);
-            return tag ? tag.title : '';
-        }).join(', ');
+    useEffect(() => {
+        if (recipeTags.length === 0) {
+            return;
+        }
 
-        return commaSeparatedTags.length > 30 ? commaSeparatedTags.substr(0, 30) + '...' : commaSeparatedTags;
-    };
+        setSelectedTags(recreateOptionsFromRecipe(recipeTags, tags));
+    }, [recipeTags]);
+
+    function handleTagChange(e, selectedTags) {
+        setSelectedTags(selectedTags);
+        onTagSelect(selectedTags.map(tag => tag.id))
+    }
 
     return (<>
-            <InputLabel htmlFor="tags">Tags</InputLabel>
-            <Select
-                fullWidth
-                multiple
-                value={recipeTags}
-                onChange={onTagSelect}
-                input={<Input id="tags"/>}
-                renderValue={getRenderValue}
-                MenuProps={MenuProps}
-            >
-                {tags.map(tag => (
-                    <MenuItem key={tag.id} value={tag.id}>
-                        <ListItemText primary={tag.title}/>
-                    </MenuItem>
-                ))}
-            </Select>
+            {/*<InputLabel htmlFor="tags">Tags</InputLabel>*/}
+
+
+            <Autocomplete options={tags}
+                          getOptionLabel={(option) => option.title}
+                          multiple
+                          size="small"
+                          limitTags={6}
+                          renderInput={(params) => <TextField fullWidth label="Tags" {...params}/>}
+                          renderOption={(option) => option.title}
+                          disableCloseOnSelect={true}
+                          onChange={handleTagChange}
+                          value={selectedTags}
+                          // value={inputs.unit}
+                          // inputValue={inputs.unitInputValue}
+            />
+            {/*<Select*/}
+            {/*    fullWidth*/}
+            {/*    multiple*/}
+            {/*    value={recipeTags}*/}
+            {/*    onChange={onTagSelect}*/}
+            {/*    input={<Input id="tags"/>}*/}
+            {/*    renderValue={getRenderValue}*/}
+            {/*    MenuProps={MenuProps}*/}
+            {/*>*/}
+            {/*    {tags.map(tag => (*/}
+            {/*        <MenuItem key={tag.id} value={tag.id}>*/}
+            {/*            <ListItemText primary={tag.title}/>*/}
+            {/*        </MenuItem>*/}
+            {/*    ))}*/}
+            {/*</Select>*/}
         </>);
 }
