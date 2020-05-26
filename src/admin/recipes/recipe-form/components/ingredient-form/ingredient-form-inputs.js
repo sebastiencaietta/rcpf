@@ -78,14 +78,20 @@ const IngredientFormInputs = ({ingredientOptions, onSubmit, onCancel, savedIngre
     }
 
     function handleUnitKeyDown(e) {
-        if (e.keyCode === 13 && inputs.unit && inputs.unitInputValue === inputs.unit.label) {
+        if (e.keyCode === 13
+            && inputs.unit
+            && inputs.unitInputValue
+            && inputs.unitInputValue === inputs.unit.label) {
             e.preventDefault();
             handleSubmit();
         }
     }
 
     function handleIngredientKeyDown(e) {
-        if (e.keyCode === 13 && inputs.ingredient && inputs.ingredientInputValue === inputs.ingredient.label) {
+        if (e.keyCode === 13
+            && inputs.ingredient
+            && inputs.ingredientInputValue
+            && inputs.ingredientInputValue === inputs.ingredient.label) {
             e.preventDefault();
             handleSubmit();
         }
@@ -108,7 +114,7 @@ const IngredientFormInputs = ({ingredientOptions, onSubmit, onCancel, savedIngre
         }
         onSubmit({
             ingredientId: inputs.ingredient.value,
-            quantity: inputs.quantity ? parseInt(inputs.quantity) : '',
+            quantity: inputs.quantity,
             unit: inputs.unit.value,
             comment: inputs.comment,
         });
@@ -125,7 +131,7 @@ const IngredientFormInputs = ({ingredientOptions, onSubmit, onCancel, savedIngre
 
     return <Grid container alignItems="flex-end" className={classes.inputContainer}>
         <Grid item xs={2}>
-            <TextField type="number" label="Quantity" fullWidth margin="dense" size="small"
+            <TextField type="text" label="Quantity" fullWidth margin="dense" size="small"
                        value={inputs.quantity}
                        onChange={handleQuantityChange}
                        onKeyDown={handleKeyDown}

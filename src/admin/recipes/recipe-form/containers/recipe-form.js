@@ -55,6 +55,7 @@ export default (props) => {
             ...recipe,
             [fieldName]: fieldValue,
         });
+        console.log(fieldName, fieldValue);
     }
 
     async function handleSubmit(e) {
@@ -80,7 +81,7 @@ export default (props) => {
 
     return <form onSubmit={handleSubmit}>
 
-        <ExpansionPanel defaultExpanded={false}>
+        <ExpansionPanel defaultExpanded={true}>
             <ExpansionPanelSummary expandIcon={<ExpandMore/>} aria-label="Expand">General
                 Information</ExpansionPanelSummary>
             <ExpansionPanelDetails>
@@ -94,7 +95,7 @@ export default (props) => {
         </ExpansionPanel>
 
         <ExpansionPanel defaultExpanded={true}>
-            <ExpansionPanelSummary expandIcon={<ExpandMore/>} aria-label="Expand">Ingredients</ExpansionPanelSummary>
+            <ExpansionPanelSummary expandIcon={<ExpandMore/>} aria-label="Expand">Ingrédients</ExpansionPanelSummary>
             <ExpansionPanelDetails>
                 {
                     useMemo(() => <IngredientsForm
@@ -105,7 +106,7 @@ export default (props) => {
             </ExpansionPanelDetails>
         </ExpansionPanel>
 
-        <ExpansionPanel defaultExpanded={false}>
+        <ExpansionPanel defaultExpanded={true}>
             <ExpansionPanelSummary expandIcon={<ExpandMore/>} aria-label="Expand">Description</ExpansionPanelSummary>
             <ExpansionPanelDetails>
                 {
@@ -116,7 +117,7 @@ export default (props) => {
                 }
             </ExpansionPanelDetails>
         </ExpansionPanel>
-        <ExpansionPanel defaultExpanded={false}>
+        <ExpansionPanel defaultExpanded={true}>
             <ExpansionPanelSummary expandIcon={<ExpandMore/>} aria-label="Expand">
                 Images
             </ExpansionPanelSummary>

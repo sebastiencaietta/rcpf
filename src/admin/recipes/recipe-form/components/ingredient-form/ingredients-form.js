@@ -3,13 +3,19 @@ import {getIngredients} from "../../../../../repositories/ingredients";
 import SectionForm from "./section-form";
 import AddIcon from "@material-ui/icons/Add";
 import Button from "@material-ui/core/Button";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 const IngredientsForm = ({savedRecipe, onIngredientsChange}) => {
-    const [data, setData] = useState({sections: [{title: '', ingredients: []}]});
+    const [data, setData] = useState({
+        sections: [
+            {title: '', ingredients: []}
+        ],
+        ...savedRecipe ? savedRecipe.ingredients : undefined,
+    });
+
     const [ingredientOptions, setIngredientOptions] = useState([]);
     const [ingredientsById, setIngredientsById] = useState({});
-    const [ingredientsPromise, setIngredientsPromise] = useState(new Promise(() => {
-    }));
+    const [isLoading, setLoading] = useState(savedRecipe.ingredients !== undefined);
 
     useEffect(() => {
         const initIngredients = async () => {
@@ -27,22 +33,8 @@ const IngredientsForm = ({savedRecipe, onIngredientsChange}) => {
             setIngredientsById({...tmp});
         }
 
-        const promise = initIngredients();
-        setIngredientsPromise(promise);
-        promise.then(() => setIngredientsPromise(promise));
+        initIngredients().then(() => setLoading(false));
     }, []);
-
-    useEffect(() => {
-        if (savedRecipe === undefined) {
-            return;
-        }
-
-        if (savedRecipe.ingredients !== undefined) {
-            ingredientsPromise.then(() => {
-                setData({...savedRecipe.ingredients});
-            });
-        }
-    }, [savedRecipe, ingredientsPromise])
 
     function handleSectionChange(index, section) {
         data.sections[index] = section;
@@ -67,6 +59,12 @@ const IngredientsForm = ({savedRecipe, onIngredientsChange}) => {
         };
         setData(dataWithDeletedSection);
         onIngredientsChange(dataWithDeletedSection);
+    }
+
+    if (isLoading) {
+        return <div style={{display: 'flex', height: '90vh', alignItems: 'center', justifyContent: 'center'}}>
+            <CircularProgress />
+        </div>;
     }
 
     return <div>

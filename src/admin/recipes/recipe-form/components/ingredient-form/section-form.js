@@ -56,7 +56,6 @@ const SectionForm = ({onSectionChange, ingredientOptions, ingredientsById, defau
             const newSectionData = {...data, title: 'Ingrédients'};
             setData(newSectionData);
             setIsEditingTitle(false);
-            onSectionChange(newSectionData);
         }
 
         if (section.title !== '') {
