@@ -35,10 +35,23 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
+const intialRecipeState = {
+    title: '',
+    slug: '',
+    tags: [],
+    category: '',
+    portionSize: '',
+    portionType: '',
+    prepTime: '',
+    cookingTime: '',
+    source: '',
+    ingredients: [],
+};
+
 export default (props) => {
     const classes = useStyles();
     const history = useHistory();
-    const [recipe, setRecipe] = useState({...props.recipe});
+    const [recipe, setRecipe] = useState({...intialRecipeState, ...props.recipe});
     const [savedRecipe, setSavedRecipe] = useState({...props.recipe});
     const [successOpen, setSuccessOpen] = useState(false);
 
@@ -55,11 +68,12 @@ export default (props) => {
             ...recipe,
             [fieldName]: fieldValue,
         });
-        console.log(fieldName, fieldValue);
     }
 
     async function handleSubmit(e) {
         e.preventDefault();
+        console.log(recipe);
+        return;
 
         if (recipe.title === '') {
             return;

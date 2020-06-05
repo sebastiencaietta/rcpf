@@ -8,27 +8,14 @@ import {makeStyles} from "@material-ui/core";
 import clsx from "clsx";
 
 const useStyles = makeStyles(theme => ({
-    media: {
-        paddingTop: '75%',
-        position: "relative"
-    },
-    fileInput: {
-        visibility: 'hidden',
-    },
+    media: {paddingTop: '75%', position: "relative"},
+    fileInput: {visibility: 'hidden'},
     inputSpan: {
-        '&::before': {
-            position: 'absolute',
-            content: '" "',
-            top: 0,
-            bottom: 0,
-            left: 0,
-            right: 0,
-            cursor: 'pointer',
-        },
+        '&::before': {position: 'absolute', content: '" "', top: 0, bottom: 0, left: 0, right: 0, cursor: 'pointer'},
         '&:hover': {
-            '&::before': {background: 'rgba(0,0,0, 0.3)'},
+            '&::before': {background: 'rgba(0,0,0, 0.5)'},
             '&::after': {
-                content: '"Upload new image"',
+                content: '"UPLOAD NEW IMAGE"',
                 position: 'absolute',
                 width: '100%',
                 top: '50%',
@@ -41,9 +28,9 @@ const useStyles = makeStyles(theme => ({
     },
     disabledInputSpan: {
         '&:hover': {
-            '&::before': {background: 'rgba(0,0,0, 0.8)'},
+            '&::before': {background: 'rgba(0,0,0, 0.85)'},
             '&::after': {
-                content: '"Set the title for the recipe before uploading the thumbnail"',
+                content: '"Veuillez choisir le titre de la recette avant d\'ajouter une image"',
                 color: theme.palette.error.light,
             }
         }

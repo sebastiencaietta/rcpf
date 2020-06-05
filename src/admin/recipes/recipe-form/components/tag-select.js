@@ -23,9 +23,6 @@ export default ({recipeTags, tags, onTagSelect}) => {
     }
 
     return (<>
-            {/*<InputLabel htmlFor="tags">Tags</InputLabel>*/}
-
-
             <Autocomplete options={tags}
                           getOptionLabel={(option) => option.title}
                           multiple
@@ -36,23 +33,6 @@ export default ({recipeTags, tags, onTagSelect}) => {
                           disableCloseOnSelect={true}
                           onChange={handleTagChange}
                           value={selectedTags}
-                          // value={inputs.unit}
-                          // inputValue={inputs.unitInputValue}
             />
-            {/*<Select*/}
-            {/*    fullWidth*/}
-            {/*    multiple*/}
-            {/*    value={recipeTags}*/}
-            {/*    onChange={onTagSelect}*/}
-            {/*    input={<Input id="tags"/>}*/}
-            {/*    renderValue={getRenderValue}*/}
-            {/*    MenuProps={MenuProps}*/}
-            {/*>*/}
-            {/*    {tags.map(tag => (*/}
-            {/*        <MenuItem key={tag.id} value={tag.id}>*/}
-            {/*            <ListItemText primary={tag.title}/>*/}
-            {/*        </MenuItem>*/}
-            {/*    ))}*/}
-            {/*</Select>*/}
         </>);
 }

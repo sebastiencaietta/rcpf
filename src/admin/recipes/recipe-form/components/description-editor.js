@@ -1,5 +1,7 @@
 import React, {useEffect, useState} from "react";
-import {Editor, EditorState, convertToRaw, convertFromRaw, Modifier, CompositeDecorator, RichUtils} from "draft-js";
+import Editor from 'draft-js-plugins-editor';
+import {EditorState, convertToRaw, convertFromRaw, Modifier, CompositeDecorator, RichUtils} from "draft-js";
+import createBlockBreakoutPlugin from 'draft-js-block-breakout-plugin'
 import {makeStyles} from "@material-ui/core";
 import Paper from "@material-ui/core/Paper";
 import Toolbar from "@material-ui/core/Toolbar";
@@ -8,6 +10,7 @@ import IconButton from "@material-ui/core/IconButton";
 import LinkIcon from "@material-ui/icons/Link"
 import ListControls from "./editor/list-controls";
 import InlineStyleControls from "./editor/inline-style-controls";
+import ParagraphControls from "./editor/paragraph-controls";
 
 const useStyles = makeStyles(theme => ({
     editor: {
@@ -27,7 +30,9 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-const decorator = new CompositeDecorator([linkDecorator,]);
+const decorator = new CompositeDecorator([linkDecorator]);
+const blockBreakoutPlugin = createBlockBreakoutPlugin();
+const plugins = [blockBreakoutPlugin];
 
 export default function DescriptionEditor({onChange, savedDescription}) {
     const classes = useStyles();
@@ -85,6 +90,7 @@ export default function DescriptionEditor({onChange, savedDescription}) {
     return <React.Fragment>
         <Paper className={classes.paper}>
             <Toolbar className={classes.toolbar}>
+                <ParagraphControls editorState={editorState} onChange={handleBlockStyleChange}/>
                 <InlineStyleControls editorState={editorState} onChange={handleInlineStyleChange}/>
                 <ListControls editorState={editorState} onChange={handleBlockStyleChange}/>
                 <IconButton className={classes.button} aria-label="Delete" onClick={onLinkClick}>
@@ -95,6 +101,7 @@ export default function DescriptionEditor({onChange, savedDescription}) {
                 <Editor editorState={editorState}
                         onChange={handleOnChange}
                         className={classes.editor}
+                        plugins={plugins}
                         ref={editorRef}/>
             </div>
         </Paper>
