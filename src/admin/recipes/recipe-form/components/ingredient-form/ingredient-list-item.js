@@ -1,11 +1,12 @@
 import React, {useState} from 'react';
+import IngredientRenderer from "../../../../../global/components/ingredient-renderer";
+import ConfirmIconButton from "../../../../../global/components/confirm-icon-button";
 import IconButton from "@material-ui/core/IconButton";
 import MoveUpIcon from "@material-ui/icons/ExpandLess";
 import MoveDownIcon from "@material-ui/icons/ExpandMore";
-import IngredientRenderer from "./ingredient-renderer";
+import DeleteIcon from "@material-ui/icons/Delete";
 import SyncAltIcon from "@material-ui/icons/SyncAlt";
 import EditIcon from "@material-ui/icons/Edit";
-import DeleteIngredientButton from "./delete-ingredient-button";
 import {makeStyles} from "@material-ui/core/styles";
 import IngredientFormInputs from "./ingredient-form-inputs";
 
@@ -64,7 +65,7 @@ const IngredientListItem = ({ingredient, onMoveUpClick, onMoveDownClick, onIngre
                         <EditIcon/>
                     </IconButton>
 
-                    <DeleteIngredientButton onDelete={onDelete}/>
+                    <ConfirmIconButton onConfirm={onDelete} IconComponent={DeleteIcon}/>
                 </div>
         }
     </div>;

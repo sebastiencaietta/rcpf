@@ -1,6 +1,7 @@
 import React from "react";
 import redraft from 'redraft';
 import {Link} from "@material-ui/core";
+import {makeStyles} from "@material-ui/core/styles";
 
 
 const inline = {
@@ -46,11 +47,20 @@ const options = {
     },
 };
 
+const useStyles = makeStyles(theme => ({
+    rteRoot: {
+        '& p': {fontSize: theme.typography.pxToRem(16)},
+        '& ol, & ul': {lineHeight: 1.5, fontSize: theme.typography.pxToRem(16)},
+        '& ol li, & ul li': {marginBottom: theme.spacing(1)},
+    }
+}));
+
 export default function Renderer({raw}) {
     const isEmpty = isEmptyRaw(raw);
+    const classes = useStyles();
 
-    return <React.Fragment>
+    return <div className={classes.rteRoot}>
         {!isEmpty && redraft(raw, { inline, blocks, entities }, options)}
-    </React.Fragment>
+    </div>
 }
 

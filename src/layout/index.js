@@ -4,6 +4,7 @@ import {makeStyles} from '@material-ui/core/styles';
 import AppBar from "./app-bar";
 import Container from "@material-ui/core/Container";
 import Hero from '../global/components/hero';
+import Footer from "./footer";
 
 const useStyles = makeStyles(theme => ({
     content: {
@@ -20,20 +21,21 @@ const Layout = (props) => {
         <React.Fragment>
             <AppBar onToggleTheme={props.onToggleTheme}/>
 
-            {props.heroTitle && props.heroBg ? <Hero title={props.heroTitle} bg={props.heroBg}/> : ''}
+            {props.hero ? props.hero : ''}
 
             <Container fixed>
                 <main className={classes.content}>
                     {props.children}
                 </main>
             </Container>
+
+            <Footer />
         </React.Fragment>
     );
 };
 
 Layout.propTypes = {
-    heroTitle: PropTypes.string,
-    heroBg: PropTypes.string,
+    hero: PropTypes.element,
 };
 
 export default Layout;

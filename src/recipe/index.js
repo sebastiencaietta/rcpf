@@ -3,21 +3,43 @@ import Layout from "../layout";
 import {getRecipeBySlug} from "../repositories/recipes";
 import RecipePage from './components/recipe-page'
 import CircularProgress from "@material-ui/core/CircularProgress";
+import Hero from "../global/components/hero";
+import {fetchCategories, fetchTags} from "../global/eve";
+import {getIngredients} from "../repositories/ingredients";
 
 const Component = (props) => {
-    const [recipe, setRecipe] = useState({title: ''});
+    const [recipe, setRecipe] = useState({});
+    const [tags, setTags] = useState([]);
+    const [category, setCategory] = useState({});
+    const [ingredients, setIngredients] = useState([]);
+    const [loading, setLoading] = useState(props.match.params.slug !== undefined);
 
     useEffect(() => {
-        async function fetchRecipe(slug) {
-            const result = await getRecipeBySlug(slug);
-            setRecipe(result);
-        }
+        Promise.all([getRecipeBySlug(props.match.params.slug), fetchTags(), fetchCategories(), getIngredients()]).then(([recipe, tags, categories, ingredients]) => {
+            setCategory(categories.find(category => category.id === recipe.category));
+            setTags(tags);
+            setRecipe(recipe);
 
-        fetchRecipe(props.match.params.slug).catch(error => console.error(error));
+            const ingredientsById = {};
+            ingredients.forEach(ingredient => ingredientsById[ingredient.id] = ingredient);
+            setIngredients(ingredientsById);
+
+            setLoading(false);
+        })
     }, []);
 
-    return <Layout>
-        {recipe.title ? <RecipePage recipe={recipe}/> : <CircularProgress />}
+    if (loading) {
+        return <Layout>
+            <div style={{display: 'flex', height: '90vh', alignItems: 'center', justifyContent: 'center'}}>
+                <CircularProgress />
+            </div>
+        </Layout>;
+    }
+
+    return <Layout hero={<Hero title={recipe.title}
+                               bg={recipe.hero && recipe.hero.url ? recipe.hero.url : recipe.thumbnail}
+                               verticalPosition={recipe.hero && recipe.hero.verticalPosition ? recipe.hero.verticalPosition : undefined}/>}>
+       <RecipePage recipe={recipe} tags={tags} category={category} ingredients={ingredients}/>
     </Layout>;
 };
 

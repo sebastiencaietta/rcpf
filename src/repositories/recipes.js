@@ -76,6 +76,18 @@ export const uploadRecipeThumbnail = async (path, thumbnail) => {
     return await storageRef.getDownloadURL();
 };
 
+export const uploadRecipeHero = async (slug, hero) => {
+    const metadata = {
+        contentType: 'image/jpeg'
+    };
+
+    const dateString = new Date().toISOString().substring(0, 10).replace(/-/g, '');
+    const storageRef = firebase.storage().ref(`images/recipes/${slug}/hero_${dateString}`);
+    await storageRef.put(hero, metadata);
+
+    return await storageRef.getDownloadURL();
+};
+
 export const deleteRecipe = async (id) => {
     return firebase.firestore().collection('recipes').doc(id).delete();
 };

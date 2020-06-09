@@ -1,6 +1,12 @@
 import React, {useEffect, useState} from 'react';
 import RecipeForm from './containers/recipe-form';
-import {getRecipeBySlug, addRecipe, uploadRecipeThumbnail, updateRecipe} from "../../../repositories/recipes";
+import {
+    getRecipeBySlug,
+    addRecipe,
+    uploadRecipeThumbnail,
+    updateRecipe,
+    uploadRecipeHero
+} from "../../../repositories/recipes";
 import SignUpPage from '../../../global/components/sign-in-page';
 import Layout from "../../../layout";
 import CircularProgress from "@material-ui/core/CircularProgress";
@@ -40,7 +46,8 @@ const Component = (props) => {
             <RecipeForm
                 handleSubmit={saveRecipe}
                 recipe={recipe}
-                handleUploadRecipeThumbnail={uploadRecipeThumbnail}/>
+                handleUploadRecipeThumbnail={uploadRecipeThumbnail}
+                handleUploadRecipeHero={uploadRecipeHero}/>
         </SignUpPage>
     </Layout>
 };

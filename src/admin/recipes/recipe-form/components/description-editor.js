@@ -47,6 +47,7 @@ export default function DescriptionEditor({onChange, savedDescription}) {
             const newContent = convertFromRaw(savedDescription);
             const newState = EditorState.push(editorState, newContent, 'insert-characters');
             setEditorState(newState);
+            handleOnChange(newState);
         }
     }, [savedDescription]);
 
@@ -84,6 +85,7 @@ export default function DescriptionEditor({onChange, savedDescription}) {
             entityKey
         );
         const newEditorState = EditorState.set(editorState, {currentContent: contentStateWithLink});
+        setEditorState(newEditorState);
         handleOnChange(newEditorState);
     }
 

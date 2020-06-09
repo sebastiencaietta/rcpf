@@ -9,7 +9,7 @@ const useStyles = makeStyles(theme => ({
         backgroundSize: 'cover',
         position: 'relative',
         color: theme.palette.text.primary,
-        backgroundImage: 'url(' + props.bg + ')',
+        backgroundImage: 'url("' + props.bg + '")',
         height: '30vh',
         display: 'flex',
         alignItems: 'center',
@@ -26,19 +26,24 @@ const useStyles = makeStyles(theme => ({
         },
         [theme.breakpoints.up('lg')]: {
             height: '40vh',
-            backgroundPosition: 'center 69%',
+            backgroundPosition: `center ${props.verticalPosition || '69'}%`,
         }
     }),
     title: {
         zIndex: 2,
         color: '#fff',
+        fontSize: '3rem',
+        textAlign: 'center',
+        [theme.breakpoints.up('lg')]: {fontSize: '3.5rem'},
     },
 }));
 
-export default (props) => {
+const Hero = (props) => {
     const classes = useStyles(props);
 
     return <Box className={classes.heroBox}>
         <Typography variant="h1" className={classes.title}>{props.title}</Typography>
     </Box>
-}
+};
+
+export default Hero;

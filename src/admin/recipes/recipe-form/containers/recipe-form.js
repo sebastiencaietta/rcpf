@@ -9,7 +9,7 @@ import Snackbar from "@material-ui/core/Snackbar";
 import SnackbarContent from "@material-ui/core/SnackbarContent";
 import GeneralInformation from '../components/general-information';
 import IngredientsForm from '../components/ingredient-form/ingredients-form';
-import ThumbnailUpload from '../components/thumbnail-upload';
+import ImageUpload from '../components/image-upload';
 import {ExpandMore} from "@material-ui/icons";
 import ExpansionPanel from "@material-ui/core/ExpansionPanel";
 import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary";
@@ -72,8 +72,6 @@ export default (props) => {
 
     async function handleSubmit(e) {
         e.preventDefault();
-        console.log(recipe);
-        return;
 
         if (recipe.title === '') {
             return;
@@ -137,9 +135,11 @@ export default (props) => {
             </ExpansionPanelSummary>
             <ExpansionPanelDetails>
                 {
-                    useMemo(() => <ThumbnailUpload
+                    useMemo(() => <ImageUpload
                             onThumbnailChange={(thumbUrl) => handleFieldChange('thumbnail', thumbUrl)}
+                            onHeroChange={(hero) => handleFieldChange('hero', hero)}
                             uploadRecipeThumbnail={props.handleUploadRecipeThumbnail}
+                            updateRecipeHero={props.handleUploadRecipeHero}
                             savedRecipe={savedRecipe}
                             recipeSlug={recipe.slug}
                             recipeTitle={recipe.title}/>,
