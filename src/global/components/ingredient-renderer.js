@@ -28,13 +28,13 @@ const getPreposition = (ingredientName, unit) => {
     }
 
     const firstLetter = ingredientName[0];
-    const isVowel = ['e', 'a', 'i', 'o', 'u', 'y'].indexOf(firstLetter.toLowerCase()) !== -1;
+    const isVowel = ['e', 'a', 'i', 'o', 'u', 'y', 'é', 'à', 'è', 'î', 'ê'].indexOf(firstLetter.toLowerCase()) !== -1;
 
     if (isVowel) {
         return "d'";
     }
 
-    const exceptions = ['huile', 'huitre'];
+    const exceptions = ['huile', 'huitre', 'huître'];
     const isException = exceptions.some((exception) => ingredientName.toLowerCase().includes(exception));
 
     return isException ? "d'" : 'de '
