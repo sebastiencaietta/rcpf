@@ -68,7 +68,7 @@ const ImageUpload = ({savedRecipe, onThumbnailChange, uploadRecipeThumbnail, rec
     const thumbnailInput = React.createRef();
     const heroInput = React.createRef();
     const [thumbnail, setThumbnail] = useState('');
-    const [hero, setHero] = useState({heroUrl: undefined, verticalPosition: 69});
+    const [hero, setHero] = useState({url: null, verticalPosition: 69});
     const classes = useStyles();
 
     useEffect(() => {
@@ -86,10 +86,10 @@ const ImageUpload = ({savedRecipe, onThumbnailChange, uploadRecipeThumbnail, rec
         setThumbnail(thumbUrl);
     }
 
-    async function handleHeroImageChange(hero) {
-        const heroUrl = await updateRecipeHero(recipeSlug, hero);
-        onHeroChange({...hero, url: heroUrl});
-        setHero(heroUrl);
+    async function handleHeroImageChange(file) {
+        const url = await updateRecipeHero(recipeSlug, file);
+        onHeroChange({...hero, url});
+        setHero({...hero, url});
     }
 
     const handleMoveHeroUp = () => {
@@ -116,10 +116,9 @@ const ImageUpload = ({savedRecipe, onThumbnailChange, uploadRecipeThumbnail, rec
     }
 
     const handleDeleteHero = () => {
-        setHero({heroUrl: undefined, verticalPosition: 69});
-        onHeroChange({heroUrl: undefined, verticalPosition: 69});
+        setHero({url: null, verticalPosition: 69});
+        onHeroChange({url: null, verticalPosition: 69});
     };
-
 
     return <div style={{flexGrow: 1}}>
         <h2>Liste des recettes</h2>
