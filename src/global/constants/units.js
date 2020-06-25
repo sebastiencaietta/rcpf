@@ -83,4 +83,9 @@ export const UNITS = {
         isScientific: false,
         plural: 'verres',
     },
+    UNIT_BARQUETTE: {
+        unit: 'barquette',
+        isScientific: false,
+        plural: 'barquettes',
+    },
 };
