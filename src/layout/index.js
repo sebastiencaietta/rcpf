@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import {makeStyles} from '@material-ui/core/styles';
 import AppBar from "./app-bar";
 import Container from "@material-ui/core/Container";
-import Hero from '../global/components/hero';
 import Footer from "./footer";
 
 const useStyles = makeStyles(theme => ({

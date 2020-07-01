@@ -6,6 +6,7 @@ import store, {browserHistory} from './store'
 import * as serviceWorker from './serviceWorker';
 import {createTheme, getPreferredPaletteType, setPreferredPaletteType} from "./global/theme-settings";
 import {initFirebaseApp} from "./vendor/firebase";
+import {getErrorBoundary, initBugsnapApp} from './vendor/bugsnag';
 import {ThemeProvider} from '@material-ui/styles';
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Auth from "./auth";
@@ -14,10 +15,13 @@ import Routes from './routes';
 import './index.css';
 
 initFirebaseApp();
+initBugsnapApp();
 
 const target = document.querySelector('#root');
 
 export const PaletteTypeToggleContext = createContext({});
+
+const ErrorBoundary = getErrorBoundary();
 
 const App = () => {
     const [theme, setTheme] = useState(createTheme(getPreferredPaletteType()));
@@ -28,15 +32,17 @@ const App = () => {
     };
 
     return <Provider store={store}>
-        <PaletteTypeToggleContext.Provider value={{onToggleTheme}}>
-            <ThemeProvider theme={theme}>
-                <CssBaseline/>
-                <Router history={browserHistory}>
-                    <Auth/>
-                    <Routes/>
-                </Router>
-            </ThemeProvider>
-        </PaletteTypeToggleContext.Provider>
+        <ErrorBoundary>
+            <PaletteTypeToggleContext.Provider value={{onToggleTheme}}>
+                <ThemeProvider theme={theme}>
+                    <CssBaseline/>
+                    <Router history={browserHistory}>
+                        <Auth/>
+                        <Routes/>
+                    </Router>
+                </ThemeProvider>
+            </PaletteTypeToggleContext.Provider>
+        </ErrorBoundary>
     </Provider>
 };
 
