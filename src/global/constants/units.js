@@ -92,5 +92,15 @@ export const UNITS = {
         unit: 'goutte',
         isScientific: false,
         plural: 'gouttes',
-    }
+    },
+    UNIT_BOTTE: {
+        unit: 'botte',
+        isScientific: false,
+        plural: 'bottes',
+    },
+    UNIT_BRIN: {
+        unit: 'brin',
+        isScientific: false,
+        plural: 'brins',
+    },
 };
