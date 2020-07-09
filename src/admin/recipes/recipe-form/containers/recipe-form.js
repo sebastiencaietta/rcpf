@@ -98,10 +98,9 @@ export default (props) => {
                 Information</ExpansionPanelSummary>
             <ExpansionPanelDetails>
                 {
-                    useMemo(() => <GeneralInformation onFieldChange={handleFieldChange}
-                                                      onTitleChange={handleTitleChange}
-                                                      savedRecipe={savedRecipe}/>,
-                        [recipe.title, recipe.slug, recipe.category, recipe.tags, recipe.portionSize, recipe.portionType, recipe.prepTime, recipe.cookingTime, recipe.source])
+                    <GeneralInformation onFieldChange={handleFieldChange}
+                                        onTitleChange={handleTitleChange}
+                                        savedRecipe={savedRecipe}/>
                 }
             </ExpansionPanelDetails>
         </ExpansionPanel>
@@ -110,10 +109,9 @@ export default (props) => {
             <ExpansionPanelSummary expandIcon={<ExpandMore/>} aria-label="Expand">Ingrédients</ExpansionPanelSummary>
             <ExpansionPanelDetails>
                 {
-                    useMemo(() => <IngredientsForm
-                            onIngredientsChange={(ingArray) => handleFieldChange('ingredients', ingArray)}
-                            savedRecipe={savedRecipe}/>,
-                        [recipe.ingredients])
+                    <IngredientsForm
+                        onIngredientsChange={(ingArray) => handleFieldChange('ingredients', ingArray)}
+                        savedRecipe={savedRecipe}/>
                 }
             </ExpansionPanelDetails>
         </ExpansionPanel>
@@ -122,10 +120,9 @@ export default (props) => {
             <ExpansionPanelSummary expandIcon={<ExpandMore/>} aria-label="Expand">Description</ExpansionPanelSummary>
             <ExpansionPanelDetails>
                 {
-                    useMemo(() => <DescriptionForm
-                            onDescriptionChange={(description) => handleFieldChange('description', description)}
-                            savedRecipe={savedRecipe}/>,
-                        [recipe.description])
+                    <DescriptionForm
+                        onDescriptionChange={(description) => handleFieldChange('description', description)}
+                        savedRecipe={savedRecipe}/>
                 }
             </ExpansionPanelDetails>
         </ExpansionPanel>
@@ -135,15 +132,14 @@ export default (props) => {
             </ExpansionPanelSummary>
             <ExpansionPanelDetails>
                 {
-                    useMemo(() => <ImageUpload
-                            onThumbnailChange={(thumbUrl) => handleFieldChange('thumbnail', thumbUrl)}
-                            onHeroChange={(hero) => handleFieldChange('hero', hero)}
-                            uploadRecipeThumbnail={props.handleUploadRecipeThumbnail}
-                            updateRecipeHero={props.handleUploadRecipeHero}
-                            savedRecipe={savedRecipe}
-                            recipeSlug={recipe.slug}
-                            recipeTitle={recipe.title}/>,
-                        [recipe.slug, recipe.title, recipe.thumbnail])
+                    <ImageUpload
+                        onThumbnailChange={(thumbUrl) => handleFieldChange('thumbnail', thumbUrl)}
+                        onHeroChange={(hero) => handleFieldChange('hero', hero)}
+                        uploadRecipeThumbnail={props.handleUploadRecipeThumbnail}
+                        updateRecipeHero={props.handleUploadRecipeHero}
+                        savedRecipe={savedRecipe}
+                        recipeSlug={recipe.slug}
+                        recipeTitle={recipe.title}/>
                 }
             </ExpansionPanelDetails>
         </ExpansionPanel>
