@@ -1,4 +1,4 @@
-import React, {useMemo, useState} from "react";
+import React, {useState} from "react";
 import {useHistory} from "react-router-dom";
 import {green} from '@material-ui/core/colors';
 import slugify from "slugify";

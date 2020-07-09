@@ -1,10 +1,7 @@
 import {createStore, compose} from 'redux';
-import * as history from 'history';
 import {combineReducers} from 'redux';
 import filters from './recipe-list/reducers/filters';
 import auth from './global/reducers/auth';
-
-export const browserHistory = history.createBrowserHistory();
 
 const initialState = {};
 const enhancers = [];

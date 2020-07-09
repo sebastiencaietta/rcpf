@@ -18,6 +18,7 @@ export default ({ingredient: propsIngredient, onSubmit}) => {
     const ingredientInitialState = {
         thumbnail: '',
         name: '',
+        plural: '',
         links: [''],
     };
 
@@ -44,6 +45,13 @@ export default ({ingredient: propsIngredient, onSubmit}) => {
             links: [e.target.value]
         });
     };
+
+    const onPluralChange = (e) => {
+        setIngredient({
+            ...ingredient,
+            plural: e.target.value,
+        });
+    }
 
     const onNewThumbnailUpload = (file) => {
         setIngredient({
@@ -86,11 +94,14 @@ export default ({ingredient: propsIngredient, onSubmit}) => {
                     fileInput.current.click()
                 }} variant="square" src={thumbnailPreview || ingredient.thumbnail} className={classes.avatar}/>
             </Grid>
-            <Grid item xs={9} md={5}>
-                <TextField id="ingredient-name" label="Name" className={classes.textField} value={ingredient.name} onChange={onNameChange}/>
+            <Grid item xs={9} md={3}>
+                <TextField id="ingredient-name" label="Nom" className={classes.textField} value={ingredient.name} onChange={onNameChange}/>
             </Grid>
-            <Grid item xs={9} md={5}>
-                <TextField label="Link" className={classes.textField} value={ingredient.links[0]} onChange={onLinkChange}/>
+            <Grid item xs={12} md={3}>
+                <TextField label="Pluriel" className={classes.textField} value={ingredient.plural} onChange={onPluralChange}/>
+            </Grid>
+            <Grid item xs={9} md={3}>
+                <TextField label="Lien" className={classes.textField} value={ingredient.links[0]} onChange={onLinkChange}/>
             </Grid>
             <Grid item xs={3} md={1}>
                 <IconButton className={classes.saveButton} type="submit" disabled={loading}>

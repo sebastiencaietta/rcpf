@@ -13,6 +13,18 @@ const useStyles = makeStyles((theme) => ({
     ingredientText: {fontSize: '1.1em'},
 }));
 
+const getIngredientName = (name, plural, quantity, unit) => {
+    if (unit === 'UNIT_NO_UNIT' && !quantity) {
+        return name;
+    }
+
+    if (quantity > 1 && plural !== undefined) {
+        return plural.toLowerCase();
+    }
+
+    return name.toLowerCase();
+};
+
 const getQuantityWithUnit = (unitConstant, quantity) => {
     const unitOptions = UNITS[unitConstant];
     if (unitOptions.isScientific) {
@@ -42,14 +54,14 @@ const getPreposition = (ingredientName, unit) => {
 
 const IngredientRenderer = ({recipeIngredient, ingredientSettings}) => {
     const {quantity, unit, comment} = recipeIngredient;
-    const {name, thumbnail} = ingredientSettings;
+    const {name, plural, thumbnail} = ingredientSettings;
     const classes = useStyles();
 
     return <div className={classes.ingredientWrapper}>
         <Avatar alt={ingredientSettings.name} src={thumbnail} className={classes.ingredientAvatar}/>
         <span className={classes.ingredientText}>
             {`${getQuantityWithUnit(unit, quantity)} ${getPreposition(name, unit)}`}
-            <b>{name.toLowerCase()}</b>
+            <b>{getIngredientName(name, plural, quantity, unit)}</b>
             {comment}
         </span>
     </div>

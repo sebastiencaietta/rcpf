@@ -9,6 +9,7 @@ import AddIcon from "@material-ui/icons/Add";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import EditIcon from "@material-ui/icons/Edit";
 import DeleteIcon from '@material-ui/icons/Delete';
+import VisibilityIcon from '@material-ui/icons/Visibility';
 import {Link} from "react-router-dom";
 import clsx from "clsx";
 import DialogActions from "@material-ui/core/DialogActions";
@@ -71,7 +72,7 @@ const useStyles = makeStyles(theme => ({
         justifyContent: 'flex-end',
     },
     leftIcon: {
-        paddingRight: theme.spacing(1),
+        marginRight: theme.spacing(1),
     }
 }));
 
@@ -145,11 +146,13 @@ export default function AdminRecipeList() {
             {visibleRecipes.map((recipe) => {
                 return <Grid item xs={12} md={4} lg={3} key={recipe.slug}>
                     <Card className={classes.card}>
-                        <CardMedia
-                            className={classes.media}
-                            image={recipe.thumbnail || RecipeImage}
-                            title={recipe.title}
-                        />
+                        <Link to={`/admin/recipes/edit/${recipe.slug}`} className={classes.link}>
+                            <CardMedia
+                                className={classes.media}
+                                image={recipe.thumbnail || RecipeImage}
+                                title={recipe.title}
+                            />
+                        </Link>
                         <CardContent className={classes.cardContent}>
                             <Typography variant="body2" color="textSecondary" component="p"
                                         className={classes.cardTitle}>
@@ -157,13 +160,18 @@ export default function AdminRecipeList() {
                             </Typography>
                         </CardContent>
                         <CardActions className={classes.cardActions}>
-                            <Link to={`/admin/recipes/edit/${recipe.slug}`} className={classes.link}>
-                                <IconButton size="small">
-                                    <EditIcon className={classes.leftIcon}/>
+                            <Link to={`/recipes/${recipe.slug}`} target="_blank">
+                                <IconButton size="small" className={classes.leftIcon}>
+                                    <VisibilityIcon/>
                                 </IconButton>
                             </Link>
-                            <IconButton size="small" onClick={() => openDeleteDialog(recipe.id)}>
-                                <DeleteIcon className={classes.leftIcon}/>
+                            <Link to={`/admin/recipes/edit/${recipe.slug}`} className={classes.leftIcon}>
+                                <IconButton size="small">
+                                    <EditIcon/>
+                                </IconButton>
+                            </Link>
+                            <IconButton size="small" onClick={() => openDeleteDialog(recipe.id)} className={classes.leftIcon}>
+                                <DeleteIcon/>
                             </IconButton>
                         </CardActions>
                     </Card>
