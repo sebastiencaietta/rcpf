@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import Grid from "@material-ui/core/Grid";
 import TextField from "@material-ui/core/TextField";
 import Autocomplete from "@material-ui/lab/Autocomplete";
@@ -33,6 +33,8 @@ const IngredientFormInputs = ({ingredientOptions, onSubmit, onCancel, savedIngre
     const [isCanceling, setIsCanceling] = useState(false);
     const classes = useStyles();
 
+    const quantityInput = useRef(null);
+
     useEffect(() => {
         if (savedIngredient === undefined) {
             return;
@@ -50,6 +52,10 @@ const IngredientFormInputs = ({ingredientOptions, onSubmit, onCancel, savedIngre
             comment: savedIngredient.comment,
         });
     }, [savedIngredient]);
+
+    useEffect(() => {
+        quantityInput.current.focus();
+    }, []);
 
     function handleQuantityChange(e) {
         setInputs({...inputs, quantity: e.target.value});
@@ -104,6 +110,18 @@ const IngredientFormInputs = ({ingredientOptions, onSubmit, onCancel, savedIngre
         }
     }
 
+    function onUnitBlur() {
+        if (inputs.unit === null && inputs.unitInputValue) {
+            const unitOption = unitOptions.find(option => option.label === inputs.unitInputValue)
+            if (unitOption) {
+                setInputs({
+                    ...inputs,
+                    unit: unitOption,
+                })
+            }
+        }
+    }
+
     function isValid() {
         return inputs.unit && inputs.ingredient;
     }
@@ -133,6 +151,7 @@ const IngredientFormInputs = ({ingredientOptions, onSubmit, onCancel, savedIngre
         <Grid item xs={2}>
             <TextField type="text" label="Quantity" fullWidth margin="dense" size="small"
                        value={inputs.quantity}
+                       inputRef={quantityInput}
                        onChange={handleQuantityChange}
                        onKeyDown={handleKeyDown}
                        tabIndex={1}/>
@@ -142,6 +161,7 @@ const IngredientFormInputs = ({ingredientOptions, onSubmit, onCancel, savedIngre
                           renderInput={(params) => <TextField fullWidth label="Unit" margin="dense"{...params}
                                                               size="small"
                                                               onChange={handleUnitInputChange}
+                                                              onBlur={onUnitBlur}
                                                               onKeyDown={handleUnitKeyDown}/>}
                           renderOption={(option) => option.label}
                           clearOnEscape={true}
