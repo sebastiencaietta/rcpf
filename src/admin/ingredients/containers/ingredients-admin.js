@@ -1,13 +1,13 @@
-import React, {useEffect, useState} from "react";
+import React, {useState} from "react";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
-import AdminIngredientForm from "../components/ingredient-form";
 import AdminIngredientList from "../components/ingredient-list";
 import {makeStyles} from "@material-ui/core";
-import {addIngredient, deleteIngredient, getIngredients, updateIngredient} from "../../../repositories/ingredients";
+import {addIngredient, deleteIngredient, updateIngredient} from "../../../repositories/ingredients";
 import SnackbarContent from "@material-ui/core/SnackbarContent";
 import Snackbar from "@material-ui/core/Snackbar";
 import Divider from "@material-ui/core/Divider";
+import {sortAlphabetically} from "../../../global/lodash";
 
 const useStyles = makeStyles(theme => {
     return {
@@ -24,9 +24,9 @@ const useStyles = makeStyles(theme => {
     };
 });
 
-export default () => {
+const IngredientsAdmin = ({savedIngredients, recipesByIngredientId}) => {
     const classes = useStyles();
-    const [ingredients, setIngredients] = useState([]);
+    const [ingredients, setIngredients] = useState([...savedIngredients]);
     const [snackbarOpen, setSnackbarOpen] = useState(false);
     const [snackbarType, setSnackbarType] = useState('success');
     const [snackbarMessage, setSnackbarMessage] = useState('');
@@ -43,13 +43,13 @@ export default () => {
         setSnackbarMessage(message);
     };
 
-    const addNewIngredient = async (ingredient) => {
+    const handleAddNewIngredient = async (ingredient) => {
         try {
             const newIngredient = await addIngredient(ingredient);
-            setIngredients([
+            setIngredients(sortAlphabetically([
                 ...ingredients,
                 newIngredient,
-            ]);
+            ], 'name'));
             showSuccess('Ingredient ajouté');
         } catch (error) {
             showError(error.message);
@@ -80,32 +80,18 @@ export default () => {
         }
     };
 
-    useEffect(() => {
-        const fetchIngredients = async () => {
-            const ingredients = await getIngredients();
-            ingredients.sort((a, b) => a.name < b.name ? -1 : a.name > b.name ? 1 : 0);
-            setIngredients(ingredients);
-        };
-
-        fetchIngredients();
-    }, []);
-
     const handleSuccessClose = () => {
         setSnackbarOpen(false);
     };
 
     return <React.Fragment>
         <Paper className={classes.paper}>
-            <Typography variant="h6">Ajouter un nouvel ingrédient</Typography>
-            <Divider />
-            <AdminIngredientForm onSubmit={addNewIngredient}/>
-        </Paper>
-
-        <Paper className={classes.paper}>
-            <Typography variant="h6">Ingrédients sauvegardés</Typography>
+            <Typography variant="h6">Ingrédients</Typography>
             <Divider />
             <AdminIngredientList
                 ingredients={ingredients}
+                recipesByIngredient={recipesByIngredientId}
+                addIngredient={handleAddNewIngredient}
                 updateIngredient={handleUpdateIngredient}
                 deleteIngredient={handleDeleteIngredient}/>
         </Paper>
@@ -123,4 +109,6 @@ export default () => {
             />
         </Snackbar>
     </React.Fragment>
-}
+};
+
+export default IngredientsAdmin;

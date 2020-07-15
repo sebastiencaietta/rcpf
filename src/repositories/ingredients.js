@@ -42,7 +42,7 @@ export const updateIngredient = async (ingredient) => {
         };
     }
     await db.collection('ingredients').doc(ingredient.id).set(ingredient);
-    return ingredient
+    return ingredient;
 };
 
 export const deleteIngredient = async (ingredient) => {
