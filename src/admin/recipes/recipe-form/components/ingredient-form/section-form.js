@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import Input from "@material-ui/core/Input";
 import Button from "@material-ui/core/Button";
 import CheckIcon from '@material-ui/icons/Check';
@@ -49,6 +49,9 @@ const SectionForm = ({onSectionChange, ingredientOptions, ingredientsById, defau
     const [isEditingTitle, setIsEditingTitle] = useState(true);
     const [isAddingIngredient, setIsAddingIngredient] = useState(false);
     const [isCanceling, setIsCanceling] = useState(false);
+    const addIngredientRef = useRef(null);
+    const prevIsAddingIngredientRef = useRef(false);
+    const prevIsAddingIngredient = prevIsAddingIngredientRef.current;
     const classes = useStyles();
 
     useEffect(() => {
@@ -69,7 +72,17 @@ const SectionForm = ({onSectionChange, ingredientOptions, ingredientsById, defau
         }
 
         setData({...section});
-    }, [section])
+    }, [section]);
+
+    useEffect(() => {
+        prevIsAddingIngredientRef.current = isAddingIngredient;
+    });
+
+    useEffect(() => {
+        if (prevIsAddingIngredient === true && !isAddingIngredient) {
+            addIngredientRef.current.focus();
+        }
+    }, [isAddingIngredient]);
 
     function handleTitleEnterKeyPress(e) {
         if (e.keyCode === 13) {
@@ -171,7 +184,7 @@ const SectionForm = ({onSectionChange, ingredientOptions, ingredientsById, defau
                                             onSubmit={handleAddIngredient}
                                             onCancel={handleCancelAddIngredient}/>
                     : <Button variant={"contained"} color="primary" size="small" startIcon={<AddIcon/>}
-                              onClick={() => setIsAddingIngredient(true)}>
+                              onClick={() => setIsAddingIngredient(true)} ref={addIngredientRef}>
                         Ingrédient
                     </Button>
             }

@@ -34,7 +34,6 @@ export const getRecipeList = async () => {
     return sortRecipeListAlphabetically(cachedRecipeList);
 };
 
-
 export const listenToRecipes = (onNext) => {
     return firebase.firestore().collection("recipes").onSnapshot(onNext);
 };

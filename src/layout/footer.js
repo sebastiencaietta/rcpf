@@ -11,7 +11,7 @@ const useStyles = makeStyles(theme => ({
     footerRoot: {
         paddingTop: theme.spacing(6),
         paddingBottom: theme.spacing(4),
-        marginTop: theme.spacing(10),
+        marginTop: 'auto',
         backgroundColor: theme.palette.type === PALETTE_TYPE_DARK ? '#212121' : theme.palette.background.paper,
     },
     love: {textAlign: "right"},

@@ -9,3 +9,7 @@ export const addOrRemoveInArray = (array, id) => {
         ...array.slice(index + 1, array.length),
     ];
 };
+
+export const sortAlphabetically = (array, propName) => {
+    return array.sort((a, b) => a[propName] < b[propName] ? -1 : a[propName] > b[propName] ? 1 : 0);
+}
