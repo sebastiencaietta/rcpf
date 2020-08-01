@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useReducer} from "react";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
 import AdminIngredientList from "../components/ingredient-list";
@@ -26,30 +26,44 @@ const useStyles = makeStyles(theme => {
 
 const IngredientsAdmin = ({savedIngredients, recipesByIngredientId}) => {
     const classes = useStyles();
-    const [ingredients, setIngredients] = useState([...savedIngredients]);
-    const [snackbarOpen, setSnackbarOpen] = useState(false);
-    const [snackbarType, setSnackbarType] = useState('success');
-    const [snackbarMessage, setSnackbarMessage] = useState('');
+    const [state, setState] = useReducer(
+        (state, newState) => ({...state, ...newState}), {
+            ingredients: [...savedIngredients],
+            snackbarOpen: false,
+            snackbarType: 'success',
+            snackbarMessage: '',
+            recipes: {...recipesByIngredientId}
+        });
 
     const showSuccess = message => {
-        setSnackbarType('success');
-        setSnackbarOpen(true);
-        setSnackbarMessage(message);
+        setState({
+            snackbarType: 'success',
+            snackbarMessage: message,
+            snackbarOpen: true,
+        })
     };
 
     const showError = message => {
-        setSnackbarType('error');
-        setSnackbarOpen(true);
-        setSnackbarMessage(message);
+        setState({
+            snackbarType: 'error',
+            snackbarOpen: true,
+            snackbarMessage: message,
+        });
     };
 
     const handleAddNewIngredient = async (ingredient) => {
         try {
             const newIngredient = await addIngredient(ingredient);
-            setIngredients(sortAlphabetically([
-                ...ingredients,
-                newIngredient,
-            ], 'name'));
+            setState({
+                recipes: {
+                    ...state.recipes,
+                    [newIngredient.id]: []
+                },
+                ingredients: sortAlphabetically([
+                    ...state.ingredients,
+                    newIngredient,
+                ], 'name')
+            });
             showSuccess('Ingredient ajouté');
         } catch (error) {
             showError(error.message);
@@ -59,9 +73,11 @@ const IngredientsAdmin = ({savedIngredients, recipesByIngredientId}) => {
     const handleUpdateIngredient = async (ingredientToUpdate) => {
         try {
             const updatedIngredient = await updateIngredient(ingredientToUpdate);
-            setIngredients(ingredients.map(
-                ingredient => ingredient.id === updatedIngredient.id ? updatedIngredient : ingredient
-            ));
+            setState({
+                ingredients: state.ingredients.map(
+                    ingredient => ingredient.id === updatedIngredient.id ? updatedIngredient : ingredient
+                )
+            });
             showSuccess('Ingredient sauvegardé');
         } catch (error) {
             showError(error.message);
@@ -71,9 +87,11 @@ const IngredientsAdmin = ({savedIngredients, recipesByIngredientId}) => {
     const handleDeleteIngredient = async (ingredientToDelete) => {
         try {
             await deleteIngredient(ingredientToDelete);
-            setIngredients(ingredients.filter(
-                ingredient => ingredient.id !== ingredientToDelete.id
-            ));
+            setState({
+                ingredients: state.ingredients.filter(
+                    ingredient => ingredient.id !== ingredientToDelete.id
+                )
+            });
             showSuccess('Ingredient supprimé');
         } catch (error) {
             showError(error.message);
@@ -81,16 +99,16 @@ const IngredientsAdmin = ({savedIngredients, recipesByIngredientId}) => {
     };
 
     const handleSuccessClose = () => {
-        setSnackbarOpen(false);
+        setState({snackbarOpen: false});
     };
 
     return <React.Fragment>
         <Paper className={classes.paper}>
             <Typography variant="h6">Ingrédients</Typography>
-            <Divider />
+            <Divider/>
             <AdminIngredientList
-                ingredients={ingredients}
-                recipesByIngredient={recipesByIngredientId}
+                ingredients={state.ingredients}
+                recipesByIngredient={state.recipes}
                 addIngredient={handleAddNewIngredient}
                 updateIngredient={handleUpdateIngredient}
                 deleteIngredient={handleDeleteIngredient}/>
@@ -98,14 +116,14 @@ const IngredientsAdmin = ({savedIngredients, recipesByIngredientId}) => {
 
         <Snackbar
             anchorOrigin={{vertical: 'bottom', horizontal: 'right'}}
-            open={snackbarOpen}
+            open={state.snackbarOpen}
             autoHideDuration={100000}
             onClose={handleSuccessClose}
         >
             <SnackbarContent
                 aria-describedby="message-id"
-                className={classes[snackbarType]}
-                message={<span id="message-id">{snackbarMessage}</span>}
+                className={classes[state.snackbarType]}
+                message={<span id="message-id">{state.snackbarMessage}</span>}
             />
         </Snackbar>
     </React.Fragment>
