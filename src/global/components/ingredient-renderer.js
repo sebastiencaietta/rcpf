@@ -18,7 +18,7 @@ const getIngredientName = (name, plural, quantity, unit) => {
         return name;
     }
 
-    if (parseInt(quantity) > 1 && plural !== undefined) {
+    if (parseInt(quantity) > 1 && plural !== undefined && plural !== "") {
         return plural.toLowerCase();
     }
 
