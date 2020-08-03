@@ -28,7 +28,8 @@ const IngredientsForm = ({savedRecipe, onIngredientsChange}) => {
             const tmp = {};
             savedIngredients.forEach(ingredient => tmp[ingredient.id] = {
                 name: ingredient.name,
-                thumbnail: ingredient.thumbnail
+                thumbnail: ingredient.thumbnail,
+                plural: ingredient.plural,
             });
             setIngredientsById({...tmp});
         }
