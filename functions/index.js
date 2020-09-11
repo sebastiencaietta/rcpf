@@ -1,6 +1,7 @@
 const functions = require('firebase-functions');
 const admin = require('firebase-admin');
 const cron = require('./cron');
+const ingredientCache = require('./ingredientCache');
 
 admin.initializeApp();
 
@@ -141,3 +142,22 @@ exports.scheduledFirestoreExport = functions.region('europe-west1').
     pubsub.schedule('0 3 * * *')
     .timeZone('Europe/London')
     .onRun(cron.dbExport);
+
+exports.updateIngredientListOnIngredientAdd = functions.region('europe-west1')
+    .firestore
+    .document('ingredients/{ingredientId}')
+    .onCreate(ingredientCache.updateIngredientListOnIngredientAdd);
+
+exports.updateIngredientListOnIngredientUpdate = functions.region('europe-west1')
+    .firestore
+    .document('ingredients/{ingredientId}')
+    .onUpdate(ingredientCache.updateIngredientListOnIngredientUpdate);
+
+exports.updateIngredientListOnIngredientDelete = functions.region('europe-west1')
+    .firestore
+    .document('ingredients/{ingredientId}')
+    .onDelete(ingredientCache.updateIngredientListOnIngredientDelete);
+
+exports.regenerateIngredientListCache = functions.region('europe-west1')
+    .https
+    .onRequest(ingredientCache.regenerateIngredientListCache);

@@ -46,7 +46,7 @@ const getPreposition = (ingredientName, unit) => {
         return "d'";
     }
 
-    const exceptions = ['huile', 'huitre', 'huître'];
+    const exceptions = ['huile', 'huitre', 'huître', 'yaourt', 'yoghurt', 'yahourt'];
     const isException = exceptions.some((exception) => ingredientName.toLowerCase().includes(exception));
 
     return isException ? "d'" : 'de '

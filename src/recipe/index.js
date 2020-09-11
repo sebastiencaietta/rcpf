@@ -5,7 +5,7 @@ import RecipePage from './components/recipe-page'
 import CircularProgress from "@material-ui/core/CircularProgress";
 import Hero from "../global/components/hero";
 import {fetchCategories, fetchTags} from "../global/eve";
-import {getIngredients} from "../repositories/ingredients";
+import {getIngredientList} from "../repositories/ingredients";
 
 const Component = (props) => {
     const [recipe, setRecipe] = useState({});
@@ -15,17 +15,18 @@ const Component = (props) => {
     const [loading, setLoading] = useState(props.match.params.slug !== undefined);
 
     useEffect(() => {
-        Promise.all([getRecipeBySlug(props.match.params.slug), fetchTags(), fetchCategories(), getIngredients()]).then(([recipe, tags, categories, ingredients]) => {
-            setCategory(categories.find(category => category.id === recipe.category));
-            setTags(tags);
-            setRecipe(recipe);
+        Promise.all([getRecipeBySlug(props.match.params.slug), fetchTags(), fetchCategories(), getIngredientList()])
+            .then(([recipe, tags, categories, ingredients]) => {
+                setCategory(categories.find(category => category.id === recipe.category));
+                setTags(tags);
+                setRecipe(recipe);
 
-            const ingredientsById = {};
-            ingredients.forEach(ingredient => ingredientsById[ingredient.id] = ingredient);
-            setIngredients(ingredientsById);
+                const ingredientsById = {};
+                ingredients.forEach(ingredient => ingredientsById[ingredient.id] = ingredient);
+                setIngredients(ingredientsById);
 
-            setLoading(false);
-        })
+                setLoading(false);
+            })
     }, []);
 
     if (loading) {

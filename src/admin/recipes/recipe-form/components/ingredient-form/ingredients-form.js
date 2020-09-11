@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {getIngredients} from "../../../../../repositories/ingredients";
+import {getIngredientList} from "../../../../../repositories/ingredients";
 import SectionForm from "./section-form";
 import AddIcon from "@material-ui/icons/Add";
 import Button from "@material-ui/core/Button";
@@ -19,7 +19,7 @@ const IngredientsForm = ({savedRecipe, onIngredientsChange}) => {
 
     useEffect(() => {
         const initIngredients = async () => {
-            const savedIngredients = await getIngredients();
+            const savedIngredients = await getIngredientList();
             setIngredientOptions(savedIngredients.map(ingredient => ({
                 label: ingredient.name,
                 value: ingredient.id,

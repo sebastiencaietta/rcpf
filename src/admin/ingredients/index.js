@@ -3,7 +3,7 @@ import IngredientsAdmin from './containers/ingredients-admin'
 import Layout from "../../layout";
 import SignInPage from '../../global/components/sign-in-page';
 import CircularProgress from "@material-ui/core/CircularProgress";
-import {getIngredients} from "../../repositories/ingredients";
+import {getIngredientList} from "../../repositories/ingredients";
 import {sortAlphabetically} from "../../global/lodash";
 import {getRecipes} from "../../repositories/recipes";
 
@@ -27,7 +27,7 @@ export default function IngredientsAdminPage() {
     const [recipesByIngredientId, setRecipesByIngredientId] = useState({});
 
     useEffect(() => {
-        Promise.all([getIngredients(), getRecipes()]).then(([ingredients, recipes]) => {
+        Promise.all([getIngredientList(), getRecipes()]).then(([ingredients, recipes]) => {
             setIngredients(sortAlphabetically(ingredients, 'name'));
             const test = getRecipesByIngredient(recipes, ingredients);
             setRecipesByIngredientId(test);

@@ -25,7 +25,6 @@ export default ({ingredient: propsIngredient, onSubmit, onCancel}) => {
         thumbnail: '',
         name: '',
         plural: '',
-        links: [''],
     };
 
     const [ingredient, setIngredient] = useState({
@@ -47,13 +46,6 @@ export default ({ingredient: propsIngredient, onSubmit, onCancel}) => {
         setIngredient({
             ...ingredient,
             name: e.target.value,
-        });
-    };
-
-    const onLinkChange = (e) => {
-        setIngredient({
-            ...ingredient,
-            links: [e.target.value]
         });
     };
 
@@ -129,11 +121,6 @@ export default ({ingredient: propsIngredient, onSubmit, onCancel}) => {
                         control={<Checkbox name="excludeFromGroceries"/>}
                         label="Exclure de la liste de courses"
                     />
-                </Grid>
-                <Grid item xs={12}>
-                    <h4 className={classes.formTitle}>Liens</h4>
-                    <TextField label="Lien" className={classes.textField} value={ingredient.links[0]}
-                               onChange={onLinkChange}/>
                 </Grid>
             </Grid>
         </DialogContent>

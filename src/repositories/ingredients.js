@@ -1,14 +1,11 @@
 import firebase from 'firebase/app';
 import slugify from "slugify";
 
-export const getIngredients = async () => {
-    const snapshot = await firebase.firestore().collection('ingredients').get();
+export const getIngredientList = async () => {
+    const snapshot = await firebase.firestore().collection('cache').doc('ingredientList').get();
+    const cachedIngredientList = snapshot.data();
     const ingredients = [];
-
-    snapshot.forEach((doc) => {
-        ingredients.push({...doc.data(), id: doc.id});
-    });
-
+    Object.keys(cachedIngredientList).map(id => ingredients.push({...cachedIngredientList[id], id}));
     return ingredients;
 };
 
@@ -33,15 +30,16 @@ export const addIngredient = async (ingredient) => {
 
 export const updateIngredient = async (ingredient) => {
     const db = firebase.firestore();
-    if (ingredient.newThumbnail) {
-        const thumbnailUrl = await uploadThumbnail(ingredient, ingredient.newThumbnail);
+    const {id, newThumbnail, ...pureIngredient} = ingredient;
+    console.log(pureIngredient);
+    if (newThumbnail) {
+        const thumbnailUrl = await uploadThumbnail(ingredient, newThumbnail);
         ingredient = {
             ...ingredient,
             thumbnail: thumbnailUrl,
-            newThumbnail: '',
         };
     }
-    await db.collection('ingredients').doc(ingredient.id).set(ingredient);
+    await db.collection('ingredients').doc(id).set(pureIngredient);
     return ingredient;
 };
 

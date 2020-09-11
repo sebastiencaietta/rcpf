@@ -42,6 +42,7 @@
     "not op_mini all"
   ],
   "devDependencies": {
+    "firestore-size": "^2.0.6",
     "redux-devtools-extension": "^2.13.2"
   }
 }
