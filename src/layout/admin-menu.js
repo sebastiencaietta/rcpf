@@ -2,11 +2,11 @@ import React, {useState} from 'react';
 import {Link} from "react-router-dom";
 import SettingsIcon from '@material-ui/icons/Settings';
 import {makeStyles} from "@material-ui/core";
-import {connect} from "react-redux";
 import Button from "@material-ui/core/Button";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 import clsx from "clsx";
+import {useAuth} from "../auth/use-auth";
 
 const useStyles = makeStyles(theme => ({
     menuLink: {
@@ -29,7 +29,14 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
-const Component = ({user}) => {
+const AdminMenu = () => {
+    const auth = useAuth();
+    const {user} = auth.user;
+
+    if (user.uid === undefined || user.role !== 'ROLE_ADMIN') {
+        return '';
+    }
+
     const classes = useStyles();
     const [anchorEl, setAnchorEl] = useState(null);
 
@@ -43,12 +50,12 @@ const Component = ({user}) => {
 
     const settingsIconClasses = clsx(classes.settingsIcon, {[classes.settingsIconOpen]: anchorEl});
 
-    const loggedInAdminMenu = (<React.Fragment>
+    return <React.Fragment>
         <Button onClick={handleAdminClick} startIcon={<SettingsIcon className={settingsIconClasses}/>}>
             Admin
         </Button>
         <Menu
-            id="simple-menu"
+            id="admin-menu"
             anchorEl={anchorEl}
             getContentAnchorEl={null}
             keepMounted
@@ -66,19 +73,7 @@ const Component = ({user}) => {
                 <MenuItem onClick={handleClose}>Tags</MenuItem>
             </Link>
         </Menu>
-    </React.Fragment>);
-
-    const loggedOutAdminMenu = <Link to="/admin/recipes" className={classes.menuLink}>
-        <Button startIcon={<SettingsIcon />}>Admin</Button>
-    </Link>;
-
-    return <React.Fragment>
-        {user.uid !== undefined ? loggedInAdminMenu : loggedOutAdminMenu}
     </React.Fragment>;
 };
 
-const mapStateToProps = state => ({
-    user: state.auth.user,
-});
-
-export default connect(mapStateToProps)(Component)
+export default AdminMenu;

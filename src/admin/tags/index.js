@@ -1,12 +1,12 @@
 import React from "react";
 import TagsAdmin from './containers/tag-admin';
 import Layout from "../../layout";
-import SignInPage from '../../global/components/sign-in-page';
+import RoleRestrictedPage from '../../global/components/role-restricted-page';
 
 export default function TagsAdminPage() {
     return <Layout>
-        <SignInPage>
+        <RoleRestrictedPage userRole="ROLE_ADMIN">
             <TagsAdmin/>
-        </SignInPage>
+        </RoleRestrictedPage>
     </Layout>
 };

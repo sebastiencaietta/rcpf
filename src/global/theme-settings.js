@@ -9,16 +9,6 @@ import deepOrange from "@material-ui/core/colors/deepOrange";
 export const PALETTE_TYPE_LIGHT = 'light';
 export const PALETTE_TYPE_DARK = 'dark';
 
-export const getPreferredPaletteType = () => {
-    const paletteType = window.localStorage.getItem('paletteType');
-    if (!paletteType || (paletteType !== PALETTE_TYPE_DARK && paletteType !== PALETTE_TYPE_LIGHT)) {
-        window.localStorage.setItem('paletteType', PALETTE_TYPE_DARK);
-        return PALETTE_TYPE_DARK;
-    }
-
-    return paletteType;
-};
-
 export const setPreferredPaletteType = (paletteType) => {
     if (paletteType !== PALETTE_TYPE_DARK && paletteType !== PALETTE_TYPE_LIGHT) {
         return;

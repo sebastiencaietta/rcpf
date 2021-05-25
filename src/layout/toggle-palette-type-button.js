@@ -5,13 +5,15 @@ import Brightness7Icon from '@material-ui/icons/Brightness7';
 import IconButton from "@material-ui/core/IconButton";
 import {makeStyles} from "@material-ui/core/styles";
 import {PALETTE_TYPE_DARK, PALETTE_TYPE_LIGHT} from "../global/theme-settings";
+import {useThemeSwitcher} from "./use-theme-switcher";
 
 const useStyles = makeStyles(theme => ({
     toggleButton: {color: theme.palette.text.primary},
 })) ;
 
-const TogglePaletteTypeButton = ({onToggleTheme}) => {
+const TogglePaletteTypeButton = () => {
     const theme = useTheme();
+    const {onToggleTheme} = useThemeSwitcher();
     const classes = useStyles();
 
     const handleThemeChange = () => {

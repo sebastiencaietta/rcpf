@@ -1,7 +1,6 @@
 import {createStore, compose} from 'redux';
 import {combineReducers} from 'redux';
 import filters from './recipe-list/reducers/filters';
-import auth from './global/reducers/auth';
 
 const initialState = {};
 const enhancers = [];
@@ -17,7 +16,6 @@ if (process.env.NODE_ENV === 'development') {
 const composedEnhancers = compose(...enhancers);
 const reducers = combineReducers({
         filters,
-        auth,
     },
 );
 

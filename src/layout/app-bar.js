@@ -16,6 +16,7 @@ import {makeStyles} from "@material-ui/core/styles";
 import {PaletteTypeToggleContext} from "../index";
 import TogglePaletteTypeButton from './toggle-palette-type-button';
 import {PALETTE_TYPE_DARK} from "../global/theme-settings";
+import AccountMenu from "./account-menu";
 
 const useStyles = makeStyles(theme => {
     const appBarTransitionProps = ['box-shadow', 'min-height'];
@@ -76,10 +77,9 @@ export default () => {
                                     <Button startIcon={<RestaurantMenu/>}>Recettes</Button>
                                 </Link>
                                 <Button disabled startIcon={<MenuBookIcon/>}>Menus</Button>
-                                <AdminMenu/>
-                                <PaletteTypeToggleContext.Consumer>
-                                    {({onToggleTheme}) => <TogglePaletteTypeButton onToggleTheme={onToggleTheme}/>}
-                                </PaletteTypeToggleContext.Consumer>
+                                <AccountMenu />
+                                <AdminMenu />
+                                <TogglePaletteTypeButton/>
                             </Hidden>
                         </Grid>
                     </Grid>

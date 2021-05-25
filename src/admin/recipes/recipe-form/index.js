@@ -7,7 +7,7 @@ import {
     updateRecipe,
     uploadRecipeHero
 } from "../../../repositories/recipes";
-import SignUpPage from '../../../global/components/sign-in-page';
+import SignUpPage from '../../../global/components/role-restricted-page';
 import Layout from "../../../layout";
 import CircularProgress from "@material-ui/core/CircularProgress";
 

@@ -8,6 +8,7 @@ import SnackbarContent from "@material-ui/core/SnackbarContent";
 import Snackbar from "@material-ui/core/Snackbar";
 import Divider from "@material-ui/core/Divider";
 import {sortAlphabetically} from "../../../global/lodash";
+import Bugsnag from "@bugsnag/js";
 
 const useStyles = makeStyles(theme => {
     return {
@@ -66,6 +67,7 @@ const IngredientsAdmin = ({savedIngredients, recipesByIngredientId}) => {
             });
             showSuccess('Ingredient ajouté');
         } catch (error) {
+            Bugsnag.notify(error);
             showError(error.message);
         }
     };
@@ -80,6 +82,7 @@ const IngredientsAdmin = ({savedIngredients, recipesByIngredientId}) => {
             });
             showSuccess('Ingredient sauvegardé');
         } catch (error) {
+            Bugsnag.notify(error);
             showError(error.message);
         }
     };
@@ -94,6 +97,7 @@ const IngredientsAdmin = ({savedIngredients, recipesByIngredientId}) => {
             });
             showSuccess('Ingredient supprimé');
         } catch (error) {
+            Bugsnag.notify(error);
             showError(error.message);
         }
     };

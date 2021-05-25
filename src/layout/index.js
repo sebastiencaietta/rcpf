@@ -11,6 +11,11 @@ const useStyles = makeStyles(theme => ({
         padding: theme.spacing(3, 0),
         position: 'relative',
     },
+    container: {
+        display: 'flex',
+        flexGrow: 1,
+        position: 'relative',
+    }
 }));
 
 const Layout = (props) => {
@@ -22,7 +27,7 @@ const Layout = (props) => {
 
             {props.hero ? props.hero : ''}
 
-            <Container fixed>
+            <Container fixed className={classes.container}>
                 <main className={classes.content}>
                     {props.children}
                 </main>
