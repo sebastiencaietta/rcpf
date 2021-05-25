@@ -29,13 +29,13 @@ const useStyles = makeStyles(theme => ({
             backgroundPosition: `center ${props.verticalPosition || '69'}%`,
         }
     }),
-    title: {
+    title: props => ({
         zIndex: 2,
         color: '#fff',
-        fontSize: '3rem',
+        fontSize: props.titleSize && '3rem',
         textAlign: 'center',
         [theme.breakpoints.up('lg')]: {fontSize: '3.5rem'},
-    },
+    }),
 }));
 
 const Hero = (props) => {

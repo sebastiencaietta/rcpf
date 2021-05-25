@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useState} from "react";
 import FormControl from "@material-ui/core/FormControl";
 import Input from "@material-ui/core/Input";
 import InputAdornment from "@material-ui/core/InputAdornment";
@@ -18,9 +18,18 @@ const useStyles = makeStyles(() => ({
     }
 }));
 
-const RecipeList = ({recipeList, onRecipeSelect, checkedRecipes}) => {
+const searchRecipes = (search, recipeList) => {
+     return recipeList.filter(recipe => {
+        if (!search) {
+            return true;
+        }
+        return recipe.title.toLowerCase().includes(search.toLowerCase());
+    });
+};
+
+const RecipeList = ({recipeList, onRecipeSelect, checkedRecipes, height}) => {
     const [search, setSearch] = useState('');
-    const [visibleRecipes, setVisibleRecipes] = useState([...recipeList]);
+    const visibleRecipes = searchRecipes(search, recipeList);
     const classes = useStyles();
 
     const handleSearch = (e) => {
@@ -31,18 +40,7 @@ const RecipeList = ({recipeList, onRecipeSelect, checkedRecipes}) => {
         onRecipeSelect(recipeId);
     };
 
-    useEffect(() => {
-        const filteredRecipes = recipeList.filter(recipe => {
-            if (!search) {
-                return true;
-            }
-            return recipe.title.toLowerCase().includes(search.toLowerCase());
-        });
-
-        setVisibleRecipes(filteredRecipes);
-    }, [search, recipeList]);
-
-    return <>
+    return <div>
         <FormControl fullWidth={true}>
             <Input
                 value={search}
@@ -55,13 +53,13 @@ const RecipeList = ({recipeList, onRecipeSelect, checkedRecipes}) => {
                 fullWidth={true}
             />
         </FormControl>
-        <FixedSizeList height={400} width="100%" itemSize={46} itemCount={visibleRecipes.length}
+        <FixedSizeList height={height} width="100%" itemSize={46} itemCount={visibleRecipes.length}
                        itemData={visibleRecipes} className={classes.list}>
             {({style, index, data}) => {
                 const recipe = data[index];
 
-                return <div style={style}>
-                    <ListItem key={index} button onClick={() => handleToggle(recipe.id)}>
+                return <div style={style} key={index}>
+                    <ListItem button onClick={() => handleToggle(recipe.id)}>
                         <ListItemAvatar>
                             <Avatar
                                 alt={`${recipe.slug} thumbnail`}
@@ -81,7 +79,7 @@ const RecipeList = ({recipeList, onRecipeSelect, checkedRecipes}) => {
                 </div>
             }}
         </FixedSizeList>
-    </>
+    </div>
 };
 
-export default RecipeList;
+export default React.memo(RecipeList);

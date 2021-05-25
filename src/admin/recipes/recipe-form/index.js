@@ -7,7 +7,6 @@ import {
     updateRecipe,
     uploadRecipeHero
 } from "../../../repositories/recipes";
-import SignUpPage from '../../../global/components/sign-in-page';
 import Layout from "../../../layout";
 import CircularProgress from "@material-ui/core/CircularProgress";
 
@@ -42,13 +41,11 @@ const Component = (props) => {
     }
 
     return <Layout>
-        <SignUpPage>
-            <RecipeForm
-                handleSubmit={saveRecipe}
-                recipe={recipe}
-                handleUploadRecipeThumbnail={uploadRecipeThumbnail}
-                handleUploadRecipeHero={uploadRecipeHero}/>
-        </SignUpPage>
+        <RecipeForm
+            handleSubmit={saveRecipe}
+            recipe={recipe}
+            handleUploadRecipeThumbnail={uploadRecipeThumbnail}
+            handleUploadRecipeHero={uploadRecipeHero}/>
     </Layout>
 };
 

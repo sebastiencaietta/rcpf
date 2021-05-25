@@ -2,7 +2,7 @@ import React, {useState} from "react";
 import {useHistory} from "react-router-dom";
 import {green} from '@material-ui/core/colors';
 import slugify from "slugify";
-import {makeStyles} from "@material-ui/core";
+import {Accordion, AccordionDetails, AccordionSummary, makeStyles} from "@material-ui/core";
 import SaveIcon from '@material-ui/icons/Save';
 import Fab from "@material-ui/core/Fab";
 import Snackbar from "@material-ui/core/Snackbar";
@@ -11,9 +11,6 @@ import GeneralInformation from '../components/general-information';
 import IngredientsForm from '../components/ingredient-form/ingredients-form';
 import ImageUpload from '../components/image-upload';
 import {ExpandMore} from "@material-ui/icons";
-import ExpansionPanel from "@material-ui/core/ExpansionPanel";
-import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary";
-import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
 import DescriptionForm from "../components/description-form";
 
 const useStyles = makeStyles(theme => ({
@@ -93,44 +90,45 @@ export default (props) => {
 
     return <form onSubmit={handleSubmit}>
 
-        <ExpansionPanel defaultExpanded={true}>
-            <ExpansionPanelSummary expandIcon={<ExpandMore/>} aria-label="Expand">General
-                Information</ExpansionPanelSummary>
-            <ExpansionPanelDetails>
+        <Accordion defaultExpanded={true}>
+            <AccordionSummary expandIcon={<ExpandMore/>} aria-label="Expand">
+                General Information
+            </AccordionSummary>
+            <AccordionDetails>
                 {
                     <GeneralInformation onFieldChange={handleFieldChange}
                                         onTitleChange={handleTitleChange}
                                         savedRecipe={savedRecipe}/>
                 }
-            </ExpansionPanelDetails>
-        </ExpansionPanel>
+            </AccordionDetails>
+        </Accordion>
 
-        <ExpansionPanel defaultExpanded={true}>
-            <ExpansionPanelSummary expandIcon={<ExpandMore/>} aria-label="Expand">Ingrédients</ExpansionPanelSummary>
-            <ExpansionPanelDetails>
+        <Accordion defaultExpanded={true}>
+            <AccordionSummary expandIcon={<ExpandMore/>} aria-label="Expand">Ingrédients</AccordionSummary>
+            <AccordionDetails>
                 {
                     <IngredientsForm
                         onIngredientsChange={(ingArray) => handleFieldChange('ingredients', ingArray)}
                         savedRecipe={savedRecipe}/>
                 }
-            </ExpansionPanelDetails>
-        </ExpansionPanel>
+            </AccordionDetails>
+        </Accordion>
 
-        <ExpansionPanel defaultExpanded={true}>
-            <ExpansionPanelSummary expandIcon={<ExpandMore/>} aria-label="Expand">Description</ExpansionPanelSummary>
-            <ExpansionPanelDetails>
+        <Accordion defaultExpanded={true}>
+            <AccordionSummary expandIcon={<ExpandMore/>} aria-label="Expand">Description</AccordionSummary>
+            <AccordionDetails>
                 {
                     <DescriptionForm
                         onDescriptionChange={(description) => handleFieldChange('description', description)}
                         savedRecipe={savedRecipe}/>
                 }
-            </ExpansionPanelDetails>
-        </ExpansionPanel>
-        <ExpansionPanel defaultExpanded={true}>
-            <ExpansionPanelSummary expandIcon={<ExpandMore/>} aria-label="Expand">
+            </AccordionDetails>
+        </Accordion>
+        <Accordion defaultExpanded={true}>
+            <AccordionSummary expandIcon={<ExpandMore/>} aria-label="Expand">
                 Images
-            </ExpansionPanelSummary>
-            <ExpansionPanelDetails>
+            </AccordionSummary>
+            <AccordionDetails>
                 {
                     <ImageUpload
                         onThumbnailChange={(thumbUrl) => handleFieldChange('thumbnail', thumbUrl)}
@@ -141,8 +139,8 @@ export default (props) => {
                         recipeSlug={recipe.slug}
                         recipeTitle={recipe.title}/>
                 }
-            </ExpansionPanelDetails>
-        </ExpansionPanel>
+            </AccordionDetails>
+        </Accordion>
 
         <Snackbar
             anchorOrigin={{vertical: 'top', horizontal: 'right'}}

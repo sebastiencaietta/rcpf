@@ -1,7 +1,6 @@
 import React, {useEffect, useState} from "react";
 import IngredientsAdmin from './containers/ingredients-admin'
 import Layout from "../../layout";
-import SignInPage from '../../global/components/sign-in-page';
 import CircularProgress from "@material-ui/core/CircularProgress";
 import {getIngredientList} from "../../repositories/ingredients";
 import {sortAlphabetically} from "../../global/lodash";
@@ -44,8 +43,6 @@ export default function IngredientsAdminPage() {
     }
 
     return <Layout>
-        <SignInPage>
-            <IngredientsAdmin savedIngredients={ingredients} recipesByIngredientId={recipesByIngredientId}/>
-        </SignInPage>
+        <IngredientsAdmin savedIngredients={ingredients} recipesByIngredientId={recipesByIngredientId}/>
     </Layout>
 }

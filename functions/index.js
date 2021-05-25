@@ -15,21 +15,17 @@ exports.updateRecipeListOnRecipeCreate = functions.region('europe-west1').firest
         const {recipeId} = context.params;
         const db = admin.firestore();
 
-        const documentSnapshot = await db.collection('cache').doc('recipeList').get();
-        const recipeList = documentSnapshot.exists ? documentSnapshot.data() : {};
-
-        const newRecipeList = {
-            ...recipeList,
+        return db.collection('cache').doc('recipeList').update({
             [recipeId]: {
                 slug: recipe.slug,
                 title: recipe.title,
                 thumbnail: recipe.thumbnail,
                 tags: recipe.tags,
                 category: recipe.category,
+                diets: recipe.diets || [],
+                seasons: recipe.seasons || [],
             }
-        };
-
-        return db.collection('cache').doc('recipeList').set(newRecipeList);
+        });
     });
 
 exports.deleteRecipeFromRecipeListOnRecipeDelete = functions.region('europe-west1').firestore
@@ -44,18 +40,17 @@ exports.deleteRecipeFromRecipeListOnRecipeDelete = functions.region('europe-west
             return null;
         }
 
-        const recipeList = documentSnapshot.data();
-        delete recipeList[recipeId];
-
-        return db.collection('cache').doc('recipeList').set(recipeList);
+        return db.collection('cache').doc('recipeList').update({
+            [recipeId]: admin.firestore.FieldValue.delete()
+        });
     });
 
-//Only update the recipe list on title/thumbnail/tags/category/slug change
+//Only update the recipe list on title/thumbnail/tags/category/slug/diets/seasons change
 const shouldUpdateRecipe = (newVal, oldVal) => {
     return JSON.stringify(
-        [newVal.title, newVal.thumbnail, newVal.tags, newVal.category, newVal.slug]
+        [newVal.title, newVal.thumbnail, newVal.tags, newVal.category, newVal.slug, newVal.diets, newVal.seasons]
     ) !== JSON.stringify(
-        [oldVal.title, oldVal.thumbnail, oldVal.tags, oldVal.category, oldVal.slug]
+        [oldVal.title, oldVal.thumbnail, oldVal.tags, oldVal.category, oldVal.slug, oldVal.diets, oldVal.seasons]
     );
 };
 
@@ -78,6 +73,8 @@ exports.updateRecipeListOnRecipeUpdate = functions.region('europe-west1').firest
             [recipeId + '.tags']: newVal.tags,
             [recipeId + '.category']: newVal.category,
             [recipeId + '.slug']: newVal.slug,
+            [recipeId + '.diets']: newVal.diets || [],
+            [recipeId + '.seasons']: newVal.seasons || [],
         });
     });
 
@@ -129,6 +126,8 @@ exports.regenerateRecipeListCache = functions.region('europe-west1').https.onReq
             thumbnail: recipe.thumbnail,
             tags: recipe.tags,
             category: recipe.category,
+            diets: recipe.diets || [],
+            seasons: recipe.seasons || [],
         };
     });
 

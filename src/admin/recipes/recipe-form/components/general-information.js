@@ -8,12 +8,16 @@ import MenuItem from "@material-ui/core/MenuItem";
 import TagSelect from "./tag-select";
 import {fetchCategories, fetchTags} from "../../../../global/eve";
 import InputAdornment from "@material-ui/core/InputAdornment";
+import {SEASONS} from "../../../../global/constants/seasons";
+import {DIETS} from "../../../../global/constants/diets";
 
 const GeneralInformation = ({onFieldChange, savedRecipe, onTitleChange}) => {
     const [data, setData] = useState({
         title: '',
         slug: '',
         tags: [],
+        diets: [],
+        seasons: [],
         category: '',
         portionSize: '',
         portionType: '',
@@ -23,6 +27,8 @@ const GeneralInformation = ({onFieldChange, savedRecipe, onTitleChange}) => {
     });
     const [tags, setTags] = useState([]);
     const [categories, setCategories] = useState([]);
+    const seasons = Object.keys(SEASONS).map(key => SEASONS[key]);
+    const diets = Object.keys(DIETS).map(key => DIETS[key]);
 
     useEffect(() => {
         Promise.all([fetchTags(), fetchCategories()]).then(([tags, categories]) => {
@@ -39,6 +45,8 @@ const GeneralInformation = ({onFieldChange, savedRecipe, onTitleChange}) => {
                 slug: savedRecipe.slug,
                 tags: savedRecipe.tags,
                 category: savedRecipe.category,
+                diets: savedRecipe.diets || [],
+                seasons: savedRecipe.seasons || [],
                 portionSize: savedRecipe.portionSize || '',
                 portionType: savedRecipe.portionType || '',
                 prepTime: savedRecipe.prepTime || '',
@@ -89,8 +97,21 @@ const GeneralInformation = ({onFieldChange, savedRecipe, onTitleChange}) => {
         </Grid>
 
         <Grid item xs={12} sm={6}>
-            <TagSelect tags={tags} recipeTags={data.tags}
-                       onTagSelect={(tags) => handleFieldChange('tags', tags)}/>
+            <TagSelect options={tags} selectedOptions={data.tags}
+                       onOptionSelect={(tags) => handleFieldChange('tags', tags)}
+                        idField="id" label="Tags" labelField="title"/>
+        </Grid>
+
+        <Grid item xs={12} sm={6}>
+            <TagSelect options={seasons} selectedOptions={data.seasons}
+                       onOptionSelect={(seasons) => handleFieldChange('seasons', seasons)}
+                        idField="name" label="Saison" labelField="name"/>
+        </Grid>
+
+        <Grid item xs={12} sm={6}>
+            <TagSelect options={diets} selectedOptions={data.diets}
+                       onOptionSelect={(diets) => handleFieldChange('diets', diets)}
+                        idField="name" label="Régime" labelField="name"/>
         </Grid>
 
         <Grid item xs={4} sm={2}>

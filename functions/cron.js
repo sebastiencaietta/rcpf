@@ -9,7 +9,6 @@ exports.dbExport = async (context) => {
     const exportFolder = functions.config().firestoreexports.folder;
     const exportDirectory = bucket + '/' + exportFolder;
 
-
     const projectId = process.env.GCP_PROJECT || process.env.GCLOUD_PROJECT;
     const databaseName = firestoreClient.databasePath(projectId, '(default)');
 
@@ -21,7 +20,7 @@ exports.dbExport = async (context) => {
     const exportsToDelete = exports.filter(file => {
         const exportDateString = file.name.substring(8, 18);
         const exportTimestamp = Date.parse(exportDateString);
-        return exportTimestamp + 1000 * 60 * 60 * 24 * 30 < (new Date()).getTime();
+        return exportTimestamp + 1000 * 60 * 60 * 24 * 20 < (new Date()).getTime();
     });
 
 

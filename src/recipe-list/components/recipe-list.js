@@ -10,13 +10,13 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
-export default function RecipeList(props) {
+export default function RecipeList({recipes}) {
     const classes = useStyles();
 
     return (
         <React.Fragment>
             <Grid container justify="flex-start" spacing={3} className={classes.recipeList}>
-                {props.recipes.map(recipe => <Recipe recipe={recipe} key={recipe.slug}/>)}
+                {recipes.map(recipe => <Recipe recipe={recipe} key={recipe.slug}/>)}
             </Grid>
         </React.Fragment>
     );
