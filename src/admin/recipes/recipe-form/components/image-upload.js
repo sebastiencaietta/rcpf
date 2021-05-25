@@ -88,6 +88,7 @@ const ImageUpload = ({savedRecipe, onThumbnailChange, uploadRecipeThumbnail, rec
 
     async function handleHeroImageChange(file) {
         const url = await updateRecipeHero(recipeSlug, file);
+        console.log(url);
         onHeroChange({...hero, url});
         setHero({...hero, url});
     }
@@ -157,7 +158,7 @@ const ImageUpload = ({savedRecipe, onThumbnailChange, uploadRecipeThumbnail, rec
         <ConfirmIconButton onConfirm={handleDeleteHero} IconComponent={DeleteIcon} disabled={hero.url === undefined}/>
 
         <div className={classes.heroReplica} style={{
-            backgroundImage: `url('${hero && hero.url ? hero.url : thumbnail}')`,
+            backgroundImage: `url("${hero && hero.url ? hero.url : thumbnail}")`,
             backgroundPosition: `center ${hero.verticalPosition}%`
         }}>
             <label htmlFor="hero">
@@ -170,7 +171,7 @@ const ImageUpload = ({savedRecipe, onThumbnailChange, uploadRecipeThumbnail, rec
         <h3>Mobile</h3>
         <div style={{width: '360px'}}>
             <div className={classes.mobileHeroReplica}
-                 style={{backgroundImage: `url('${hero && hero.url ? hero.url : thumbnail}')`}}>
+                 style={{backgroundImage: `url("${hero && hero.url ? hero.url : thumbnail}")`}}>
             </div>
         </div>
     </div>;
