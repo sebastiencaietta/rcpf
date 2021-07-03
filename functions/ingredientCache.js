@@ -5,16 +5,9 @@ exports.updateIngredientListOnIngredientAdd = async (snap, context) => {
     const {ingredientId} = context.params;
     const db = admin.firestore();
 
-    const documentSnapshot = await db.collection('cache').doc('ingredientList').get();
-    const ingredientList = documentSnapshot.exists ? documentSnapshot.data() : {};
     const {newThumbnail, id, links, ...pureIngredient} = ingredient;
 
-    const newIngredientList = {
-        ...ingredientList,
-        [ingredientId]: pureIngredient
-    };
-
-    return db.collection('cache').doc('ingredientList').set(newIngredientList);
+    return db.collection('cache').doc('ingredientList').update({[ingredientId]: pureIngredient});
 };
 
 exports.updateIngredientListOnIngredientUpdate = async (change, context) => {
@@ -40,10 +33,9 @@ exports.updateIngredientListOnIngredientDelete = async (snap, context) => {
         return null;
     }
 
-    const ingredientList = documentSnapshot.data();
-    delete ingredientList[ingredientId];
-
-    return db.collection('cache').doc('ingredientList').set(ingredientList);
+    return db.collection('cache').doc('ingredientList').update({
+        [ingredientId]: admin.firestore.FieldValue.delete()
+    });
 };
 
 exports.regenerateIngredientListCache = async (req, res) => {
