@@ -103,4 +103,14 @@ export const UNITS = {
         isScientific: false,
         plural: 'brins',
     },
+    UNIT_FEUILLE: {
+        unit: 'feuille',
+        isScientific: false,
+        plural: 'feuilles',
+    },
+    UNIT_BRANCHE: {
+        unit: 'branches',
+        isScientific: false,
+        plural: 'branches',
+    },
 };
