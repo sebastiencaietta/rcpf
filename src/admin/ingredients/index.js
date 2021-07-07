@@ -44,8 +44,6 @@ export default function IngredientsAdminPage() {
     }
 
     return <Layout>
-        <RoleRestrictedPage>
-            <IngredientsAdmin savedIngredients={ingredients} recipesByIngredientId={recipesByIngredientId}/>
-        </RoleRestrictedPage>
+        <IngredientsAdmin savedIngredients={ingredients} recipesByIngredientId={recipesByIngredientId}/>
     </Layout>
 }

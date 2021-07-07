@@ -46,7 +46,8 @@ export default function Recipe({recipe}) {
             <Card className={classes.card}>
                 <CardMedia
                     className={classes.media}
-                    image={recipe.thumbnail || RecipeImage}
+                    // image={recipe.thumbnail || RecipeImage}
+                    image={RecipeImage}
                     title={recipe.title}
                 />
                 <CardContent className={classes.cardContent}>

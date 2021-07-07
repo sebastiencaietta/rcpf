@@ -2,37 +2,37 @@ import React, {useEffect, useState} from "react";
 import TextField from "@material-ui/core/TextField";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 
-const recreateOptionsFromRecipe = (recipeTags, tags) => {
-  return recipeTags.map(recipeTag => tags.find(tag => recipeTag === tag.id));
+const recreateOptionsFromRecipe = (selectedOptions, options, idField) => {
+  return selectedOptions.map(selectedOption => options.find(option => selectedOption === option[idField]));
 };
 
-export default ({recipeTags, tags, onTagSelect}) => {
-    const [selectedTags, setSelectedTags] = useState([]);
+export default ({selectedOptions, options, onOptionSelect, idField, labelField, label}) => {
+    const [selected, setSelected] = useState([]);
 
     useEffect(() => {
-        if (recipeTags.length === 0) {
+        if (selectedOptions.length === 0) {
             return;
         }
 
-        setSelectedTags(recreateOptionsFromRecipe(recipeTags, tags));
-    }, [recipeTags]);
+        setSelected(recreateOptionsFromRecipe(selectedOptions, options, idField));
+    }, [selectedOptions]);
 
-    function handleTagChange(e, selectedTags) {
-        setSelectedTags(selectedTags);
-        onTagSelect(selectedTags.map(tag => tag.id))
+    function handleChange(e, selectedOptions) {
+        setSelected(selectedOptions);
+        onOptionSelect(selectedOptions.map(option => option[idField]))
     }
 
     return (<>
-            <Autocomplete options={tags}
-                          getOptionLabel={(option) => option.title}
+            <Autocomplete options={options}
+                          getOptionLabel={(option) => option[labelField]}
                           multiple
                           size="small"
                           limitTags={6}
-                          renderInput={(params) => <TextField fullWidth label="Tags" {...params}/>}
-                          renderOption={(option) => option.title}
+                          renderInput={(params) => <TextField fullWidth label={label} {...params}/>}
+                          renderOption={(option) => option[labelField]}
                           disableCloseOnSelect={true}
-                          onChange={handleTagChange}
-                          value={selectedTags}
+                          onChange={handleChange}
+                          value={selected}
             />
         </>);
 }

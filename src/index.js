@@ -1,8 +1,6 @@
 import React from 'react';
-import {Provider} from 'react-redux';
 import ReactDOM from 'react-dom';
 import {Router} from 'react-router-dom'
-import store from './store'
 import * as serviceWorker from './serviceWorker';
 import {initFirebaseApp} from "./vendor/firebase";
 import {getErrorBoundary, initBugsnapApp} from './vendor/bugsnag';
@@ -15,6 +13,7 @@ import {wrapHistory} from "oaf-react-router";
 import './index.css';
 import {ProviderThemeSwitcher} from "./layout/use-theme-switcher";
 import PreferredThemeProvider from "./layout/theme-provider";
+import {ProviderFilters} from "./recipe-list/use-filters";
 
 initFirebaseApp();
 initBugsnapApp();
@@ -27,20 +26,22 @@ const history = createBrowserHistory(); // or createHashHistory()
 wrapHistory(history);
 
 const App = () => {
-    return <Provider store={store}>
+    return <>
         <ErrorBoundary>
             <ProviderThemeSwitcher>
                 <ProvideAuth>
                     <PreferredThemeProvider>
-                        <CssBaseline/>
-                        <Router history={history}>
-                            <Routes/>
-                        </Router>
+                        <ProviderFilters>
+                            <CssBaseline/>
+                            <Router history={history}>
+                                <Routes/>
+                            </Router>
+                        </ProviderFilters>
                     </PreferredThemeProvider>
                 </ProvideAuth>
             </ProviderThemeSwitcher>
         </ErrorBoundary>
-    </Provider>
+    </>
 };
 
 ReactDOM.render(

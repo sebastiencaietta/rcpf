@@ -60,8 +60,8 @@ const RecipeList = ({recipeList, onRecipeSelect, checkedRecipes}) => {
             {({style, index, data}) => {
                 const recipe = data[index];
 
-                return <div style={style}>
-                    <ListItem key={index} button onClick={() => handleToggle(recipe.id)}>
+                return <div style={style} key={index}>
+                    <ListItem button onClick={() => handleToggle(recipe.id)}>
                         <ListItemAvatar>
                             <Avatar
                                 alt={`${recipe.slug} thumbnail`}
@@ -84,4 +84,4 @@ const RecipeList = ({recipeList, onRecipeSelect, checkedRecipes}) => {
     </>
 };
 
-export default RecipeList;
+export default React.memo(RecipeList);

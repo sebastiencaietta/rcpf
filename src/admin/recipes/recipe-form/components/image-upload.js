@@ -88,7 +88,6 @@ const ImageUpload = ({savedRecipe, onThumbnailChange, uploadRecipeThumbnail, rec
 
     async function handleHeroImageChange(file) {
         const url = await updateRecipeHero(recipeSlug, file);
-        console.log(url);
         onHeroChange({...hero, url});
         setHero({...hero, url});
     }

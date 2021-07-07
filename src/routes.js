@@ -19,19 +19,19 @@ export default () => <>
     <RoleRestrictedPage exact path="/my-account" userRole="ROLE_USER">
         <MyAccount />
     </RoleRestrictedPage>
-    <RoleRestrictedPage exact path="/admin/recipes/add">
+    <RoleRestrictedPage exact path="/admin/recipes/add" userRole="ROLE_ADMIN">
         <AddRecipe/>
     </RoleRestrictedPage>
-    <RoleRestrictedPage exact path="/admin/recipes">
+    <RoleRestrictedPage exact path="/admin/recipes" userRole="ROLE_ADMIN">
         <RecipesAdmin/>
     </RoleRestrictedPage>
-    <RoleRestrictedPage exact path="/admin/recipes/edit/:slug">
+    <RoleRestrictedPage exact path="/admin/recipes/edit/:slug" userRole="ROLE_ADMIN">
         <AddRecipe/>
     </RoleRestrictedPage>
-    <RoleRestrictedPage exact path="/admin/ingredients/">
+    <RoleRestrictedPage exact path="/admin/ingredients/" userRole="ROLE_ADMIN">
         <IngredientsAdmin/>
     </RoleRestrictedPage>
-    <RoleRestrictedPage exact path="/admin/tags/">
+    <RoleRestrictedPage exact path="/admin/tags/" userRole="ROLE_ADMIN">
         <TagsAdmin/>
     </RoleRestrictedPage>
     <Route path="/__/auth/action" component={AuthActions} />

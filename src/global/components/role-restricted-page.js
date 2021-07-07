@@ -11,12 +11,12 @@ const useStyles = makeStyles((theme) => ({
     denied: {fontSize: theme.typography.pxToRem(128), color: theme.palette.error.main}
 }));
 
-const RoleRestrictedPage = ({userRole, children, ...props}) => {
+const RoleRestrictedPage = ({userRole, component, children, ...props}) => {
     const classes = useStyles();
     const auth = useAuth();
     const {authStatusReported, signedIn, user} = auth.user;
 
-    const getRenderedComponent = ({location}) => {
+    const getRenderedComponent = ({location, ...props}) => {
         if (!authStatusReported) {
             return <Layout>
                 <div className={classes.root}>
@@ -42,7 +42,7 @@ const RoleRestrictedPage = ({userRole, children, ...props}) => {
             </Layout>;
         }
 
-        return children;
+        return React.cloneElement(children, props);
     };
 
     return (

@@ -31,14 +31,14 @@ const useStyles = makeStyles(theme => ({
 
 const AdminMenu = () => {
     const auth = useAuth();
+    const [anchorEl, setAnchorEl] = useState(null);
+    const classes = useStyles();
+
     const {user} = auth.user;
 
     if (user.uid === undefined || user.role !== 'ROLE_ADMIN') {
         return '';
     }
-
-    const classes = useStyles();
-    const [anchorEl, setAnchorEl] = useState(null);
 
     function handleAdminClick(event) {
         setAnchorEl(event.currentTarget);

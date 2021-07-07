@@ -149,7 +149,8 @@ export default function AdminRecipeList() {
                         <Link to={`/admin/recipes/edit/${recipe.slug}`} className={classes.link}>
                             <CardMedia
                                 className={classes.media}
-                                image={recipe.thumbnail || RecipeImage}
+                                // image={recipe.thumbnail || RecipeImage}
+                                image={RecipeImage}
                                 title={recipe.title}
                             />
                         </Link>

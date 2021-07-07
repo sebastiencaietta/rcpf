@@ -13,7 +13,6 @@ import useScrollTrigger from "@material-ui/core/useScrollTrigger/useScrollTrigge
 import RestaurantMenu from '@material-ui/icons/RestaurantMenu';
 import MenuBookIcon from '@material-ui/icons/MenuBook';
 import {makeStyles} from "@material-ui/core/styles";
-import {PaletteTypeToggleContext} from "../index";
 import TogglePaletteTypeButton from './toggle-palette-type-button';
 import {PALETTE_TYPE_DARK} from "../global/theme-settings";
 import AccountMenu from "./account-menu";
