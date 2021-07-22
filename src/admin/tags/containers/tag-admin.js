@@ -117,7 +117,7 @@ const TagAdmin = () => {
         <Snackbar
             anchorOrigin={{vertical: 'bottom', horizontal: 'right'}}
             open={snackbarOpen}
-            autoHideDuration={100000}
+            autoHideDuration={2000}
             onClose={handleSuccessClose}
         >
             <SnackbarContent

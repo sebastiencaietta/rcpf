@@ -100,3 +100,25 @@ export const addTagForRecipes = async (recipeIds, tagId) => {
         ));
     await batch.commit();
 };
+
+export const updateLabel = async (labelType, labelValue, recipesAdded, recipesRemoved) => {
+    const batch = firebase.firestore().batch();
+
+    recipesAdded.forEach(recipe => {
+        console.log(recipe.id, recipe[labelType]);
+        batch.update(
+            firebase.firestore().collection('recipes').doc(recipe.id),
+            {[labelType]: firebase.firestore.FieldValue.arrayUnion(labelValue)}
+        )
+    });
+
+    recipesRemoved.forEach(recipe => {
+        console.log(recipe.id, recipe[labelType]);
+        batch.update(
+            firebase.firestore().collection('recipes').doc(recipe.id),
+            {[labelType]: firebase.firestore.FieldValue.arrayRemove(labelValue)}
+        )
+    });
+
+    await batch.commit();
+};

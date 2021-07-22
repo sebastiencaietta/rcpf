@@ -10,7 +10,15 @@ const useStyles = makeStyles(theme => ({
         flexGrow: 1,
         padding: theme.spacing(3, 0),
         position: 'relative',
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "stretch",
     },
+    container: {
+        display: 'flex',
+        flexGrow: 1,
+        position: 'relative',
+    }
 }));
 
 const Layout = (props) => {
@@ -22,7 +30,7 @@ const Layout = (props) => {
 
             {props.hero ? props.hero : ''}
 
-            <Container fixed>
+            <Container fixed className={classes.container}>
                 <main className={classes.content}>
                     {props.children}
                 </main>

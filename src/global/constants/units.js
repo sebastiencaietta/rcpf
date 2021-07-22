@@ -69,9 +69,9 @@ export const UNITS = {
         plural: 'lbs',
     },
     UNIT_TIN: {
-        unit: 'boite',
+        unit: 'boîte',
         isScientific: false,
-        plural: 'boites',
+        plural: 'boîtes',
     },
     UNIT_SLICE: {
         unit: 'tranche',

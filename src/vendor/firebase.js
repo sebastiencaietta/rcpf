@@ -13,4 +13,5 @@ export const initFirebaseApp = () => {
         messagingSenderId: process.env.REACT_APP_FIREBASE_MESSENGING_SENDER_ID,
         appId: process.env.REACT_APP_FIREBASE_APP_ID,
     });
+    firebase.auth().useDeviceLanguage();
 };
