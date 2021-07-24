@@ -17,7 +17,7 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-const NewFilters = ({tags, categories}) => {
+const Filters = ({tags, categories}) => {
     const {filters, ...filtering} = useFilters();
     const [expandedAccordions, setExpandedAccordions] = useState({
         category: false,
@@ -104,4 +104,4 @@ const NewFilters = ({tags, categories}) => {
     </>
 }
 
-export default NewFilters;
+export default Filters;

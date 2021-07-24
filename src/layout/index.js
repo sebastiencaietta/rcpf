@@ -15,9 +15,11 @@ const useStyles = makeStyles(theme => ({
         alignItems: "stretch",
     },
     container: {
-        display: 'flex',
         flexGrow: 1,
         position: 'relative',
+    },
+    [theme.breakpoints.up('md')]: {
+        container: {display: 'flex'},
     }
 }));
 

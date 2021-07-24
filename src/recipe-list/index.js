@@ -5,7 +5,7 @@ import Grid from "@material-ui/core/Grid";
 import Layout from "../layout";
 import heroBg from './images/recipes-hero.webp';
 import Hero from "../global/components/hero";
-import NewFilters from "./components/new-filters";
+import Filters from "./components/filters";
 
 export default () => {
     const [tags, setTags] = useState([]);
@@ -25,7 +25,7 @@ export default () => {
     return <Layout hero={<Hero title="Recettes" bg={heroBg}/>}>
         <Grid container spacing={3}>
             <Grid item xs={12} md={3}>
-                <NewFilters tags={tags} categories={categories}/>
+                <Filters tags={tags} categories={categories}/>
             </Grid>
             <Grid item xs={12} md={9}>
                 <RecipeList recipes={recipes}/>

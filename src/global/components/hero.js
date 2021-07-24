@@ -32,9 +32,10 @@ const useStyles = makeStyles(theme => ({
     title: props => ({
         zIndex: 2,
         color: '#fff',
-        fontSize: props.titleSize && '3rem',
+        fontSize: props.titleSize || '2.5rem',
         textAlign: 'center',
         [theme.breakpoints.up('lg')]: {fontSize: '3.5rem'},
+        [theme.breakpoints.up('md')]: {fontSize: '3rem'},
     }),
 }));
 

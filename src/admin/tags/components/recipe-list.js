@@ -11,6 +11,7 @@ import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
 import Checkbox from "@material-ui/core/Checkbox";
 import {FixedSizeList} from "react-window";
 import {makeStyles} from "@material-ui/core/styles";
+import {filterSearch} from "../../../global/lodash";
 
 const useStyles = makeStyles(() => ({
     list: {
@@ -18,18 +19,9 @@ const useStyles = makeStyles(() => ({
     }
 }));
 
-const searchRecipes = (search, recipeList) => {
-     return recipeList.filter(recipe => {
-        if (!search) {
-            return true;
-        }
-        return recipe.title.toLowerCase().includes(search.toLowerCase());
-    });
-};
-
 const RecipeList = ({recipeList, onRecipeSelect, checkedRecipes, height}) => {
     const [search, setSearch] = useState('');
-    const visibleRecipes = searchRecipes(search, recipeList);
+    const visibleRecipes = filterSearch(search, recipeList, (recipe) => recipe.title);
     const classes = useStyles();
 
     const handleSearch = (e) => {

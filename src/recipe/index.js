@@ -11,7 +11,7 @@ const Component = (props) => {
     const [recipe, setRecipe] = useState({});
     const [tags, setTags] = useState([]);
     const [category, setCategory] = useState({});
-    const [ingredients, setIngredients] = useState([]);
+    const [ingredients, setIngredients] = useState({});
     const [loading, setLoading] = useState(props.match.params.slug !== undefined);
 
     useEffect(() => {
@@ -31,7 +31,7 @@ const Component = (props) => {
 
     if (loading) {
         return <Layout>
-            <div style={{display: 'flex', height: '90vh', alignItems: 'center', justifyContent: 'center'}}>
+            <div style={{display: 'flex', flexGrow: 1, alignItems: 'center', justifyContent: 'center'}}>
                 <CircularProgress />
             </div>
         </Layout>;

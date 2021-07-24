@@ -1,12 +1,13 @@
 import React from 'react';
 import RecipeList from '../components/recipe-list';
 import {useFilters} from "../use-filters";
+import {includesNormalized} from "../../global/lodash";
 
 const filterRecipes = (filters, recipes) => {
     const {search, tags, seasons, diets, category} = filters;
 
     return recipes.filter((recipe) => {
-        if (search !== '' && !recipe.title.toLowerCase().includes(search.toLowerCase())) {
+        if (!includesNormalized(search, recipe.title)) {
             return false;
         }
 

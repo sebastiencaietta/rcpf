@@ -26,6 +26,7 @@ import Input from "@material-ui/core/Input";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import {Search} from "@material-ui/icons";
 import FormControl from "@material-ui/core/FormControl";
+import {filterSearch} from "../../../global/lodash";
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -100,14 +101,8 @@ export default function AdminRecipeList() {
     }
 
     function handleSearch(e) {
+        const filteredRecipes = filterSearch(e.target.value, recipes, (recipe) => recipe.title);
         setSearch(e.target.value);
-        const filteredRecipes = recipes.filter(recipe => {
-            if (search === '') {
-                return true;
-            }
-            return recipe.title.toLowerCase().includes(e.target.value.toLowerCase());
-
-        });
         setVisibleRecipes(filteredRecipes);
     }
 

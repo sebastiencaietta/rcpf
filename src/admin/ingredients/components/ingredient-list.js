@@ -15,6 +15,7 @@ import Input from "@material-ui/core/Input";
 import AdminIngredientForm from "./ingredient-form";
 import {Link} from "react-router-dom";
 import MuiLink from '@material-ui/core/Link';
+import {filterSearch} from "../../../global/lodash";
 
 const useStyles = makeStyles((theme) => ({
     listSearchAdd: {margin: theme.spacing(2, 0)},
@@ -91,7 +92,7 @@ export default ({ingredients, recipesByIngredient, deleteIngredient, addIngredie
             return ingredients;
         }
 
-        return ingredients.filter(ingredient => ingredient.name.toLowerCase().includes(search.toLowerCase()));
+        return filterSearch(search, ingredients, ingredient => ingredient.name);
     }
 
     return <>
