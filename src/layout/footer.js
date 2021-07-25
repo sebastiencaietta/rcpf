@@ -26,7 +26,7 @@ const Footer = () => {
 
     return <div className={classes.footerRoot}>
         <Container fixed>
-            <Grid container justify="center">
+            <Grid container justifyContent="center">
                 <Grid item xs={8}>
                     <div className={classes.wrapper}>
                         <Typography variant="body2">© Sebastien Caietta 2021</Typography>

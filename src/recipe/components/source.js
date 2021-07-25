@@ -7,11 +7,11 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Source = ({recipe}) => {
+    const classes = useStyles();
+
     if (!recipe.source) {
         return '';
     }
-
-    const classes = useStyles();
 
     return <div className={classes.root}>
         <Typography variant="body2" color="textSecondary">Source</Typography>

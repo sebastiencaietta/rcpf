@@ -6,6 +6,7 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 import Hero from "../global/components/hero";
 import {fetchCategories, fetchTags} from "../global/eve";
 import {getIngredientList} from "../repositories/ingredients";
+import { Helmet } from 'react-helmet-async';
 
 const Component = (props) => {
     const [recipe, setRecipe] = useState({});
@@ -27,7 +28,7 @@ const Component = (props) => {
 
                 setLoading(false);
             })
-    }, []);
+    }, [props.match.params.slug]);
 
     if (loading) {
         return <Layout>
@@ -40,6 +41,9 @@ const Component = (props) => {
     return <Layout hero={<Hero title={recipe.title}
                                bg={recipe.hero && recipe.hero.url ? recipe.hero.url : recipe.thumbnail}
                                verticalPosition={recipe.hero && recipe.hero.verticalPosition ? recipe.hero.verticalPosition : undefined}/>}>
+        <Helmet>
+            <title>CookMate | {recipe.title}</title>
+        </Helmet>
        <RecipePage recipe={recipe} tags={tags} category={category} ingredients={ingredients}/>
     </Layout>;
 };

@@ -6,7 +6,7 @@ const recreateOptionsFromRecipe = (selectedOptions, options, idField) => {
   return selectedOptions.map(selectedOption => options.find(option => selectedOption === option[idField]));
 };
 
-export default ({selectedOptions, options, onOptionSelect, idField, labelField, label}) => {
+const TagSelect = ({selectedOptions, options, onOptionSelect, idField, labelField, label}) => {
     const [selected, setSelected] = useState([]);
 
     useEffect(() => {
@@ -14,8 +14,8 @@ export default ({selectedOptions, options, onOptionSelect, idField, labelField, 
             return;
         }
 
-        setSelected(recreateOptionsFromRecipe(selectedOptions, options, idField));
-    }, [selectedOptions]);
+        setSelected(recreateOptionsFromRecipe(selectedOptions, options, idField))
+    }, [selectedOptions, options, idField])
 
     function handleChange(e, selectedOptions) {
         setSelected(selectedOptions);
@@ -23,16 +23,18 @@ export default ({selectedOptions, options, onOptionSelect, idField, labelField, 
     }
 
     return (<>
-            <Autocomplete options={options}
-                          getOptionLabel={(option) => option[labelField]}
-                          multiple
-                          size="small"
-                          limitTags={6}
-                          renderInput={(params) => <TextField fullWidth label={label} {...params}/>}
-                          renderOption={(option) => option[labelField]}
-                          disableCloseOnSelect={true}
-                          onChange={handleChange}
-                          value={selected}
-            />
-        </>);
-}
+        <Autocomplete options={options}
+                      getOptionLabel={(option) => option[labelField]}
+                      multiple
+                      size="small"
+                      limitTags={6}
+                      renderInput={(params) => <TextField fullWidth label={label} {...params}/>}
+                      renderOption={(option) => option[labelField]}
+                      disableCloseOnSelect={true}
+                      onChange={handleChange}
+                      value={selected}
+        />
+    </>);
+};
+
+export default TagSelect

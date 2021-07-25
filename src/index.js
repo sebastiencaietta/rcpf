@@ -5,6 +5,7 @@ import * as serviceWorker from './serviceWorker';
 import {initFirebaseApp} from "./vendor/firebase";
 import {getErrorBoundary, initBugsnapApp} from './vendor/bugsnag';
 import {ProvideAuth} from "./auth/use-auth";
+import {HelmetProvider} from 'react-helmet-async';
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Routes from './routes';
 import {createBrowserHistory} from "history";
@@ -31,12 +32,14 @@ const App = () => {
             <ProviderThemeSwitcher>
                 <ProvideAuth>
                     <PreferredThemeProvider>
-                        <ProviderFilters>
+                        <HelmetProvider>
                             <CssBaseline/>
                             <Router history={history}>
-                                <Routes/>
+                                <ProviderFilters>
+                                    <Routes/>
+                                </ProviderFilters>
                             </Router>
-                        </ProviderFilters>
+                        </HelmetProvider>
                     </PreferredThemeProvider>
                 </ProvideAuth>
             </ProviderThemeSwitcher>

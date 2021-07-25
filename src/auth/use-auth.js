@@ -41,8 +41,7 @@ function useProvideAuth() {
     }
 
     useEffect(() => {
-        const unsubscribe = onUserUpdate(userObserver);
-        return () => unsubscribe();
+        return onUserUpdate(userObserver);
     }, []);
 
     return {

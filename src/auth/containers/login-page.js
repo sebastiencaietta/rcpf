@@ -22,7 +22,7 @@ const LoginPage = () => {
        if (auth.user.authStatusReported && auth.user.signedIn && auth.user.user.firstName && auth.user.user.emailVerified) {
            history.push(from);
        }
-    }, [auth]);
+    }, [history, from, auth]);
 
     if (!auth.user.authStatusReported) {
         return <Layout>

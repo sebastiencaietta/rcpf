@@ -9,6 +9,7 @@ import {
 } from "../../../repositories/recipes";
 import Layout from "../../../layout";
 import CircularProgress from "@material-ui/core/CircularProgress";
+import {Helmet} from "react-helmet-async";
 
 const saveRecipe = async (recipe) => {
     if (recipe.id === undefined) {
@@ -22,15 +23,15 @@ const Component = (props) => {
     const [recipe, setRecipe] = useState({});
     const [loading, setLoading] = useState(props.match.params.slug !== undefined);
 
-    if (props.match.params.slug) {
-        useEffect(() => {
+    useEffect(() => {
+        if (props.match.params.slug) {
             async function fetchRecipe(slug) {
                 const result = await getRecipeBySlug(slug);
                 setRecipe(result);
             }
             fetchRecipe(props.match.params.slug).then(() => setLoading(false));
-        }, []);
-    }
+        }
+    }, [props.match.params.slug]);
 
     if (loading) {
         return <Layout>
@@ -41,6 +42,9 @@ const Component = (props) => {
     }
 
     return <Layout>
+        <Helmet>
+            <title>CookMate | Admin | {recipe.title}</title>
+        </Helmet>
         <RecipeForm
             handleSubmit={saveRecipe}
             recipe={recipe}

@@ -33,7 +33,7 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
-export default function recipePage({recipe, tags, category, ingredients}) {
+const RecipePage = ({recipe, tags, category, ingredients}) => {
     const classes = useStyles();
 
     const hasIngredients = () => {
@@ -62,3 +62,5 @@ export default function recipePage({recipe, tags, category, ingredients}) {
 
     </React.Fragment>;
 }
+
+export default RecipePage;

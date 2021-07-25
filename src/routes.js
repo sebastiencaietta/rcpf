@@ -12,7 +12,7 @@ import MyAccount from "./account";
 import RoleRestrictedPage from "./global/components/role-restricted-page";
 import LabelAdmin from "./admin/labels/";
 
-export default () => <>
+const Routes = () => <>
     <Route exact path="/" component={RecipeList}/>
     <Route exact path="/recipes/:slug" component={Recipe}/>
     <Route exact path="/login" component={LoginPage} />
@@ -39,5 +39,7 @@ export default () => <>
         <LabelAdmin/>
     </RoleRestrictedPage>
     <Route path="/__/auth/action" component={AuthActions} />
-</>
+</>;
+
+export default Routes
 

@@ -1,6 +1,6 @@
 import React from "react";
 import clsx from "clsx";
-import AppBar from "@material-ui/core/AppBar/AppBar";
+import MuiAppBar from "@material-ui/core/AppBar/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Container from "@material-ui/core/Container";
 import Grid from "@material-ui/core/Grid";
@@ -51,7 +51,7 @@ const useStyles = makeStyles(theme => {
     }
 });
 
-export default () => {
+const AppBar = () => {
     const classes = useStyles();
 
     const trigger = useScrollTrigger({
@@ -60,7 +60,7 @@ export default () => {
     });
 
     return <>
-        <AppBar position="fixed" className={clsx(classes.appBar, {[classes.appBarShift]: trigger})}
+        <MuiAppBar position="fixed" className={clsx(classes.appBar, {[classes.appBarShift]: trigger})}
                 elevation={trigger ? 4 : 0}>
             <Toolbar className={clsx(classes.toolbar, {[classes.toolbarShift]: trigger})}>
                 <Container fixed>
@@ -84,8 +84,10 @@ export default () => {
                     </Grid>
                 </Container>
             </Toolbar>
-        </AppBar>
+        </MuiAppBar>
 
         <div className={classes.toolbar}/>
     </>
-}
+};
+
+export default AppBar

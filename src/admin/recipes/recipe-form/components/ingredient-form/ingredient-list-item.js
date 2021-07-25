@@ -29,7 +29,7 @@ const IngredientListItem = ({ingredient, onMoveUpClick, onMoveDownClick, onIngre
 
     function handleCancelEdit() {
         setShowForm(false)
-    };
+    }
 
     return <div className={classes.listItemRoot}>
         <div className={classes.moveUpDownWrapper}>

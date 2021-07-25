@@ -28,7 +28,7 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
-export default ({error}) => {
+const ErrorMessage = ({error}) => {
     const classes = useStyles();
 
     return <div className={classes.errorBox}>
@@ -37,4 +37,6 @@ export default ({error}) => {
         </div>
         <div className={classes.errorMessage}>{error}</div>
     </div>
-}
+};
+
+export default ErrorMessage

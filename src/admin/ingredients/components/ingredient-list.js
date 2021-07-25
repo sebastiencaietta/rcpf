@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import IngredientListItem from './ingredient-list-item'
+import IngredientListItemComponent from './ingredient-list-item'
 import DialogTitle from "@material-ui/core/DialogTitle";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
@@ -28,7 +28,7 @@ const RecipeLink = React.forwardRef((props, ref) => {
     return <MuiLink underline="none" {...rest} ref={ref} href={props.href}>{props.children}</MuiLink>
 });
 
-export default ({ingredients, recipesByIngredient, deleteIngredient, addIngredient, updateIngredient}) => {
+const IngredientListItem = ({ingredients, recipesByIngredient, deleteIngredient, addIngredient, updateIngredient}) => {
     const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
     const [formDialogOpen, setFormDialogOpen] = useState(false);
     const [viewDialogOpen, setViewDialogOpen] = useState(false);
@@ -119,7 +119,7 @@ export default ({ingredients, recipesByIngredient, deleteIngredient, addIngredie
         </Grid>
         <Grid container spacing={1}>
             {visibleIngredients().map(ingredient => {
-                return <IngredientListItem key={ingredient.id}
+                return <IngredientListItemComponent key={ingredient.id}
                                            ingredient={ingredient}
                                            recipes={recipesByIngredient[ingredient.id]}
                                            onViewClick={handleViewClick}
@@ -180,7 +180,7 @@ export default ({ingredients, recipesByIngredient, deleteIngredient, addIngredie
                             {
                                 recipesByIngredient[viewingIngredient.id].map(
                                     recipe => <div className={classes.recipeLink} key={recipe.id}>
-                                        <Link  component={RecipeLink} to={`/recipes/${recipe.slug}`}>{recipe.title}</Link>
+                                        <Link component={RecipeLink} to={`/recipes/${recipe.slug}`}>{recipe.title}</Link>
                                     </div>
                                 )
                             }
@@ -191,3 +191,4 @@ export default ({ingredients, recipesByIngredient, deleteIngredient, addIngredie
         </Dialog>
     </>;
 };
+export default IngredientListItem;

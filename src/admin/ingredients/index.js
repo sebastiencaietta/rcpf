@@ -5,6 +5,7 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 import {getIngredientList} from "../../repositories/ingredients";
 import {sortAlphabetically} from "../../global/lodash";
 import {getRecipes} from "../../repositories/recipes";
+import {Helmet} from "react-helmet-async";
 
 const getRecipesByIngredient = ((recipes, ingredients) => {
     const recipesByIngredientId = {};
@@ -28,8 +29,7 @@ export default function IngredientsAdminPage() {
     useEffect(() => {
         Promise.all([getIngredientList(), getRecipes()]).then(([ingredients, recipes]) => {
             setIngredients(sortAlphabetically(ingredients, 'name'));
-            const test = getRecipesByIngredient(recipes, ingredients);
-            setRecipesByIngredientId(test);
+            setRecipesByIngredientId(getRecipesByIngredient(recipes, ingredients));
             setLoading(false);
         });
     }, []);
@@ -43,6 +43,9 @@ export default function IngredientsAdminPage() {
     }
 
     return <Layout>
+        <Helmet>
+            <title>CookMate | Admin | Ingredients</title>
+        </Helmet>
         <IngredientsAdmin savedIngredients={ingredients} recipesByIngredientId={recipesByIngredientId}/>
     </Layout>
 }

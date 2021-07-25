@@ -49,7 +49,7 @@ const TagForm = ({recipeList, tagToEdit, onSave, onClear}) => {
     };
 
     return <form onSubmit={handleSave}>
-        <Grid container spacing={3} alignItems="center" justify="center">
+        <Grid container spacing={3} alignItems="center" justifyContent="center">
             <Grid item xs={10}>
                 <TextField
                     label="Titre"

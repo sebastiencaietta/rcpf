@@ -51,7 +51,7 @@ const IngredientFormInputs = ({ingredientOptions, onSubmit, onCancel, savedIngre
             unitInputValue: unitOption.label,
             comment: savedIngredient.comment,
         });
-    }, [savedIngredient]);
+    }, [savedIngredient, ingredientOptions]);
 
     useEffect(() => {
         quantityInput.current.focus();

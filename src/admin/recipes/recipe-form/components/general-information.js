@@ -40,7 +40,6 @@ const GeneralInformation = ({onFieldChange, savedRecipe, onTitleChange}) => {
             }
 
             setData({
-                ...data,
                 title: savedRecipe.title,
                 slug: savedRecipe.slug,
                 tags: savedRecipe.tags,
@@ -68,7 +67,7 @@ const GeneralInformation = ({onFieldChange, savedRecipe, onTitleChange}) => {
         onFieldChange(field, value);
     }
 
-    return <Grid container justify="center" spacing={3}>
+    return <Grid container justifyContent="center" spacing={3}>
         <Grid item xs={12}>
             <TextField
                 label="Title" fullWidth

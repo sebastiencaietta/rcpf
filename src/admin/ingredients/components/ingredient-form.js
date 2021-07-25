@@ -20,7 +20,7 @@ const useStyles = makeStyles(theme => ({
     circularProgress: {marginLeft: theme.spacing(1)},
 }));
 
-export default ({ingredient: propsIngredient, onSubmit, onCancel}) => {
+const IngredientForm = ({ingredient: propsIngredient, onSubmit, onCancel}) => {
     const ingredientInitialState = {
         thumbnail: '',
         name: '',
@@ -141,3 +141,5 @@ export default ({ingredient: propsIngredient, onSubmit, onCancel}) => {
 
     </form>;
 }
+
+export default IngredientForm;

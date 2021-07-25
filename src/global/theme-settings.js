@@ -1,4 +1,4 @@
-import {createMuiTheme, responsiveFontSizes} from "@material-ui/core";
+import {createTheme, responsiveFontSizes} from "@material-ui/core";
 import lightBlue from "@material-ui/core/colors/lightBlue";
 import lime from "@material-ui/core/colors/lime";
 import red from "@material-ui/core/colors/red";
@@ -17,8 +17,8 @@ export const setPreferredPaletteType = (paletteType) => {
     window.localStorage.setItem('paletteType', paletteType);
 };
 
-export const createTheme = (paletteType) => responsiveFontSizes(
-    createMuiTheme({
+export const createCustomTheme = (paletteType) => responsiveFontSizes(
+    createTheme({
         palette: {
             type: paletteType,
             primary: paletteType === PALETTE_TYPE_DARK ? lightBlue : indigo,

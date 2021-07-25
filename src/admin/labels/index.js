@@ -1,7 +1,13 @@
 import React from 'react';
 import Layout from "../../layout";
-import LabelAdmin from "./containers/label-admin";
+import LabelAdminContainer from "./containers/label-admin";
+import {Helmet} from "react-helmet-async";
 
-export default () => <Layout>
-    <LabelAdmin />
-</Layout>
+const LabelAdmin = () => <Layout>
+    <Helmet>
+        <title>CookMate | Admin | Régimes & Saisons</title>
+    </Helmet>
+    <LabelAdminContainer />
+</Layout>;
+
+export default LabelAdmin

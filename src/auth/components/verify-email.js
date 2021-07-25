@@ -16,7 +16,7 @@ const VerifyEmail = ({oobCode, apiKey}) => {
 
     useEffect(() => {
         verifyEmail(oobCode, apiKey).then(() => setEmailVerified(true)).catch(error => Bugsnag.notify(error));
-    }, []);
+    }, [oobCode, apiKey]);
 
     if (emailVerified) {
         return <Layout>

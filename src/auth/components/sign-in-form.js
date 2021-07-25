@@ -54,7 +54,7 @@ const SignInForm = ({onSignIn, onForgottenPasswordClick, onSignUpClick}) => {
     </Link>;
 
     return <div className={classes.root}>
-        <Grid container justify="center" alignContent="center">
+        <Grid container justifyContent="center" alignContent="center">
             <Grid item md={6} xs={12} sm={8}>
                 <Paper className={classes.paper}>
                     <Typography variant="h5">Deja enregistré?</Typography>

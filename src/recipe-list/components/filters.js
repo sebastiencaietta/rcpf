@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {useFilters} from "../use-filters";
 import {ExpandMore, Search} from "@material-ui/icons";
 import {Accordion, AccordionDetails, AccordionSummary, makeStyles} from "@material-ui/core";
@@ -20,25 +20,13 @@ const useStyles = makeStyles(theme => ({
 const Filters = ({tags, categories}) => {
     const {filters, ...filtering} = useFilters();
     const [expandedAccordions, setExpandedAccordions] = useState({
-        category: false,
-        tags: false,
-        season: false,
-        diet: false
+        category: filters.category !== '',
+        tags: filters.tags.length !== 0,
+        season: filters.seasons.length !== 0,
+        diet: filters.diets.length !== 0,
     });
 
     const classes = useStyles();
-
-    useEffect(() => {
-            setExpandedAccordions({
-                ...expandedAccordions,
-                category: filters.category !== '',
-                tags: filters.tags.length !== 0,
-                season: filters.seasons.length !== 0,
-                diet: filters.diets.length !== 0,
-            })
-        },
-        []
-    );
 
     const seasons = Object.keys(SEASONS).map(key => SEASONS[key]);
     const diets = Object.keys(DIETS).map(key => DIETS[key]);

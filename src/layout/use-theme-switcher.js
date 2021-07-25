@@ -1,6 +1,6 @@
 import React, {createContext, useContext, useState} from "react";
 import {
-    createTheme,
+    createCustomTheme,
     PALETTE_TYPE_DARK, PALETTE_TYPE_LIGHT,
     setPreferredPaletteType
 } from "../global/theme-settings";
@@ -30,12 +30,12 @@ const getPreferredPaletteType = () => {
 };
 
 function useProvideTheme() {
-    const [theme, setTheme] = useState(createTheme(getPreferredPaletteType()));
+    const [theme, setTheme] = useState(createCustomTheme(getPreferredPaletteType()));
 
 
     const onToggleTheme = paletteType => {
         setPreferredPaletteType(paletteType);
-        setTheme(createTheme(paletteType));
+        setTheme(createCustomTheme(paletteType));
     };
 
     return {

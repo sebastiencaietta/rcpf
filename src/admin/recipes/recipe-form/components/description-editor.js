@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import Editor from 'draft-js-plugins-editor';
+import Editor from '@draft-js-plugins/editor';
 import {EditorState, convertToRaw, convertFromRaw, Modifier, CompositeDecorator, RichUtils} from "draft-js";
 import createBlockBreakoutPlugin from 'draft-js-block-breakout-plugin'
 import {makeStyles} from "@material-ui/core";
@@ -45,9 +45,8 @@ export default function DescriptionEditor({onChange, savedDescription}) {
     useEffect(() => {
         if (savedDescription !== undefined) {
             const newContent = convertFromRaw(savedDescription);
-            const newState = EditorState.push(editorState, newContent, 'insert-characters');
+            const newState = EditorState.createWithContent(newContent, decorator)
             setEditorState(newState);
-            handleOnChange(newState);
         }
     }, [savedDescription]);
 

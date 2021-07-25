@@ -19,7 +19,7 @@ const useStyles = makeStyles(theme => ({
     actions: {justifyContent: 'space-between', marginLeft: 'auto', paddingLeft: theme.spacing(2), '& >button': {visibility: 'hidden'}},
 }));
 
-export default ({ingredient, recipes, onEditClick, onViewClick, onDeleteClick}) => {
+const IngredientListItem = ({ingredient, recipes, onEditClick, onViewClick, onDeleteClick}) => {
     const classes = useStyles();
 
     const handleViewClick = () => {
@@ -65,3 +65,5 @@ export default ({ingredient, recipes, onEditClick, onViewClick, onDeleteClick}) 
         </div>
     </Grid>;
 }
+
+export default IngredientListItem;

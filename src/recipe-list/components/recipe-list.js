@@ -15,7 +15,7 @@ export default function RecipeList({recipes}) {
 
     return (
         <React.Fragment>
-            <Grid container justify="flex-start" spacing={3} className={classes.recipeList}>
+            <Grid container justifyContent="flex-start" spacing={3} className={classes.recipeList}>
                 {recipes.map(recipe => <Recipe recipe={recipe} key={recipe.slug}/>)}
             </Grid>
         </React.Fragment>

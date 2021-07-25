@@ -45,7 +45,7 @@ const intialRecipeState = {
     ingredients: [],
 };
 
-export default (props) => {
+const RecipeForm = (props) => {
     const classes = useStyles();
     const history = useHistory();
     const [recipe, setRecipe] = useState({...intialRecipeState, ...props.recipe});
@@ -163,4 +163,6 @@ export default (props) => {
             <SaveIcon/>
         </Fab>
     </form>
-}
+};
+
+export default RecipeForm

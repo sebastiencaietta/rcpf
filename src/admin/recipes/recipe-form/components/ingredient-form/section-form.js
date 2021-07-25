@@ -46,7 +46,7 @@ const useStyles = makeStyles(theme => ({
 
 const SectionForm = ({onSectionChange, ingredientOptions, ingredientsById, defaultSection, section, onCancel}) => {
     const [data, setData] = useState({title: '', ingredients: []});
-    const [isEditingTitle, setIsEditingTitle] = useState(true);
+    const [isEditingTitle, setIsEditingTitle] = useState(!defaultSection && section.title === '');
     const [isAddingIngredient, setIsAddingIngredient] = useState(false);
     const [isCanceling, setIsCanceling] = useState(false);
     const addIngredientRef = useRef(null);
@@ -56,12 +56,8 @@ const SectionForm = ({onSectionChange, ingredientOptions, ingredientsById, defau
 
     useEffect(() => {
         if (defaultSection) {
-            const newSectionData = {...data, title: 'Ingrédients'};
+            const newSectionData = {title: 'Ingrédients', ingredients: []};
             setData(newSectionData);
-            setIsEditingTitle(false);
-        }
-
-        if (section.title !== '') {
             setIsEditingTitle(false);
         }
     }, [defaultSection]);
@@ -82,7 +78,7 @@ const SectionForm = ({onSectionChange, ingredientOptions, ingredientsById, defau
         if (prevIsAddingIngredient === true && !isAddingIngredient) {
             addIngredientRef.current.focus();
         }
-    }, [isAddingIngredient]);
+    }, [prevIsAddingIngredient, isAddingIngredient]);
 
     function handleTitleEnterKeyPress(e) {
         if (e.keyCode === 13) {
