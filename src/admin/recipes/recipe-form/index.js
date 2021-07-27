@@ -43,7 +43,7 @@ const Component = (props) => {
 
     return <Layout>
         <Helmet>
-            <title>CookMate | Admin | {recipe.title}</title>
+            <title>CookMate | Admin | {recipe.title || 'Nouvelle recette'}</title>
         </Helmet>
         <RecipeForm
             handleSubmit={saveRecipe}
