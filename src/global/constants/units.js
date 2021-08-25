@@ -109,8 +109,13 @@ export const UNITS = {
         plural: 'feuilles',
     },
     UNIT_BRANCHE: {
-        unit: 'branches',
+        unit: 'branche',
         isScientific: false,
         plural: 'branches',
+    },
+    UNIT_BIT: {
+        unit: 'morceau',
+        isScientific: false,
+        plural: 'morceaux',
     },
 };
