@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useState} from "react";
 import Editor from '@draft-js-plugins/editor';
 import {EditorState, convertToRaw, convertFromRaw, Modifier, CompositeDecorator, RichUtils} from "draft-js";
 import createBlockBreakoutPlugin from 'draft-js-block-breakout-plugin'
@@ -39,16 +39,12 @@ export default function DescriptionEditor({onChange, savedDescription}) {
     const editorRef = React.createRef();
 
     const [editorState, setEditorState] = useState(
-        EditorState.createWithContent((EditorState.createEmpty().getCurrentContent()), decorator)
+        EditorState.createWithContent(
+            savedDescription
+                ? convertFromRaw(savedDescription)
+                : EditorState.createEmpty().getCurrentContent()
+            , decorator)
     );
-
-    useEffect(() => {
-        if (savedDescription !== undefined) {
-            const newContent = convertFromRaw(savedDescription);
-            const newState = EditorState.createWithContent(newContent, decorator)
-            setEditorState(newState);
-        }
-    }, [savedDescription]);
 
     function handleOnChange(event) {
         setEditorState(event);
