@@ -1,21 +1,11 @@
 import firebase from "firebase/app";
 
-export const sortRecipeListAlphabetically = (recipeList) => {
-    const sortedIds = Object.keys(recipeList).sort((a, b) => {
-        const slugA = recipeList[a]['slug'];
-        const slugB = recipeList[b]['slug'];
-        return slugA < slugB ? -1 : slugA > slugB ? 1 : 0;
-    });
-
-    return sortedIds.map(id => ({...recipeList[id], id}))
-};
-
 export const sortRecipeArrayAlphabetically = (recipeArray) => {
     return recipeArray.sort((a, b) => {
         const slugA = a['slug'];
         const slugB = b['slug'];
         return slugA < slugB ? -1 : slugA > slugB ? 1 : 0;
-    })
+    });
 };
 
 export const getRecipes = async () => {
@@ -31,7 +21,7 @@ export const getRecipes = async () => {
 export const getRecipeList = async () => {
     const snapshot = await firebase.firestore().collection('cache').doc('recipeList').get();
     const cachedRecipeList = snapshot.data();
-    return sortRecipeListAlphabetically(cachedRecipeList);
+    return Object.keys(cachedRecipeList).map(id => ({...cachedRecipeList[id], id}));
 };
 
 export const listenToRecipes = (onNext) => {
@@ -49,6 +39,8 @@ export const getRecipeBySlug = async (slug) => {
 };
 
 export const addRecipe = async (recipe) => {
+    const now =  new Date();
+    recipe.createdAt = now.toISOString();
     const docRef = await firebase.firestore().collection('recipes').add(recipe);
 
     return {
