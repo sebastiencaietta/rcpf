@@ -2,7 +2,7 @@ const functions = require('firebase-functions');
 const admin = require('firebase-admin');
 const cron = require('./cron');
 const ingredientCache = require('./ingredientCache');
-
+const createdAtJson = require('./createdAt.json');
 admin.initializeApp();
 
 
@@ -24,6 +24,7 @@ exports.updateRecipeListOnRecipeCreate = functions.region('europe-west1').firest
                 category: recipe.category,
                 diets: recipe.diets || [],
                 seasons: recipe.seasons || [],
+                createdAt: recipe.createdAt,
             }
         });
     });
@@ -128,6 +129,7 @@ exports.regenerateRecipeListCache = functions.region('europe-west1').https.onReq
             category: recipe.category,
             diets: recipe.diets || [],
             seasons: recipe.seasons || [],
+            createdAt: recipe.createdAt,
         };
     });
 
@@ -136,6 +138,26 @@ exports.regenerateRecipeListCache = functions.region('europe-west1').https.onReq
     res.status(200);
     res.send();
 });
+
+exports.addCreatedAtToRecipes = functions.region('europe-west1').https.onRequest(async (req, res) => {
+    const db = admin.firestore();
+    const recipesSnapshot = await db.collection('recipes').get();
+    const batch = db.batch();
+
+    recipesSnapshot.forEach(docRef => {
+        const data = docRef.data();
+        const slug = data.slug;
+
+        const createdAt = createdAtJson[slug];
+
+        batch.update(
+            db.collection('recipes').doc(docRef.id),
+            {createdAt: createdAt}
+        )
+    });
+
+    return batch.commit();
+})
 
 exports.scheduledFirestoreExport = functions.region('europe-west1').
     pubsub.schedule('0 3 * * *')
