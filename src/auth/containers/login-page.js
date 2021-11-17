@@ -5,17 +5,12 @@ import SignIn from "./sign-in";
 import {useAuth} from "../use-auth";
 import EmailNotVerified from "../components/email-not-verified";
 import CircularProgress from "@material-ui/core/CircularProgress";
-import {makeStyles} from "@material-ui/core/styles";
-
-const useStyles = makeStyles(() => ({
-    root: {position: "absolute", transform: "translateY(-50%)", top: "50%", width: "100%", textAlign: "center"},
-}));
+import Container from "../../layout/container";
 
 const LoginPage = () => {
     const auth = useAuth();
     let history = useHistory();
     let location = useLocation();
-    const classes = useStyles();
     let {from} = location.state || {from: {pathname: "/"}};
 
     useEffect(() => {
@@ -26,28 +21,32 @@ const LoginPage = () => {
 
     if (!auth.user.authStatusReported) {
         return <Layout>
-            <div className={classes.root}>
+            <Container justifyContent="center">
                 <CircularProgress/>
-            </div>
+            </Container>
         </Layout>;
     }
 
     if (!auth.user.signedIn || !auth.user.user.firstName) {
         return <Layout>
-            <SignIn/>
+            <Container justifyContent="center">
+                <SignIn/>
+            </Container>
         </Layout>
     }
 
     if (!auth.user.user.emailVerified) {
         return <Layout>
-            <EmailNotVerified email={auth.user.email}/>
+            <Container justifyContent="center">
+                <EmailNotVerified email={auth.user.email}/>
+            </Container>
         </Layout>
     }
 
     return <Layout>
-        <div className={classes.root}>
+        <Container justifyContent="center">
             <CircularProgress/>
-        </div>
+        </Container>
     </Layout>;
 };
 

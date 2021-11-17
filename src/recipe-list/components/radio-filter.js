@@ -1,43 +1,36 @@
 import React from 'react';
-import RadioGroup from "@material-ui/core/RadioGroup";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Radio from "@material-ui/core/Radio";
-import List from "@material-ui/core/List";
-import {makeStyles} from "@material-ui/core";
+import InputLabel from '@material-ui/core/InputLabel';
+import FormControl from '@material-ui/core/FormControl';
+import MenuItem from "@material-ui/core/MenuItem";
+import Select from "@material-ui/core/Select";
 
-
-const useStyles = makeStyles(() => ({
-    tagList: {
-        flexGrow: 1,
-    },
-    tagListItem: {
-        paddingTop: 0,
-        paddingBottom: 0,
-    }
-}));
-
-const RadioFilter = ({options, idField, label, onToggle, selectedOption, nullOption}) => {
-    const classes = useStyles();
-
+const RadioFilter = ({options, idField, labelField, onToggle, selectedOption, nullOption, label}) => {
     const handleChange = (e) => {
         onToggle(e.target.value);
     }
 
-    return <List dense className={classes.tagList}>
-        <RadioGroup aria-label="category" name="category" value={selectedOption}
-                    onChange={handleChange}>
-            {nullOption && <FormControlLabel value={nullOption[idField]}
-                                             control={<Radio/>}
-                                             label={nullOption[label]}
-                                             checked={!selectedOption}/>}
-
-            {options.map(category => <FormControlLabel key={category[idField]}
-                                                          value={category[idField]}
-                                                          control={<Radio/>}
-                                                          label={category[label]}
-                                                          checked={selectedOption === category[idField]}/>)}
-        </RadioGroup>
-    </List>
+    return <div>
+        <FormControl fullWidth>
+            <InputLabel>{label}</InputLabel>
+            <Select
+                fullWidth
+                value={selectedOption}
+                onChange={handleChange}
+                title={label}
+                inputProps={{
+                    name: 'category_id',
+                    id: 'category_id',
+                }}
+            >
+                {
+                    nullOption && <MenuItem value={nullOption[idField]}>{nullOption[labelField]}</MenuItem>
+                }
+                {options.map((option) => {
+                    return <MenuItem value={option[idField]} key={option[idField]}>{option[labelField]}</MenuItem>
+                })}
+            </Select>
+        </FormControl>
+    </div>
 };
 
 export default RadioFilter;

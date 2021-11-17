@@ -5,6 +5,7 @@ import {includesNormalized} from "../../global/lodash";
 import {Pagination} from "@material-ui/lab";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import NoRecipeFound from "../components/no-recipe-found";
+import {FILTER_NAME_ID, FILTER_NEW_ID} from "../../global/constants/filters";
 
 const filterRecipes = (filters, recipes) => {
     const {search, tags, seasons, diets, category} = filters;
@@ -19,7 +20,8 @@ const filterRecipes = (filters, recipes) => {
         }
 
         if (tags.length !== 0) {
-            const hasAllTags = tags.every((tagId) => {
+            const tagIds = tags.map(tag => tag['id']);
+            const hasAllTags = tagIds.every((tagId) => {
                 return recipe.tags.some((recipeTagId) => recipeTagId === tagId);
             });
 
@@ -29,7 +31,8 @@ const filterRecipes = (filters, recipes) => {
         }
 
         if (seasons.length !== 0 && recipe.seasons !== undefined) {
-            const hasAllSeasons = seasons.every((seasonName) => {
+            const seasonNames = seasons.map(season => season['name']);
+            const hasAllSeasons = seasonNames.every((seasonName) => {
                 return recipe.seasons.some((recipeSeasonName) => recipeSeasonName === seasonName);
             });
 
@@ -39,7 +42,8 @@ const filterRecipes = (filters, recipes) => {
         }
 
         if (diets.length !== 0 && recipe.diets !== undefined) {
-            const hasAllDiets = diets.every((dietName) => {
+            const dietNames = diets.map(diet => diet['name']);
+            const hasAllDiets = dietNames.every((dietName) => {
                 return recipe.diets.some((recipeDietName) => recipeDietName === dietName);
             });
 
@@ -50,6 +54,18 @@ const filterRecipes = (filters, recipes) => {
 
         return true;
     });
+};
+
+const sortRecipes = (filters, recipes) => {
+      return recipes.sort((a, b) => {
+          const field = filters.sortBy === FILTER_NAME_ID ? 'slug' : 'createdAt';
+          const valueA = a[field];
+          const valueB = b[field];
+
+          const returnValue = valueA < valueB ? -1 : valueA > valueB ? 1 : 0
+
+          return filters.sortBy === FILTER_NEW_ID ? returnValue * -1 : returnValue;
+      });
 };
 
 const useStyles = makeStyles((theme) => ({
@@ -73,7 +89,8 @@ const Recipes = ({recipes}) => {
     const {filters, onUpdatePage} = useFilters();
     const classes = useStyles();
     const filteredRecipes = filterRecipes(filters, recipes);
-    const visibleRecipes = paginatedRecipes(filteredRecipes, filters.page);
+    const sortedRecipes = sortRecipes(filters, recipes);
+    const visibleRecipes = paginatedRecipes(sortedRecipes, filters.page);
 
     const pageCount = Math.max(1, Math.ceil(filteredRecipes.length / 42));
 

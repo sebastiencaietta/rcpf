@@ -4,6 +4,7 @@ import Layout from "../../layout";
 import ResetPassword from "../components/reset-password";
 import VerifyEmail from "../components/verify-email";
 import Bugsnag from "@bugsnag/js";
+import Container from "../../layout/container";
 
 const AuthActions = () => {
     const urlParams = new URLSearchParams(window.location.search);
@@ -27,13 +28,17 @@ const AuthActions = () => {
 
     if (mode === 'resetPassword') {
         return <Layout>
-            <ResetPassword onSubmit={handleResetPassword}/>
+            <Container>
+                <ResetPassword onSubmit={handleResetPassword}/>
+            </Container>
         </Layout>
     }
 
     if (mode === 'verifyEmail') {
         return <Layout>
-            <VerifyEmail oobCode={oobCode} apiKey={apiKey}/>
+            <Container>
+                <VerifyEmail oobCode={oobCode} apiKey={apiKey}/>
+            </Container>
         </Layout>
     }
 };

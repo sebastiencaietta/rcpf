@@ -1,43 +1,43 @@
 import React from 'react';
-import ListItem from "@material-ui/core/ListItem";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
 import Checkbox from "@material-ui/core/Checkbox";
 import ListItemText from "@material-ui/core/ListItemText";
-import List from "@material-ui/core/List";
-import {makeStyles} from "@material-ui/core";
+import Input from "@material-ui/core/Input"
+import FormControl from "@material-ui/core/FormControl";
+import InputLabel from "@material-ui/core/InputLabel";
+import MenuItem from "@material-ui/core/MenuItem";
+import Select from "@material-ui/core/Select";
 
-const useStyles = makeStyles(() => ({
-    tagList: {
-        flexGrow: 1,
-    },
-    tagListItem: {
-        paddingTop: 0,
-        paddingBottom: 0,
+const CheckboxFilter = ({options, idField, labelField, setSelected, selectedOptions, label}) => {
+    const selectedIds = selectedOptions.map(option => option[idField]);
+    const selectedLabels = selectedOptions.map(option => option[labelField]);
+
+    const onChange = (event) => {
+        const {value} = event.target;
+        setSelected(value);
     }
-}));
 
-const CheckboxFilter = ({options, idField, label, onToggle, selectedOptions}) => {
-    const classes = useStyles();
+    return <div>
+        <FormControl fullWidth>
+            <InputLabel id={label}>{label}</InputLabel>
 
-    return <List dense className={classes.tagList}>
-        {options.map(option => {
-            const labelId = `checkbox-list-label-${option.title}`;
-
-            return <ListItem key={option[idField]} button onClick={() => onToggle(option[idField])}
-                             className={classes.tagListItem}>
-                <ListItemIcon>
-                    <Checkbox
-                        edge="start"
-                        checked={selectedOptions.indexOf(option[idField]) !== -1}
-                        tabIndex={-1}
-                        disableRipple
-                        inputProps={{'aria-labelledby': labelId}}
-                    />
-                </ListItemIcon>
-                <ListItemText id={labelId} primary={option[label]}/>
-            </ListItem>
-        })}
-    </List>;
+            <Select
+                labelId={label}
+                id={`select-${label}`}
+                multiple
+                value={selectedOptions}
+                onChange={onChange}
+                input={<Input />}
+                renderValue={() => selectedLabels.join(', ')}
+            >
+                {options.map((option) => (
+                    <MenuItem key={option[idField]} value={option}>
+                        <Checkbox checked={selectedIds.indexOf(option[idField]) > -1} />
+                        <ListItemText primary={option[labelField]} />
+                    </MenuItem>
+                ))}
+            </Select>
+        </FormControl>
+    </div>;
 }
 
 export default CheckboxFilter;

@@ -1,6 +1,6 @@
 import React, {createContext, useContext, useEffect, useState} from 'react';
-import {addOrRemoveInArray} from "../global/lodash";
 import {useHistory} from "react-router-dom";
+import {FILTER_NAME_ID, FILTER_NEW_ID, FILTER_OLD_ID} from "../global/constants/filters";
 
 const filtersContext = createContext({});
 
@@ -25,12 +25,19 @@ export const useFilters = () => {
     return useContext(filtersContext);
 }
 
+const sortByOptions = [
+    {id: FILTER_NEW_ID, title: 'Nouveauté'},
+    {id: FILTER_OLD_ID, title: 'Ancieneté'},
+    {id: FILTER_NAME_ID, title: 'Nom'},
+];
+
 const initialState = {
     search: '',
     category: '',
     tags: [],
     diets: [],
     seasons: [],
+    sortBy: 'new',
     page: 1,
 };
 
@@ -39,11 +46,13 @@ function useProvideFilters() {
 
     return {
         filters,
+        sortByOptions: sortByOptions,
         onUpdateSearch: (search) => setFilters({...filters, search}),
         onToggleCategory: (category) => setFilters({...filters, category}),
-        onToggleTag: (tagId) => setFilters({...filters, tags: addOrRemoveInArray(filters.tags, tagId)}),
-        onToggleDiet: (dietId) => setFilters({...filters, diets: addOrRemoveInArray(filters.diets, dietId)}),
-        onToggleSeason: (seasonId) => setFilters({...filters, seasons: addOrRemoveInArray(filters.seasons, seasonId)}),
+        onToggleSortBy: (sortBy) => setFilters({...filters, sortBy}),
+        setSelectedTags: (tags) => setFilters({...filters, tags}),
+        setSelectedDiets: (diets) => setFilters({...filters, diets}),
+        setSelectedSeasons: (seasons) => setFilters({...filters, seasons}),
         onUpdatePage: (page) => setFilters({...filters, page: page}),
         reset: () => setFilters({...initialState}),
     }

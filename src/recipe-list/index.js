@@ -8,6 +8,7 @@ import Hero from "../global/components/hero";
 import Filters from "./components/filters";
 import {Helmet} from 'react-helmet-async';
 import CircularProgress from "@material-ui/core/CircularProgress";
+import Container from "../layout/container";
 
 const RecipeList = () => {
     const [tags, setTags] = useState([]);
@@ -30,16 +31,18 @@ const RecipeList = () => {
         <Helmet>
             <title>CookMate | Toutes les recettes</title>
         </Helmet>
-        <Grid container spacing={3}>
-            <Grid item xs={12} md={3}>
-                <Filters tags={tags} categories={categories}/>
+
+        <Filters tags={tags} categories={categories}/>
+
+        <Container>
+            <Grid container spacing={3}>
+                <Grid item xs={12}>
+                    {
+                        loading ? <CircularProgress/> : <RecipeListContainer recipes={recipes}/>
+                    }
+                </Grid>
             </Grid>
-            <Grid item xs={12} md={9}>
-                {
-                    loading ? <CircularProgress/> : <RecipeListContainer recipes={recipes}/>
-                }
-            </Grid>
-        </Grid>
+        </Container>
 
 
     </Layout>;

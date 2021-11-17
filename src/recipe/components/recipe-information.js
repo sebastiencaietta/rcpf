@@ -6,7 +6,7 @@ import Chip from "@material-ui/core/Chip";
 const useStyles = makeStyles((theme) => ({
     root: {
         display: 'flex', flexDirection: 'column', justifyContent: 'space-between', alignItems: 'stretch',
-        margin: theme.spacing(0, 0, 2),
+        margin: theme.spacing(2, 0),
     },
     categoryTagsBox: {display: 'flex', flex: '4 0 auto', justifyContent: 'space-evenly', marginTop: theme.spacing(2), flexWrap: 'wrap'},
     secondaryInformation: {display: 'flex', justifyContent: 'space-between', alignItems: "stretch", flex: "1 0 auto"},

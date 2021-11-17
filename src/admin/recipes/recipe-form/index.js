@@ -1,15 +1,16 @@
 import React, {useEffect, useState} from 'react';
 import RecipeForm from './containers/recipe-form';
 import {
-    getRecipeBySlug,
     addRecipe,
-    uploadRecipeThumbnail,
+    getRecipeBySlug,
     updateRecipe,
-    uploadRecipeHero
+    uploadRecipeHero,
+    uploadRecipeThumbnail
 } from "../../../repositories/recipes";
 import Layout from "../../../layout";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import {Helmet} from "react-helmet-async";
+import Container from "../../../layout/container";
 
 const saveRecipe = async (recipe) => {
     if (recipe.id === undefined) {
@@ -35,9 +36,9 @@ const Component = (props) => {
 
     if (loading) {
         return <Layout>
-            <div style={{display: 'flex', height: '90vh', alignItems: 'center', justifyContent: 'center'}}>
-                <CircularProgress />
-            </div>
+            <Container justifyContent="center">
+                <CircularProgress/>
+            </Container>
         </Layout>;
     }
 
@@ -45,11 +46,13 @@ const Component = (props) => {
         <Helmet>
             <title>CookMate | Admin | {recipe.title || 'Nouvelle recette'}</title>
         </Helmet>
-        <RecipeForm
-            handleSubmit={saveRecipe}
-            recipe={recipe}
-            handleUploadRecipeThumbnail={uploadRecipeThumbnail}
-            handleUploadRecipeHero={uploadRecipeHero}/>
+        <Container>
+            <RecipeForm
+                handleSubmit={saveRecipe}
+                recipe={recipe}
+                handleUploadRecipeThumbnail={uploadRecipeThumbnail}
+                handleUploadRecipeHero={uploadRecipeHero}/>
+        </Container>
     </Layout>
 };
 

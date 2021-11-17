@@ -7,6 +7,7 @@ import Hero from "../global/components/hero";
 import {fetchCategories, fetchTags} from "../global/eve";
 import {getIngredientList} from "../repositories/ingredients";
 import { Helmet } from 'react-helmet-async';
+import Container from "../layout/container";
 
 const Component = (props) => {
     const [recipe, setRecipe] = useState({});
@@ -32,9 +33,9 @@ const Component = (props) => {
 
     if (loading) {
         return <Layout>
-            <div style={{display: 'flex', flexGrow: 1, alignItems: 'center', justifyContent: 'center'}}>
+            <Container justifyContent="center">
                 <CircularProgress />
-            </div>
+            </Container>
         </Layout>;
     }
 
@@ -44,7 +45,9 @@ const Component = (props) => {
         <Helmet>
             <title>CookMate | {recipe.title}</title>
         </Helmet>
-       <RecipePage recipe={recipe} tags={tags} category={category} ingredients={ingredients}/>
+        <Container>
+            <RecipePage recipe={recipe} tags={tags} category={category} ingredients={ingredients}/>
+        </Container>
     </Layout>;
 };
 

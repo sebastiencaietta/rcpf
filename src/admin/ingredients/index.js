@@ -6,6 +6,7 @@ import {getIngredientList} from "../../repositories/ingredients";
 import {sortAlphabetically} from "../../global/lodash";
 import {getRecipes} from "../../repositories/recipes";
 import {Helmet} from "react-helmet-async";
+import Container from "../../layout/container";
 
 const getRecipesByIngredient = ((recipes, ingredients) => {
     const recipesByIngredientId = {};
@@ -36,9 +37,9 @@ export default function IngredientsAdminPage() {
 
     if (loading) {
         return <Layout>
-            <div style={{display: 'flex', height: '90vh', alignItems: 'center', justifyContent: 'center'}}>
+            <Container justifyContent="center">
                 <CircularProgress />
-            </div>
+            </Container>
         </Layout>;
     }
 
@@ -46,6 +47,8 @@ export default function IngredientsAdminPage() {
         <Helmet>
             <title>CookMate | Admin | Ingredients</title>
         </Helmet>
-        <IngredientsAdmin savedIngredients={ingredients} recipesByIngredientId={recipesByIngredientId}/>
+        <Container>
+            <IngredientsAdmin savedIngredients={ingredients} recipesByIngredientId={recipesByIngredientId}/>
+        </Container>
     </Layout>
 }

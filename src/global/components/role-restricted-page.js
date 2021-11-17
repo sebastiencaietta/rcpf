@@ -6,9 +6,9 @@ import {Redirect, Route} from "react-router-dom";
 import Layout from "../../layout";
 import BlockIcon from '@material-ui/icons/Block';
 import {ROLE_ADMIN} from "../constants/roles";
+import Container from "../../layout/container";
 
 const useStyles = makeStyles((theme) => ({
-    root: {position: "absolute", transform: "translateY(-50%)", top: "50%", width: "100%", textAlign: "center"},
     denied: {fontSize: theme.typography.pxToRem(128), color: theme.palette.error.main}
 }));
 
@@ -20,9 +20,9 @@ const RoleRestrictedPage = ({userRole, component, children, ...props}) => {
     const getRenderedComponent = ({location, ...props}) => {
         if (!authStatusReported) {
             return <Layout>
-                <div className={classes.root}>
+                <Container justifyContent="center">
                     <CircularProgress/>
-                </div>
+                </Container>
             </Layout>;
         }
 
@@ -37,9 +37,9 @@ const RoleRestrictedPage = ({userRole, component, children, ...props}) => {
 
         if (user.role !== ROLE_ADMIN && user.role !== userRole) {
             return <Layout>
-                <div className={classes.root}>
+                <Container justifyContent="center">
                     <BlockIcon className={classes.denied}/>
-                </div>
+                </Container>
             </Layout>;
         }
 

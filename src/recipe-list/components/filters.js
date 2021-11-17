@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {useFilters} from "../use-filters";
-import {ExpandMore, Search} from "@material-ui/icons";
-import {Accordion, AccordionDetails, AccordionSummary, makeStyles} from "@material-ui/core";
+import {Search} from "@material-ui/icons";
+import {Collapse, makeStyles} from "@material-ui/core";
 import CheckboxFilter from "./checkbox-filter";
 import {SEASONS} from "../../global/constants/seasons";
 import {DIETS} from "../../global/constants/diets";
@@ -9,87 +9,112 @@ import RadioFilter from "./radio-filter";
 import Input from "@material-ui/core/Input";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import FormControl from "@material-ui/core/FormControl";
+import Grid from "@material-ui/core/Grid";
+import Container from "@material-ui/core/Container";
+import FilterListIcon from '@material-ui/icons/FilterList';
+import Button from "@material-ui/core/Button";
+import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
+import clsx from "clsx";
 
 const useStyles = makeStyles(theme => ({
-    margin: {
-        margin: theme.spacing(2, 0),
-        width: '100%',
+    root: {
+        background: theme.palette.background.paper,
+        padding: theme.spacing(4, 0),
+    },
+    filterArrow: {
+        transition: theme.transitions.create('transform', {
+            easing: theme.transitions.easing.sharp,
+            duration: theme.transitions.duration.standard,
+        }),
+        transform: 'rotate(0)',
+    },
+    filterArrowOpen: {
+        transition: theme.transitions.create('transform', {
+            easing: theme.transitions.easing.sharp,
+            duration: theme.transitions.duration.standard,
+        }),
+        transform: 'rotate(180deg)',
+    },
+    filtersRoot: {
+        flexGrow: 1,
+    },
+    filterWrapper: {
+        textAlign: 'right',
     },
 }));
 
 const Filters = ({tags, categories}) => {
+    const [filtersOpen, setFiltersOpen] = useState(false);
     const {filters, ...filtering} = useFilters();
-    const [expandedAccordions, setExpandedAccordions] = useState({
-        category: filters.category !== '',
-        tags: filters.tags.length !== 0,
-        season: filters.seasons.length !== 0,
-        diet: filters.diets.length !== 0,
-    });
-
     const classes = useStyles();
 
     const seasons = Object.keys(SEASONS).map(key => SEASONS[key]);
     const diets = Object.keys(DIETS).map(key => DIETS[key]);
 
-    const handleExpandAccordion = (accordionName) => setExpandedAccordions({
-        ...expandedAccordions,
-        [accordionName]: !expandedAccordions[accordionName]
-    });
+    const filterArrowClasses = clsx(classes.filterArrow, {[classes.filterArrowOpen]: filtersOpen});
 
-    return <>
-        <FormControl className={classes.margin}>
-            <Input
-                value={filters.search}
-                onChange={(e) => filtering.onUpdateSearch(e.target.value)}
-                startAdornment={
-                    <InputAdornment position="start">
-                        <Search/>
-                    </InputAdornment>
-                }
-            />
-        </FormControl>
-        <Accordion expanded={expandedAccordions['category']}>
-            <AccordionSummary expandIcon={<ExpandMore/>} aria-label="Expand"
-                              onClick={() => handleExpandAccordion('category')}>
-                Catégories
-            </AccordionSummary>
-            <AccordionDetails>
-                <RadioFilter options={categories} selectedOption={filters.category} idField={'id'} label={'title'}
-                             onToggle={filtering.onToggleCategory}
-                             nullOption={{title: 'Toutes les catégories', id: ''}}/>
-            </AccordionDetails>
-        </Accordion>
-        <Accordion expanded={expandedAccordions['tags']}>
-            <AccordionSummary expandIcon={<ExpandMore/>} aria-label="Expand"
-                              onClick={() => handleExpandAccordion('tags')}>
-                Tags
-            </AccordionSummary>
-            <AccordionDetails>
-                <CheckboxFilter options={tags} selectedOptions={filters.tags} idField={'id'} label={'title'}
-                                onToggle={filtering.onToggleTag}/>
-            </AccordionDetails>
-        </Accordion>
-        <Accordion expanded={expandedAccordions['season']}>
-            <AccordionSummary expandIcon={<ExpandMore/>} aria-label="Expand"
-                              onClick={() => handleExpandAccordion('season')}>
-                Saison
-            </AccordionSummary>
-            <AccordionDetails>
-                <CheckboxFilter options={seasons} selectedOptions={filters.seasons} idField={'name'} label={'name'}
-                                onToggle={filtering.onToggleSeason}/>
-            </AccordionDetails>
-        </Accordion>
-        <Accordion expanded={expandedAccordions['diet']}>
-            <AccordionSummary expandIcon={<ExpandMore/>} aria-label="Expand"
-                              onClick={() => handleExpandAccordion('diet')}>
-                Régime
-            </AccordionSummary>
-            <AccordionDetails>
-                <CheckboxFilter options={diets} selectedOptions={filters.diets} idField={'name'} label={'name'}
-                                onToggle={filtering.onToggleDiet}/>
-            </AccordionDetails>
-        </Accordion>
-    </>
+    return <div className={classes.root}>
+        <Container fixed>
+            <Grid container spacing={1} alignItems="flex-end">
+                <Grid item xs={12} sm={5} md={8}>
+                    <FormControl fullWidth>
+                        <Input
+                            value={filters.search}
+                            onChange={(e) => filtering.onUpdateSearch(e.target.value)}
+                            placeholder="Chercher une recette..."
+                            startAdornment={
+                                <InputAdornment position="start">
+                                    <Search/>
+                                </InputAdornment>
+                            }
+                        />
+                    </FormControl>
+                </Grid>
+                <Grid item xs={6} sm={4} md={2}>
+                    <RadioFilter options={filtering.sortByOptions} selectedOption={filters.sortBy} idField={'id'}
+                                 labelField={'title'}
+                                 onToggle={filtering.onToggleSortBy}
+                                 label="Trier par"/>
+                </Grid>
+                <Grid item xs={6} sm={3} md={2} className={classes.filterWrapper}>
+                    <Button
+                        onClick={() => setFiltersOpen(!filtersOpen)}
+                        startIcon={<FilterListIcon/>}
+                        endIcon={<ArrowDropDownIcon className={filterArrowClasses}/>}
+                    >
+                        Filtres
+                    </Button>
+                </Grid>
+                <Collapse in={filtersOpen} className={classes.filtersRoot}>
+                    <Grid container spacing={1} alignItems="flex-end">
+                        <Grid item xs={12} sm={6} md={3}>
+                            <RadioFilter options={categories} selectedOption={filters.category} idField={'id'}
+                                         labelField={'title'}
+                                         onToggle={filtering.onToggleCategory}
+                                         label="Catégorie"
+                                         nullOption={{title: 'Toutes les catégories', id: ''}}/>
+                        </Grid>
+
+                        <Grid item xs={12} sm={6} md={3}>
+                            <CheckboxFilter options={tags} selectedOptions={filters.tags} idField={'id'}
+                                            labelField={'title'}
+                                            setSelected={filtering.setSelectedTags} label="Tags"/>
+                        </Grid>
+                        <Grid item xs={12} sm={6} md={3}>
+                            <CheckboxFilter options={seasons} selectedOptions={filters.seasons} idField={'name'}
+                                            labelField={'name'}
+                                            setSelected={filtering.setSelectedSeasons} label="Saisons"/>
+                        </Grid>
+                        <Grid item xs={12} sm={6} md={3}>
+                            <CheckboxFilter options={diets} selectedOptions={filters.diets} idField={'name'}
+                                            labelField={'name'}
+                                            setSelected={filtering.setSelectedDiets} label="Régime"/>
+                        </Grid>
+                    </Grid>
+                </Collapse>
+            </Grid>
+        </Container>
+    </div>
 }
 
 export default Filters;

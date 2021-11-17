@@ -32,7 +32,7 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-const intialRecipeState = {
+const initialRecipeState = {
     title: '',
     slug: '',
     tags: [],
@@ -48,7 +48,7 @@ const intialRecipeState = {
 const RecipeForm = (props) => {
     const classes = useStyles();
     const history = useHistory();
-    const [recipe, setRecipe] = useState({...intialRecipeState, ...props.recipe});
+    const [recipe, setRecipe] = useState({...initialRecipeState, ...props.recipe});
     const [savedRecipe, setSavedRecipe] = useState({...props.recipe});
     const [successOpen, setSuccessOpen] = useState(false);
 
