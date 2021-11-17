@@ -26,9 +26,9 @@ export const useFilters = () => {
 }
 
 const sortByOptions = [
-    {id: FILTER_NEW_ID, title: 'Nouveauté'},
-    {id: FILTER_OLD_ID, title: 'Ancieneté'},
-    {id: FILTER_NAME_ID, title: 'Nom'},
+    {id: FILTER_NEW_ID, title: 'Date (Du + au - récent)'},
+    {id: FILTER_OLD_ID, title: 'Date (Du - au + récent)'},
+    {id: FILTER_NAME_ID, title: 'Ordre alphabétique'},
 ];
 
 const initialState = {
@@ -37,7 +37,7 @@ const initialState = {
     tags: [],
     diets: [],
     seasons: [],
-    sortBy: 'new',
+    sortBy: FILTER_NEW_ID,
     page: 1,
 };
 
