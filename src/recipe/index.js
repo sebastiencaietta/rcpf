@@ -6,8 +6,9 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 import Hero from "../global/components/hero";
 import {fetchCategories, fetchTags} from "../global/eve";
 import {getIngredientList} from "../repositories/ingredients";
-import { Helmet } from 'react-helmet-async';
+import {Helmet} from 'react-helmet-async';
 import Container from "../layout/container";
+import useStayAwake from "../vendor/use-stay-awake";
 
 const Component = (props) => {
     const [recipe, setRecipe] = useState({});
@@ -15,6 +16,17 @@ const Component = (props) => {
     const [category, setCategory] = useState({});
     const [ingredients, setIngredients] = useState({});
     const [loading, setLoading] = useState(props.match.params.slug !== undefined);
+    const stayAwake = useStayAwake();
+
+    useEffect(() => {
+        stayAwake.preventSleeping();
+
+        return () => {
+            if (!stayAwake.canSleep) {
+                stayAwake.allowSleeping()
+            }
+        };
+    }, [stayAwake]);
 
     useEffect(() => {
         Promise.all([getRecipeBySlug(props.match.params.slug), fetchTags(), fetchCategories(), getIngredientList()])
