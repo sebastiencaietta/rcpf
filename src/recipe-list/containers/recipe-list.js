@@ -89,7 +89,7 @@ const Recipes = ({recipes}) => {
     const {filters, onUpdatePage} = useFilters();
     const classes = useStyles();
     const filteredRecipes = filterRecipes(filters, recipes);
-    const sortedRecipes = sortRecipes(filters, recipes);
+    const sortedRecipes = sortRecipes(filters, filteredRecipes);
     const visibleRecipes = paginatedRecipes(sortedRecipes, filters.page);
 
     const pageCount = Math.max(1, Math.ceil(filteredRecipes.length / 42));
