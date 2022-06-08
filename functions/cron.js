@@ -1,10 +1,10 @@
-const functions = require('firebase-functions');
-const firestore = require('@google-cloud/firestore');
-const {Storage} = require('@google-cloud/storage');
+import functions from 'firebase-functions';
+import firestore from '@google-cloud/firestore';
+import {Storage} from '@google-cloud/storage';
 const firestoreClient = new firestore.v1.FirestoreAdminClient();
 const storageClient = new Storage();
 
-exports.dbExport = async (context) => {
+export const dbExport = async (context) => {
     const bucket = functions.config().firestoreexports.bucket;
     const exportFolder = functions.config().firestoreexports.folder;
     const exportDirectory = bucket + '/' + exportFolder;

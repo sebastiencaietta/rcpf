@@ -1,13 +1,14 @@
-const functions = require('firebase-functions');
-const admin = require('firebase-admin');
-const cron = require('./cron');
-const ingredientCache = require('./ingredientCache');
+import functions from 'firebase-functions';
+import admin from 'firebase-admin';
+import {dbExport} from './cron.js';
+import ingredientCacheFunctions from './ingredientCache.js';
+import listFunctions from './lists.js';
 admin.initializeApp();
 
 
 ////////////////////////////// ON RECIPE UPDATES //////////////////////////////
 
-exports.updateRecipeListOnRecipeCreate = functions.region('europe-west1').firestore
+export const updateRecipeListOnRecipeCreate = functions.region('europe-west1').firestore
     .document('recipes/{recipeId}')
     .onCreate(async (snap, context) => {
         const recipe = snap.data();
@@ -18,7 +19,7 @@ exports.updateRecipeListOnRecipeCreate = functions.region('europe-west1').firest
             [recipeId]: {
                 slug: recipe.slug,
                 title: recipe.title,
-                thumbnail: recipe.thumbnail,
+                thumbnail: recipe.thumbnail || '',
                 tags: recipe.tags,
                 category: recipe.category,
                 diets: recipe.diets || [],
@@ -28,7 +29,7 @@ exports.updateRecipeListOnRecipeCreate = functions.region('europe-west1').firest
         });
     });
 
-exports.deleteRecipeFromRecipeListOnRecipeDelete = functions.region('europe-west1').firestore
+export const deleteRecipeFromRecipeListOnRecipeDelete = functions.region('europe-west1').firestore
     .document('/recipes/{recipeId}')
     .onDelete(async (snap, context) => {
         const recipeId = context.params.recipeId;
@@ -54,7 +55,7 @@ const shouldUpdateRecipe = (newVal, oldVal) => {
     );
 };
 
-exports.updateRecipeListOnRecipeUpdate = functions.region('europe-west1').firestore
+export const updateRecipeListOnRecipeUpdate = functions.region('europe-west1').firestore
     .document('/recipes/{recipeId}')
     .onUpdate(async (change, context) => {
         const newVal = change.after.data();
@@ -69,7 +70,7 @@ exports.updateRecipeListOnRecipeUpdate = functions.region('europe-west1').firest
 
         return db.collection('cache').doc('recipeList').update({
             [recipeId + '.title']: newVal.title,
-            [recipeId + '.thumbnail']: newVal.thumbnail,
+            [recipeId + '.thumbnail']: newVal.thumbnail || '',
             [recipeId + '.tags']: newVal.tags,
             [recipeId + '.category']: newVal.category,
             [recipeId + '.slug']: newVal.slug,
@@ -81,7 +82,7 @@ exports.updateRecipeListOnRecipeUpdate = functions.region('europe-west1').firest
 
 ////////////////////////////// ON TAGS UPDATE //////////////////////////////
 
-exports.updateRecipesOnTagDelete = functions.region('europe-west1').firestore
+export const updateRecipesOnTagDelete = functions.region('europe-west1').firestore
     .document('/tags/{tagId}')
     .onDelete(async (snap) => {
         const tagId = snap.id;
@@ -111,7 +112,7 @@ exports.updateRecipesOnTagDelete = functions.region('europe-west1').firestore
         return batch.commit();
     });
 
-exports.regenerateRecipeListCache = functions.region('europe-west1').https.onRequest(async (req, res) => {
+export const regenerateRecipeListCache = functions.region('europe-west1').https.onRequest(async (req, res) => {
     const db = admin.firestore();
     const recipes = [];
     const recipesSnapshot = await db.collection('recipes').get();
@@ -138,26 +139,35 @@ exports.regenerateRecipeListCache = functions.region('europe-west1').https.onReq
     res.send();
 });
 
-exports.scheduledFirestoreExport = functions.region('europe-west1').
+export const scheduledFirestoreExport = functions.region('europe-west1').
     pubsub.schedule('0 3 * * *')
     .timeZone('Europe/London')
-    .onRun(cron.dbExport);
+    .onRun(dbExport);
 
-exports.updateIngredientListOnIngredientAdd = functions.region('europe-west1')
+export const updateIngredientListOnIngredientAdd = functions.region('europe-west1')
     .firestore
     .document('ingredients/{ingredientId}')
-    .onCreate(ingredientCache.updateIngredientListOnIngredientAdd);
+    .onCreate(ingredientCacheFunctions.updateIngredientListOnIngredientAdd);
 
-exports.updateIngredientListOnIngredientUpdate = functions.region('europe-west1')
+export const updateIngredientListOnIngredientUpdate = functions.region('europe-west1')
     .firestore
     .document('ingredients/{ingredientId}')
-    .onUpdate(ingredientCache.updateIngredientListOnIngredientUpdate);
+    .onUpdate(ingredientCacheFunctions.updateIngredientListOnIngredientUpdate);
 
-exports.updateIngredientListOnIngredientDelete = functions.region('europe-west1')
+export const updateIngredientListOnIngredientDelete = functions.region('europe-west1')
     .firestore
     .document('ingredients/{ingredientId}')
-    .onDelete(ingredientCache.updateIngredientListOnIngredientDelete);
+    .onDelete(ingredientCacheFunctions.updateIngredientListOnIngredientDelete);
 
-exports.regenerateIngredientListCache = functions.region('europe-west1')
+export const regenerateIngredientListCache = functions.region('europe-west1')
     .https
-    .onRequest(ingredientCache.regenerateIngredientListCache);
+    .onRequest(ingredientCacheFunctions.regenerateIngredientListCache);
+
+export const regenerateThumbnailForList = functions.region('europe-west1')
+    .https
+    .onRequest(listFunctions.regenerateThumbnailForList);
+
+export const updateListThumbnailOnListUpdate = functions.region('europe-west1')
+    .firestore
+    .document('users/{userId}/lists/{listId}')
+    .onWrite(listFunctions.updateThumbnailOnListWrite);

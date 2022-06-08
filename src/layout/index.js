@@ -6,7 +6,7 @@ import Footer from "./footer";
 const Layout = (props) => {
     return (
         <React.Fragment>
-            <AppBar onToggleTheme={props.onToggleTheme}/>
+            <AppBar/>
 
             <main>
                 {props.hero ? props.hero : ''}

@@ -1,6 +1,9 @@
 {
   "projects": {
     "default": "cookmate-a0444",
-    "cookmate-dev": "cookmate-dev"
-  }
+    "dev": "cookmate-dev",
+    "prod": "cookmate-a0444"
+  },
+  "targets": {},
+  "etags": {}
 }

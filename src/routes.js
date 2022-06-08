@@ -11,6 +11,8 @@ import LoginPage from "./auth/containers/login-page";
 import MyAccount from "./account";
 import RoleRestrictedPage from "./global/components/role-restricted-page";
 import LabelAdmin from "./admin/labels/";
+import SavedListsPage from "./saved-lists/all-lists";
+import SingleListPage from "./saved-lists/single-list";
 
 const Routes = () => <>
     <Route exact path="/" component={RecipeList}/>
@@ -20,6 +22,14 @@ const Routes = () => <>
     <RoleRestrictedPage exact path="/my-account" userRole="ROLE_USER">
         <MyAccount />
     </RoleRestrictedPage>
+
+    <RoleRestrictedPage exact path="/my-lists" userRole="ROLE_USER">
+        <SavedListsPage />
+    </RoleRestrictedPage>
+    <RoleRestrictedPage exact path="/my-lists/:listId" userRole="ROLE_USER">
+        <SingleListPage />
+    </RoleRestrictedPage>
+
     <RoleRestrictedPage exact path="/admin/recipes/add" userRole="ROLE_ADMIN">
         <AddRecipe/>
     </RoleRestrictedPage>
