@@ -18,6 +18,16 @@ export const getRecipes = async () => {
     return recipes;
 };
 
+export const getRecipesByRecipeIds = async (recipeIds) => {
+    const snapshot = await firebase.firestore().collection('recipes').where(firebase.firestore.FieldPath.documentId(), 'in', recipeIds).get();
+    const recipes = [];
+    snapshot.forEach((doc) => {
+        recipes.push({...doc.data(), id: doc.id});
+    })
+
+    return recipes;
+}
+
 export const getRecipeList = async () => {
     const snapshot = await firebase.firestore().collection('cache').doc('recipeList').get();
     const cachedRecipeList = snapshot.data();

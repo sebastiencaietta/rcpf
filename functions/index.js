@@ -14,11 +14,13 @@ exports.updateRecipeListOnRecipeCreate = functions.region('europe-west1').firest
         const {recipeId} = context.params;
         const db = admin.firestore();
 
+        console.log(recipe, recipe.createdAt);
+
         return db.collection('cache').doc('recipeList').update({
             [recipeId]: {
                 slug: recipe.slug,
                 title: recipe.title,
-                thumbnail: recipe.thumbnail,
+                thumbnail: recipe.thumbnail || '',
                 tags: recipe.tags,
                 category: recipe.category,
                 diets: recipe.diets || [],
@@ -69,7 +71,7 @@ exports.updateRecipeListOnRecipeUpdate = functions.region('europe-west1').firest
 
         return db.collection('cache').doc('recipeList').update({
             [recipeId + '.title']: newVal.title,
-            [recipeId + '.thumbnail']: newVal.thumbnail,
+            [recipeId + '.thumbnail']: newVal.thumbnail || '',
             [recipeId + '.tags']: newVal.tags,
             [recipeId + '.category']: newVal.category,
             [recipeId + '.slug']: newVal.slug,

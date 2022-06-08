@@ -54,6 +54,9 @@ const AccountMenu = () => {
             onClose={handleClose}
             anchorOrigin={{vertical: 'bottom', horizontal: 'left',}}
         >
+            <Link to="/my-lists" className={classes.menuLink}>
+                <MenuItem onClick={handleClose}>Mes listes</MenuItem>
+            </Link>
             <Link to="/my-account" className={classes.menuLink}>
                 <MenuItem onClick={handleClose}>Mon compte</MenuItem>
             </Link>

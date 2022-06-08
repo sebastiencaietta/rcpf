@@ -43,6 +43,7 @@ const initialRecipeState = {
     cookingTime: '',
     source: '',
     ingredients: [],
+    thumbnail: '',
 };
 
 const RecipeForm = (props) => {

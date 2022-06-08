@@ -1,6 +1,12 @@
 import React, {createContext, useContext, useEffect, useState} from 'react';
 import {useHistory} from "react-router-dom";
-import {FILTER_NAME_ID, FILTER_NEW_ID, FILTER_OLD_ID} from "../global/constants/filters";
+import {
+    FILTER_ADDED_ASC_AT_ID,
+    FILTER_ADDED_AT_ID,
+    FILTER_NAME_ID,
+    FILTER_NEW_ID,
+    FILTER_OLD_ID
+} from "../global/constants/filters";
 
 const filtersContext = createContext({});
 
@@ -25,7 +31,7 @@ export const useFilters = () => {
     return useContext(filtersContext);
 }
 
-const sortByOptions = [
+export const sortByOptions = [
     {id: FILTER_NEW_ID, title: 'Date (Du + au - récent)'},
     {id: FILTER_OLD_ID, title: 'Date (Du - au + récent)'},
     {id: FILTER_NAME_ID, title: 'Ordre alphabétique'},

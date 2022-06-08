@@ -1,5 +1,4 @@
-import React, {useState} from 'react';
-import {useFilters} from "../use-filters";
+import React, {useEffect, useState} from 'react';
 import {Search} from "@material-ui/icons";
 import {Collapse, makeStyles} from "@material-ui/core";
 import CheckboxFilter from "./checkbox-filter";
@@ -15,6 +14,7 @@ import FilterListIcon from '@material-ui/icons/FilterList';
 import Button from "@material-ui/core/Button";
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import clsx from "clsx";
+import {fetchCategories, fetchTags} from "../../global/eve";
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -43,9 +43,21 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-const Filters = ({tags, categories}) => {
+const Filters = ({filtersContext}) => {
+    const [tags, setTags] = useState([]);
+    const [categories, setCategories] = useState([]);
+
+    useEffect(() => {
+        Promise.all([fetchTags(), fetchCategories()]).then(([tags, categories]) => {
+            setTags(tags);
+            setCategories(categories);
+        }).catch(error => {
+            console.log(error);
+        });
+    }, []);
+
     const [filtersOpen, setFiltersOpen] = useState(false);
-    const {filters, ...filtering} = useFilters();
+    const {filters, ...filtering} = filtersContext;
     const classes = useStyles();
 
     const seasons = Object.keys(SEASONS).map(key => SEASONS[key]);
