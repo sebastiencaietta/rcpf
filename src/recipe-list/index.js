@@ -9,7 +9,6 @@ import Filters from "./containers/filters";
 import {Helmet} from 'react-helmet-async';
 import CircularProgress from "@material-ui/core/CircularProgress";
 import Container from "../layout/container";
-import {useFilters} from "./use-filters";
 
 const RecipeList = () => {
     const [recipes, setRecipes] = useState([]);
@@ -29,17 +28,22 @@ const RecipeList = () => {
             <title>CookMate | Toutes les recettes</title>
         </Helmet>
 
-        <Filters />
+        <Filters/>
 
-        <Container>
-            <Grid container spacing={3}>
-                <Grid item xs={12}>
-                    {
-                        loading ? <CircularProgress/> : <RecipeListContainer recipes={recipes}/>
-                    }
-                </Grid>
-            </Grid>
-        </Container>
+        {
+            loading
+                ? <div style={{display: 'flex', height: '10vh', alignItems: 'center', justifyContent: 'center'}}>
+                    <CircularProgress />
+                </div>
+                : <Container>
+                    <Grid container spacing={3}>
+                        <Grid item xs={12}>
+                            <RecipeListContainer recipes={recipes}/>
+                        </Grid>
+                    </Grid>
+                </Container>
+        }
+
 
     </Layout>;
 };

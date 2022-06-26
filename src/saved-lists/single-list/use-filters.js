@@ -1,6 +1,6 @@
 import React, {createContext, useContext, useEffect, useState} from "react";
 import {useHistory} from "react-router-dom";
-import {FILTER_ADDED_ASC_AT_ID, FILTER_ADDED_AT_ID} from "../../global/constants/filters";
+import {FILTER_ADDED_ASC_AT, FILTER_ADDED_AT} from "../../global/constants/filters";
 import {sortByOptions} from "../../recipe-list/use-filters";
 
 const listViewFiltersContext = createContext({});
@@ -11,7 +11,7 @@ export function ProviderListViewFilters({children}) {
 
     useEffect(() => {
         return history.listen(location => {
-            if (history.action === 'PUSH' && !location.pathname.startsWith('/my-lists/')) {
+            if (history.action === 'PUSH' && !location.pathname.startsWith('/my-lists/') && !location.pathname.startsWith('/recipes')) {
                 filters.reset();
             }
         });
@@ -32,7 +32,7 @@ const listViewInitialState = {
     tags: [],
     diets: [],
     seasons: [],
-    sortBy: FILTER_ADDED_AT_ID,
+    sortBy: FILTER_ADDED_AT.id,
     page: 1,
 }
 
@@ -43,13 +43,13 @@ function useProvideListViewFilters() {
         filters,
         sortByOptions: [
             ...sortByOptions,
-            {id: FILTER_ADDED_AT_ID, title: 'Ajoutée le + récemment à la liste'},
-            {id: FILTER_ADDED_ASC_AT_ID, title: 'Ajoutée le - récemment à la liste'},
+            FILTER_ADDED_AT,
+            FILTER_ADDED_ASC_AT,
         ],
         onUpdateSearch: (search) => setFilters({...filters, search}),
         onToggleCategory: (category) => setFilters({...filters, category}),
         onToggleSortBy: (sortBy) => setFilters({...filters, sortBy}),
-        setSelectedTags: (tags) => setFilters({...filters, tags}),
+        setSelectedTags: (tags) => {console.log(tags); setFilters({...filters, tags})},
         setSelectedDiets: (diets) => setFilters({...filters, diets}),
         setSelectedSeasons: (seasons) => setFilters({...filters, seasons}),
         onUpdatePage: (page) => setFilters({...filters, page: page}),

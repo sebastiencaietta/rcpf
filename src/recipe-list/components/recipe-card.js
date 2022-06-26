@@ -5,7 +5,6 @@ import withMoreButton from "../../global/components/card-with-more-button";
 const RecipeCard = ({id, link, image, title}) => {
     const SaveToFavourites = () => <SaveButton recipeId={id} />
 
-    // return withMoreButton(SaveToFavourites)({link, image, title});
     return withMoreButton(SaveToFavourites)({link, image, title});
 }
 

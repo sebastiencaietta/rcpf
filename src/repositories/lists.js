@@ -1,6 +1,6 @@
 import firebase from "firebase/app";
 import slugify from "slugify";
-import {FILTER_ADDED_AT_ID} from "../global/constants/filters";
+import {FILTER_ADDED_AT} from "../global/constants/filters";
 
 // collection => doc => subcollection => doc
 // 'lists' => user-uuid => 'list-slug' => {name: '', createdAt: '', recipes: {}, options: {}, deletedAt: null}
@@ -12,7 +12,7 @@ export const createFavoritesList = async (userId) => {
         createdAt: firebase.firestore.FieldValue.serverTimestamp(),
         recipes: {},
         options: {
-            defaultSort: FILTER_ADDED_AT_ID
+            defaultSort: FILTER_ADDED_AT
         },
         deletedAt: null,
     });
@@ -52,7 +52,7 @@ export const addRecipeToNewList = async (userId, listName, recipeId) => {
             }
         },
         options: {
-            defaultSort: FILTER_ADDED_AT_ID
+            defaultSort: FILTER_ADDED_AT
         },
         deletedAt: null,
     });

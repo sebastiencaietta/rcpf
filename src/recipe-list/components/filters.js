@@ -46,6 +46,9 @@ const useStyles = makeStyles(theme => ({
 const Filters = ({filtersContext}) => {
     const [tags, setTags] = useState([]);
     const [categories, setCategories] = useState([]);
+    const [filtersOpen, setFiltersOpen] = useState(false);
+    const {filters, ...filtering} = filtersContext;
+    const classes = useStyles();
 
     useEffect(() => {
         Promise.all([fetchTags(), fetchCategories()]).then(([tags, categories]) => {
@@ -56,9 +59,11 @@ const Filters = ({filtersContext}) => {
         });
     }, []);
 
-    const [filtersOpen, setFiltersOpen] = useState(false);
-    const {filters, ...filtering} = filtersContext;
-    const classes = useStyles();
+    useEffect(() => {
+        if (filters.tags.length !== 0 || filters.diets.length !== 0 || filters.seasons.length !== 0 || filters.category !== '') {
+            setFiltersOpen(true);
+        }
+    }, [filters.tags, filters.diets, filters.seasons, filters.category])
 
     const seasons = Object.keys(SEASONS).map(key => SEASONS[key]);
     const diets = Object.keys(DIETS).map(key => DIETS[key]);
@@ -100,7 +105,7 @@ const Filters = ({filtersContext}) => {
                 <Collapse in={filtersOpen} className={classes.filtersRoot}>
                     <Grid container spacing={1} alignItems="flex-end">
                         <Grid item xs={12} sm={6} md={3}>
-                            <RadioFilter options={categories} selectedOption={filters.category} idField={'id'}
+                            <RadioFilter options={categories} selectedOption={categories.length !== 0 ? filters.category : ''} idField={'id'}
                                          labelField={'title'}
                                          onToggle={filtering.onToggleCategory}
                                          label="Catégorie"
@@ -108,9 +113,14 @@ const Filters = ({filtersContext}) => {
                         </Grid>
 
                         <Grid item xs={12} sm={6} md={3}>
-                            <CheckboxFilter options={tags} selectedOptions={filters.tags} idField={'id'}
-                                            labelField={'title'}
-                                            setSelected={filtering.setSelectedTags} label="Tags"/>
+                            {
+                                tags.length > 0
+                                    ? <CheckboxFilter options={tags} selectedOptions={filters.tags} idField={'id'}
+                                                              labelField={'title'}
+                                                              setSelected={filtering.setSelectedTags} label="Tags"/>
+                                    : ''
+                            }
+
                         </Grid>
                         <Grid item xs={12} sm={6} md={3}>
                             <CheckboxFilter options={seasons} selectedOptions={filters.seasons} idField={'name'}

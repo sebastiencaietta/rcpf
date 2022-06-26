@@ -19,11 +19,32 @@ export const getRecipes = async () => {
 };
 
 export const getRecipesByRecipeIds = async (recipeIds) => {
-    const snapshot = await firebase.firestore().collection('recipes').where(firebase.firestore.FieldPath.documentId(), 'in', recipeIds).get();
+    const chunks = [];
+
+    for (let i = 0; i < recipeIds.length; i += 10) {
+        chunks.push(recipeIds.slice(i, i + 10));
+    }
+
+    const snaps_collection = [];
+
+    for await (const snap of chunks.map(
+        async (chunk) =>
+            await firebase.firestore()
+                .collection("recipes")
+                .where(firebase.firestore.FieldPath.documentId(), 'in', chunk)
+                .get()
+    )) {
+        snaps_collection.push(snap);
+    }
+
     const recipes = [];
-    snapshot.forEach((doc) => {
-        recipes.push({...doc.data(), id: doc.id});
-    })
+    snaps_collection.map(snapshot => snapshot.forEach((doc) => {
+            recipes.push({...doc.data(), id: doc.id});
+        })
+    )
+
+    // const snapshot = await firebase.firestore().collection('recipes').where(firebase.firestore.FieldPath.documentId(), 'in', recipeIds).get();
+
 
     return recipes;
 }
@@ -49,7 +70,7 @@ export const getRecipeBySlug = async (slug) => {
 };
 
 export const addRecipe = async (recipe) => {
-    const now =  new Date();
+    const now = new Date();
     recipe.createdAt = now.toISOString();
     const docRef = await firebase.firestore().collection('recipes').add(recipe);
 

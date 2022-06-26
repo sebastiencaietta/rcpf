@@ -11,18 +11,18 @@ const useStyles = makeStyles(theme => ({
 }));
 
 
-const RecipeList = ({recipes, currentListId}) => {
+const RecipeList = ({recipes, currentList}) => {
     const classes = useStyles();
 
     return <React.Fragment>
         <Grid container justifyContent="flex-start" spacing={4} className={classes.recipeList}>
             {recipes.map((recipe) => <Grid item xs={12} sm={6} md={4} key={recipe.slug}>
                 <RecipeCard id={recipe.id}
-                    // image={recipe.thumbnail || RecipeImage}
+                            // image={recipe.thumbnail || RecipeImage}
                             image={RecipeImage}
                             link={`/recipes/${recipe.slug}`}
                             title={recipe.title}
-                            currentListId={currentListId}
+                            currentListId={currentList.id}
                 />
             </Grid>)}
         </Grid>

@@ -29,7 +29,7 @@ const Footer = () => {
             <Grid container justifyContent="center">
                 <Grid item xs={8}>
                     <div className={classes.wrapper}>
-                        <Typography variant="body2">© Sebastien Caietta 2021</Typography>
+                        <Typography variant="body2">© Sebastien Caietta 2020-2022</Typography>
                     </div>
                 </Grid>
             </Grid>

@@ -6,26 +6,23 @@ import {useAuth} from "../../auth/use-auth";
 import {getRecipesByRecipeIds} from "../../repositories/recipes";
 import Hero from "../../global/components/hero";
 import Grid from "@material-ui/core/Grid";
-import RecipeList from "./components/recipe-list";
+import RecipeList from "./containers/recipe-list";
 import Filters from "./containers/filters";
-import FilteredRecipeList from "../../global/containers/filtered-recipe-list";
-import {useListViewFilters} from "./use-filters";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 const SingleListPage = (props) => {
     const listId = props.match.params.listId;
     const auth = useAuth();
 
-    console.log(auth.user.lists);
     const list = auth.user.lists.find(list => list.id === listId);
 
     const [recipes, setRecipes] = useState([]);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const recipeIds = Object.keys(list.recipes);
-        getRecipesByRecipeIds(recipeIds).then((result) => setRecipes(result));
+        getRecipesByRecipeIds(recipeIds).then((result) => {setRecipes(result); setLoading(false)});
     }, [list.recipes]);
-
-    const filters = useListViewFilters();
 
     return <Layout>
         <Helmet>
@@ -36,16 +33,20 @@ const SingleListPage = (props) => {
 
         <Filters />
 
-        <Container>
-            {listId}
-            <Grid container spacing={3}>
-                <Grid item xs={12}>
-                    <RecipeList recipes={recipes} currentListId={listId}/>
-                </Grid>
-            </Grid>
-
-
-        </Container>
+        {
+            loading
+                ? <div style={{display: 'flex', height: '10vh', alignItems: 'center', justifyContent: 'center'}}>
+                    <CircularProgress/>
+                </div>
+                :
+                <Container>
+                    <Grid container spacing={3}>
+                        <Grid item xs={12}>
+                            <RecipeList recipes={recipes} currentList={list}/>
+                        </Grid>
+                    </Grid>
+                </Container>
+        }
     </Layout>;
 }
 
