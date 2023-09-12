@@ -14,27 +14,40 @@ const SingleListPage = (props) => {
     const listId = props.match.params.listId;
     const auth = useAuth();
 
-    const list = auth.user.lists.find(list => list.id === listId);
-
+    const [state, setState] = useState({
+        recipes: [],
+        list: {name: ''},
+        loading: true,
+    })
     const [recipes, setRecipes] = useState([]);
+    const [list, setList] = useState({name: 'Cookmate'});
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        const recipeIds = Object.keys(list.recipes);
-        getRecipesByRecipeIds(recipeIds).then((result) => {setRecipes(result); setLoading(false)});
-    }, [list.recipes]);
+        console.log('called once for some reason');
+        // setLoading(true);
+        const recipeIds = Object.keys(auth.user.lists.find(list => list.id === listId).recipes);
+        console.log(recipeIds);
+        getRecipesByRecipeIds(recipeIds).then((result) => {
+            setState({
+                recipes: result,
+                list: auth.user.lists.find(list => list.id === listId),
+                loading: false,
+            });
+        });
+    }, [auth.user.lists]);
 
     return <Layout>
         <Helmet>
-            <title>CookMate | {list.name}</title>
+            <title>CookMate | {state.list.name}</title>
         </Helmet>
 
-        <Hero title={list.name}/>
+        <Hero title={state.list.name}/>
 
         <Filters />
 
         {
-            loading
+            state.loading
                 ? <div style={{display: 'flex', height: '10vh', alignItems: 'center', justifyContent: 'center'}}>
                     <CircularProgress/>
                 </div>
@@ -42,7 +55,7 @@ const SingleListPage = (props) => {
                 <Container>
                     <Grid container spacing={3}>
                         <Grid item xs={12}>
-                            <RecipeList recipes={recipes} currentList={list}/>
+                            <RecipeList recipes={state.recipes} currentList={state.list}/>
                         </Grid>
                     </Grid>
                 </Container>

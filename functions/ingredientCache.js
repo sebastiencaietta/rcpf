@@ -1,6 +1,6 @@
-const admin = require('firebase-admin');
+import admin from 'firebase-admin';
 
-exports.updateIngredientListOnIngredientAdd = async (snap, context) => {
+const updateIngredientListOnIngredientAdd = async (snap, context) => {
     const ingredient = snap.data();
     const {ingredientId} = context.params;
     const db = admin.firestore();
@@ -10,7 +10,7 @@ exports.updateIngredientListOnIngredientAdd = async (snap, context) => {
     return db.collection('cache').doc('ingredientList').update({[ingredientId]: pureIngredient});
 };
 
-exports.updateIngredientListOnIngredientUpdate = async (change, context) => {
+const updateIngredientListOnIngredientUpdate = async (change, context) => {
     const newVal = change.after.data();
 
     const db = admin.firestore();
@@ -23,7 +23,7 @@ exports.updateIngredientListOnIngredientUpdate = async (change, context) => {
     });
 };
 
-exports.updateIngredientListOnIngredientDelete = async (snap, context) => {
+const updateIngredientListOnIngredientDelete = async (snap, context) => {
     const {ingredientId} = context.params;
 
     const db = admin.firestore();
@@ -38,7 +38,7 @@ exports.updateIngredientListOnIngredientDelete = async (snap, context) => {
     });
 };
 
-exports.regenerateIngredientListCache = async (req, res) => {
+const regenerateIngredientListCache = async (req, res) => {
     const db = admin.firestore();
     const ingredients = [];
     const ingredientsSnapshop = await db.collection('ingredients').get();
@@ -56,3 +56,12 @@ exports.regenerateIngredientListCache = async (req, res) => {
     res.status(200);
     res.send();
 };
+
+const ingredientCacheFunctions = {
+    updateIngredientListOnIngredientAdd,
+    updateIngredientListOnIngredientUpdate,
+    updateIngredientListOnIngredientDelete,
+    regenerateIngredientListCache,
+};
+
+export default ingredientCacheFunctions

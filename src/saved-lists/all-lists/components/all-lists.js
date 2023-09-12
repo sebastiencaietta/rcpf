@@ -41,8 +41,7 @@ const AllLists = () => {
                                   link={`/my-lists/${list.id}`}
                                   title={list.name}
                                   id={list.id}
-                            // image={undefined}
-                                  image={RecipeImage}
+                                  image={list.thumbnailUrl || RecipeImage}
                                   listId={list.id}
                         />
                     </Grid>
