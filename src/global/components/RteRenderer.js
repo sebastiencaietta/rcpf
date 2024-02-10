@@ -51,7 +51,7 @@ const useStyles = makeStyles(theme => ({
     rteRoot: {
         '& p': {fontSize: theme.typography.pxToRem(16), lineHeight: 1.6},
         '& ol, & ul': {lineHeight: 1.6, fontSize: theme.typography.pxToRem(16)},
-        '& ol li, & ul li': {marginBottom: theme.spacing(1.6)},
+        '& ol li, & ul li': {marginBottom: theme.spacing(2.2)},
     }
 }));
 
