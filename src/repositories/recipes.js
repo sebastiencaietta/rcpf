@@ -25,7 +25,7 @@ export const getRecipesByRecipeIds = async (recipeIds) => {
         chunks.push(recipeIds.slice(i, i + 10));
     }
 
-    const recipes = [];
+    const snapCollection = [];
 
     for await (const snap of chunks.map(
         async (chunk) =>
@@ -34,13 +34,16 @@ export const getRecipesByRecipeIds = async (recipeIds) => {
                 .where(firebase.firestore.FieldPath.documentId(), 'in', chunk)
                 .get()
     )) {
-        recipes.push(snap);
+        snapCollection.push(snap);
     }
 
-    return recipes.map(snapshot => snapshot.forEach((doc) => {
+    const recipes = [];
+    snapCollection.map(snapshot => snapshot.forEach((doc) => {
             recipes.push({...doc.data(), id: doc.id});
         })
     );
+
+    return recipes;
 }
 
 export const getRecipeList = async () => {
