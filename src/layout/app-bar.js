@@ -75,7 +75,9 @@ const AppBar = () => {
                                 <Link to="/" className={classes.menuLink}>
                                     <Button startIcon={<RestaurantMenu/>}>Recettes</Button>
                                 </Link>
-                                <Button disabled startIcon={<MenuBookIcon/>}>Menus</Button>
+                                <Link to="/my-lists" className={classes.menuLink}>
+                                    <Button startIcon={<MenuBookIcon/>}>Mes listes</Button>
+                                </Link>
                                 <AccountMenu />
                                 <AdminMenu />
                                 <TogglePaletteTypeButton/>

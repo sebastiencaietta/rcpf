@@ -8,8 +8,9 @@ import MenuItem from "@material-ui/core/MenuItem";
 import Select from "@material-ui/core/Select";
 
 const CheckboxFilter = ({options, idField, labelField, setSelected, selectedOptions, label}) => {
-    const selectedIds = selectedOptions.map(option => option[idField]);
-    const selectedLabels = selectedOptions.map(option => option[labelField]);
+    const renderValue = options.filter(option => selectedOptions.indexOf(option[idField]) !== -1)
+        .map(option => option[labelField])
+        .join(', ');
 
     const onChange = (event) => {
         const {value} = event.target;
@@ -27,11 +28,11 @@ const CheckboxFilter = ({options, idField, labelField, setSelected, selectedOpti
                 value={selectedOptions}
                 onChange={onChange}
                 input={<Input />}
-                renderValue={() => selectedLabels.join(', ')}
+                renderValue={() => renderValue}
             >
                 {options.map((option) => (
-                    <MenuItem key={option[idField]} value={option}>
-                        <Checkbox checked={selectedIds.indexOf(option[idField]) > -1} />
+                    <MenuItem key={option[idField]} value={option[idField]}>
+                        <Checkbox checked={selectedOptions.indexOf(option[idField]) > -1} />
                         <ListItemText primary={option[labelField]} />
                     </MenuItem>
                 ))}

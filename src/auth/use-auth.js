@@ -10,6 +10,7 @@ import {
     signUp,
     verifyEmail
 } from "../repositories/users";
+import firebase from "firebase";
 
 const authContext = createContext({user: {authStatusReported: false, user: {}, signedIn: false}});
 
@@ -22,17 +23,22 @@ export const useAuth = () => {
     return useContext(authContext);
 };
 
+export const listenToUserLists = (userId, onNext) => {
+    return firebase.firestore().collection("users").doc(userId).collection('lists').onSnapshot(onNext);
+};
+
 function useProvideAuth() {
     const [user, setUser] = useState({authStatusReported: false, user: {}, signedIn: false});
 
     const userObserver = async (user) => {
         if (user && user.displayName) {
             const dbUser = await getUser(user.uid);
-            const {role} = dbUser;
+            const {role, lists} = dbUser;
             const {email, emailVerified, displayName, uid} = user;
             setUser({
                 authStatusReported: true,
                 user: {email, emailVerified, firstName: displayName || email, role, uid},
+                lists,
                 signedIn: true
             });
         } else {
@@ -43,6 +49,23 @@ function useProvideAuth() {
     useEffect(() => {
         return onUserUpdate(userObserver);
     }, []);
+
+    useEffect(() => {
+        if (user.user.uid === undefined) {
+            return () => {};
+        }
+
+        const unsubscribeFromLists = listenToUserLists(user.user.uid, (querySnapshot) => {
+            const lists = [];
+            querySnapshot.forEach(function (docRef) {
+                lists.push({...docRef.data(), id: docRef.id});
+            });
+
+            setUser((user) => ({...user, lists}));
+        });
+
+        return () => {unsubscribeFromLists()};
+    }, [user.user.uid]);
 
     return {
         user,

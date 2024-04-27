@@ -1,6 +1,10 @@
 import React, {createContext, useContext, useEffect, useState} from 'react';
 import {useHistory} from "react-router-dom";
-import {FILTER_NAME_ID, FILTER_NEW_ID, FILTER_OLD_ID} from "../global/constants/filters";
+import {
+    FILTER_NAME,
+    FILTER_NEW,
+    FILTER_OLD
+} from "../global/constants/filters";
 
 const filtersContext = createContext({});
 
@@ -25,10 +29,10 @@ export const useFilters = () => {
     return useContext(filtersContext);
 }
 
-const sortByOptions = [
-    {id: FILTER_NEW_ID, title: 'Date (Du + au - récent)'},
-    {id: FILTER_OLD_ID, title: 'Date (Du - au + récent)'},
-    {id: FILTER_NAME_ID, title: 'Ordre alphabétique'},
+export const sortByOptions = [
+    FILTER_NEW,
+    FILTER_OLD,
+    FILTER_NAME,
 ];
 
 const initialState = {
@@ -37,7 +41,7 @@ const initialState = {
     tags: [],
     diets: [],
     seasons: [],
-    sortBy: FILTER_NEW_ID,
+    sortBy: FILTER_NEW.id,
     page: 1,
 };
 

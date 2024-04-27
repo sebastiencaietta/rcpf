@@ -15,6 +15,7 @@ import './index.css';
 import {ProviderThemeSwitcher} from "./layout/use-theme-switcher";
 import PreferredThemeProvider from "./layout/theme-provider";
 import {ProviderFilters} from "./recipe-list/use-filters";
+import {ProviderListViewFilters} from "./saved-lists/single-list/use-filters";
 
 initFirebaseApp();
 initBugsnapApp();
@@ -36,7 +37,9 @@ const App = () => {
                             <CssBaseline/>
                             <Router history={history}>
                                 <ProviderFilters>
-                                    <Routes/>
+                                    <ProviderListViewFilters>
+                                        <Routes/>
+                                    </ProviderListViewFilters>
                                 </ProviderFilters>
                             </Router>
                         </HelmetProvider>

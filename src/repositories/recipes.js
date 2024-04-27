@@ -18,6 +18,31 @@ export const getRecipes = async () => {
     return recipes;
 };
 
+export const getRecipesByRecipeIds = async (recipeIds) => {
+    const chunks = [];
+
+    for (let i = 0; i < recipeIds.length; i += 10) {
+        chunks.push(recipeIds.slice(i, i + 10));
+    }
+
+    const recipes = [];
+
+    for await (const snap of chunks.map(
+        async (chunk) =>
+            await firebase.firestore()
+                .collection("recipes")
+                .where(firebase.firestore.FieldPath.documentId(), 'in', chunk)
+                .get()
+    )) {
+        recipes.push(snap);
+    }
+
+    return recipes.map(snapshot => snapshot.forEach((doc) => {
+            recipes.push({...doc.data(), id: doc.id});
+        })
+    );
+}
+
 export const getRecipeList = async () => {
     const snapshot = await firebase.firestore().collection('cache').doc('recipeList').get();
     const cachedRecipeList = snapshot.data();
@@ -39,7 +64,7 @@ export const getRecipeBySlug = async (slug) => {
 };
 
 export const addRecipe = async (recipe) => {
-    const now =  new Date();
+    const now = new Date();
     recipe.createdAt = now.toISOString();
     const docRef = await firebase.firestore().collection('recipes').add(recipe);
 
@@ -97,7 +122,6 @@ export const updateLabel = async (labelType, labelValue, recipesAdded, recipesRe
     const batch = firebase.firestore().batch();
 
     recipesAdded.forEach(recipe => {
-        console.log(recipe.id, recipe[labelType]);
         batch.update(
             firebase.firestore().collection('recipes').doc(recipe.id),
             {[labelType]: firebase.firestore.FieldValue.arrayUnion(labelValue)}
@@ -105,7 +129,6 @@ export const updateLabel = async (labelType, labelValue, recipesAdded, recipesRe
     });
 
     recipesRemoved.forEach(recipe => {
-        console.log(recipe.id, recipe[labelType]);
         batch.update(
             firebase.firestore().collection('recipes').doc(recipe.id),
             {[labelType]: firebase.firestore.FieldValue.arrayRemove(labelValue)}
